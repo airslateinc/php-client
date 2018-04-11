@@ -1,0 +1,14 @@
+{
+    "name": "pdffiller/airslate-users-php-client",
+    "description": "AirSlate users client library.",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "AirSlate\\UsersManagement\\": "src"
+        }
+    },
+    "require": {
+        "php": ">=7.1",
+        "guzzlehttp/guzzle": "6.3.*"
+    }
+}
