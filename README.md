@@ -94,6 +94,14 @@ $client = Client::instance('https://api.airslate.xyz', $config);
 $user = $client->users()->me();
 ```
 
+### Retrieve "me" with included organization
+```php
+/**
+ * @var AirSlate\ApiClient\Entities\User $user
+ */
+$user = $client->users()->with('organization')->me();
+```
+
 ### Invite users to organization
 ```php
 /**

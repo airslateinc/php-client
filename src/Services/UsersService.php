@@ -16,6 +16,10 @@ class UsersService
      * @var Client
      */
     private $httpClient;
+    /**
+     * @var string
+     */
+    private $include;
 
     /**
      * UsersService constructor.
@@ -27,20 +31,41 @@ class UsersService
     }
 
     /**
+     * @param string|array $include
+     * @return UsersService
+     * @throws \Exception
+     */
+    public function with($include): UsersService
+    {
+        if (\is_array($include)) {
+            $include = implode(',', $include);
+        }
+
+        if (!\is_string($include)) {
+            throw new \InvalidArgumentException('Attribute must be a string value.');
+        }
+
+        $this->include = $include;
+
+        return $this;
+    }
+
+    /**
      * Return info about authorized user.
+     * @throws \Exception
      */
     public function me(): User
     {
-        $response = $this->httpClient->get('/v1/users/me');
+        $options = [];
+        if (null !== $this->include) {
+            $options[RequestOptions::QUERY]['include'] = $this->include;
+        }
+
+        $response = $this->httpClient->get('/v1/users/me', $options);
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
-        $user = new User();
-        $user->setAttributes(array_merge(
-            ['id' => $content['data']['id']],
-            $content['data']['attributes']
-        ));
 
-        return $user;
+        return User::createFromOne($content);
     }
 
     /**
@@ -49,6 +74,7 @@ class UsersService
      * @param string $organization
      * @param array $emails
      * @return User[]
+     * @throws \Exception
      */
     public function invite(string $organization, array $emails): array
     {
@@ -64,16 +90,7 @@ class UsersService
         ]);
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
-        $users = [];
-        foreach ($content['data'] as $item) {
-            $user = new User();
-            $user->setAttributes(array_merge(
-                ['id' => $item['id']],
-                $item['attributes']
-            ));
-            $users[] = $user;
-        }
 
-        return $users;
+        return User::createFromCollection($content);
     }
 }
