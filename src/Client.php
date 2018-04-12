@@ -7,7 +7,7 @@ use AirSlate\ApiClient\Services\UsersService;
 
 /**
  * Class Client
- * @package AirSlate\UsersManagement
+ * @package AirSlate\ApiClient
  */
 class Client
 {
@@ -31,7 +31,7 @@ class Client
      * @param string $baseUri
      * @param array $config
      */
-    private function __construct(string $baseUri, $config = [])
+    private function __construct(string $baseUri, array $config = [])
     {
         $httpClient = new HttpClient([
             'base_uri' => $baseUri,

@@ -16,10 +16,6 @@ class UsersService
      * @var Client
      */
     private $httpClient;
-    /**
-     * @var string
-     */
-    private $include;
 
     /**
      * UsersService constructor.
@@ -37,15 +33,7 @@ class UsersService
      */
     public function with($include): UsersService
     {
-        if (\is_array($include)) {
-            $include = implode(',', $include);
-        }
-
-        if (!\is_string($include)) {
-            throw new \InvalidArgumentException('Attribute must be a string value.');
-        }
-
-        $this->include = $include;
+        $this->httpClient->with($include);
 
         return $this;
     }
@@ -56,12 +44,7 @@ class UsersService
      */
     public function me(): User
     {
-        $options = [];
-        if (null !== $this->include) {
-            $options[RequestOptions::QUERY]['include'] = $this->include;
-        }
-
-        $response = $this->httpClient->get('/v1/users/me', $options);
+        $response = $this->httpClient->get('/v1/users/me');
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
