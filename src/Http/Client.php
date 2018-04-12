@@ -1,6 +1,6 @@
 <?php
 
-namespace AirSlate\UsersManagement\Http;
+namespace AirSlate\ApiClient\Http;
 
 class Client extends \GuzzleHttp\Client
 {

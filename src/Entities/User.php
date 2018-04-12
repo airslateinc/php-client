@@ -1,15 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: blakovo
- * Date: 4/11/18
- * Time: 3:50 PM
- */
 
-namespace AirSlate\UsersManagement\Entities;
+namespace AirSlate\ApiClient\Entities;
 
 
-class User extends JsonModel
+class User extends JsonEntity
 {
 
 }

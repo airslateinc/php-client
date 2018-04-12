@@ -1,10 +1,9 @@
 <?php
 
-namespace AirSlate\UsersManagement;
+namespace AirSlate\ApiClient;
 
-use AirSlate\UsersManagement\Entities\User;
-use AirSlate\UsersManagement\Http\Client as HttpClient;
-use GuzzleHttp\RequestOptions;
+use AirSlate\ApiClient\Http\Client as HttpClient;
+use AirSlate\ApiClient\Services\UsersService;
 
 /**
  * Class Client
@@ -22,11 +21,10 @@ class Client
      * @var Client
      */
     static private $instance;
-
     /**
-     * @var HttpClient
+     * @var UsersService
      */
-    protected $httpClient;
+    private $usersService;
 
     /**
      * Client constructor.
@@ -35,12 +33,14 @@ class Client
      */
     private function __construct(string $baseUri, $config = [])
     {
-        $this->httpClient = new HttpClient([
+        $httpClient = new HttpClient([
             'base_uri' => $baseUri,
             'headers' => [
                 'Authorization' => 'Bearer ' . $config['token']
             ]
         ]);
+
+        $this->usersService = new UsersService($httpClient);
     }
 
     /**
@@ -48,7 +48,7 @@ class Client
      * @param array $config
      * @return Client
      */
-    public static function getInstance(string $baseUri, $config = [])
+    public static function getInstance(string $baseUri, array $config = []): Client
     {
         if (!self::$instance) {
             self::$instance = new self($baseUri, $config);
@@ -58,53 +58,10 @@ class Client
     }
 
     /**
-     * Return info about authorized user.
+     * @return UsersService
      */
-    public function me(): User
+    public function users(): UsersService
     {
-        $response = $this->httpClient->get('/v1/users/me');
-
-        $content = \GuzzleHttp\json_decode($response->getBody(), true);
-        $user = new User();
-        $user->setAttributes(array_merge(
-            ['id' => $content['data']['id']],
-            $content['data']['attributes']
-        ));
-
-        return $user;
-    }
-
-    /**
-     * Invite new users to organization.
-     *
-     * @param string $organization
-     * @param array $emails
-     * @return User[]
-     */
-    public function invite(string $organization, array $emails): array
-    {
-        $response = $this->httpClient->post('/v1/organizations/' . $organization . '/users/invite', [
-            RequestOptions::JSON => [
-                'data' => [
-                    'type' => 'users',
-                    'attributes' => [
-                        'emails' => $emails
-                    ]
-                ]
-            ]
-        ]);
-
-        $content = \GuzzleHttp\json_decode($response->getBody(), true);
-        $users = [];
-        foreach ($content['data'] as $item) {
-            $user = new User();
-            $user->setAttributes(array_merge(
-                ['id' => $item['id']],
-                $item['attributes']
-            ));
-            $users[] = $user;
-        }
-
-        return $users;
+        return $this->usersService;
     }
 }

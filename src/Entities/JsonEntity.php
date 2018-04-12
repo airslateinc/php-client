@@ -1,12 +1,12 @@
 <?php
 
-namespace AirSlate\UsersManagement\Entities;
+namespace AirSlate\ApiClient\Entities;
 
 /**
- * Class JsonModel
+ * Class JsonEntity
  * @package AirSlate\UsersManagement\Entities
  */
-class JsonModel
+class JsonEntity
 {
     /**
      * @var array

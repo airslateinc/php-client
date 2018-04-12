@@ -1,8 +1,8 @@
 <?php
 
-namespace AirSlate\UsersManagement\Entities;
+namespace AirSlate\ApiClient\Entities;
 
-class Organization extends JsonModel
+class Organization extends JsonEntity
 {
 
 }

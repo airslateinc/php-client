@@ -1,11 +1,11 @@
 <?php
 
-namespace AirSlate\UsersManagement\Providers;
+namespace AirSlate\ApiClient\Providers;
 
-use AirSlate\UsersManagement\Client;
+use AirSlate\ApiClient\Client;
 use Illuminate\Support\ServiceProvider;
 
-class UsersClientServiceProvider extends ServiceProvider
+class ApiClientServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
