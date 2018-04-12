@@ -48,7 +48,7 @@ class Client
      * @param array $config
      * @return Client
      */
-    public static function getInstance(string $baseUri, array $config = []): Client
+    public static function instance(string $baseUri, array $config = []): Client
     {
         if (!self::$instance) {
             self::$instance = new self($baseUri, $config);
