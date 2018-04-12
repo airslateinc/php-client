@@ -12,11 +12,6 @@ use AirSlate\ApiClient\Services\UsersService;
 class Client
 {
     /**
-     *
-     */
-    const LATEST_API_VERSION = 1;
-
-    /**
      * Client instances.
      * @var Client
      */

@@ -2,6 +2,9 @@
 
 namespace AirSlate\ApiClient\Entities;
 
+use AirSlate\ApiClient\Exceptions\MissingDataException;
+use AirSlate\ApiClient\Exceptions\RelationNotExistException;
+
 /**
  * Class BaseEntity
  * @package AirSlate\ApiClient\Entities
@@ -105,7 +108,7 @@ class BaseEntity
     public static function createFromOne(array $jsonApi)
     {
         if (!isset($jsonApi['data'])) {
-            throw new \RuntimeException('Invalid data.');
+            throw new MissingDataException();
         }
 
         $model = new static();
@@ -126,7 +129,7 @@ class BaseEntity
     public static function createFromCollection(array $jsonApi): array
     {
         if (!isset($jsonApi['data'])) {
-            throw new \RuntimeException('Invalid data.');
+            throw new MissingDataException();
         }
 
         if (empty($jsonApi['data'])) {
@@ -157,7 +160,7 @@ class BaseEntity
     protected function hasOne(string $className, string $relName): ?BaseEntity
     {
         if (!array_key_exists($relName, $this->relationships)) {
-            throw new \RuntimeException('No relation with such name.');
+            throw new RelationNotExistException();
         }
         $data = $this->relationships[$relName];
 

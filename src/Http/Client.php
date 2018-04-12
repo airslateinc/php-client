@@ -2,6 +2,7 @@
 
 namespace AirSlate\ApiClient\Http;
 
+use AirSlate\ApiClient\Exceptions\DomainException;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -17,10 +18,17 @@ class Client extends \GuzzleHttp\Client
 
     /**
      * @inheritdoc
+     * @throws \AirSlate\ApiClient\Exceptions\DomainException
      */
     public function request($method, $uri = '', array $options = [])
     {
-        return parent::request($method, $uri, $this->resolveOptions($options));
+        try {
+            $response = parent::request($method, $uri, $this->resolveOptions($options));
+        } catch (\Exception $exception) {
+            throw new DomainException($exception->getMessage());
+        }
+
+        return $response;
     }
 
     /**
@@ -35,7 +43,7 @@ class Client extends \GuzzleHttp\Client
         }
 
         if (!\is_string($include)) {
-            throw new \InvalidArgumentException('Attribute must be a string value.');
+            throw new \InvalidArgumentException('"$include" must be a string or array value.');
         }
 
         $this->include = $include;
