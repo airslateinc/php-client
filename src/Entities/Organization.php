@@ -24,7 +24,7 @@ class Organization extends BaseEntity
      * @return BaseEntity|User|null
      * @throws \Exception
      */
-    public function getUser()
+    public function getOwner()
     {
         return $this->hasOne(User::class, 'owner');
     }

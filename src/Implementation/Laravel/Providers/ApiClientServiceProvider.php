@@ -35,15 +35,12 @@ class ApiClientServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(Client::class, function ($app) {
-            $authHeader = $this->app->get('request')->header('Authorization');
-            $token = $authHeader ? explode(' ', $authHeader)[1] : '';
-
             /** @var \Illuminate\Contracts\Foundation\Application $app */
             $config = $app->make('config');
             return Client::instance(
                 $config->get('airslate-api.base_uri'),
                 [
-                    'token' => $token
+                    'token' => $this->app->get('request')->bearerToken()
                 ]
             );
         });
