@@ -36,6 +36,11 @@ class BaseEntity
     private $meta = [];
 
     /**
+     * @var array
+     */
+    private $objectMeta = [];
+
+    /**
      * @param string $name
      * @return mixed|null
      */
@@ -124,6 +129,22 @@ class BaseEntity
     }
 
     /**
+     * @return array
+     */
+    public function getRelationships(): array
+    {
+        return $this->relationships;
+    }
+
+    /**
+     * @return array
+     */
+    public function getIncluded(): array
+    {
+        return $this->included;
+    }
+
+    /**
      * @param null|string $name
      * @return array|string|null
      */
@@ -152,10 +173,13 @@ class BaseEntity
         }
 
         $model->setAttribute('id', $jsonApi['data']['id']);
-        $model->setAttributes($jsonApi['data']['attributes']);
+        if (isset($jsonApi['data']['attributes'])) {
+            $model->setAttributes($jsonApi['data']['attributes']);
+        }
 
         $model->relationships = $jsonApi['data']['relationships'] ?? [];
         $model->included = $jsonApi['included'] ?? [];
+        $model->objectMeta = $jsonApi['data']['meta'] ?? [];
         $model->meta = $jsonApi['meta'] ?? [];
 
         return $model;
@@ -189,6 +213,7 @@ class BaseEntity
 
             $model->relationships = $datum['relationships'] ?? [];
             $model->included = $jsonApi['included'] ?? [];
+            $model->objectMeta = $datum['meta'] ?? [];
 
             $models[] = $model;
         }
@@ -276,5 +301,31 @@ class BaseEntity
 
         /** @var BaseEntity $className */
         return $className::createFromCollection(['data' => $relations]);
+    }
+
+    /**
+     * @return array
+     */
+    public function getObjectMeta()
+    {
+        return $this->objectMeta;
+    }
+
+    /**
+     * @param $name
+     * @return mixed|null
+     */
+    public function getObjectMetaAttribute($name)
+    {
+        return $this->objectMeta[$name] ?? null;
+    }
+
+    /**
+     * @param $name
+     * @return mixed|null
+     */
+    public function getMetaAttribute($name)
+    {
+        return $this->meta[$name] ?? null;
     }
 }

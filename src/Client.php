@@ -1,8 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace AirSlate\ApiClient;
 
 use AirSlate\ApiClient\Http\Client as HttpClient;
+use AirSlate\ApiClient\Services\DocumentsService;
+use AirSlate\ApiClient\Services\FilesService;
+use AirSlate\ApiClient\Services\SlatesService;
 use AirSlate\ApiClient\Services\UsersService;
 
 /**
@@ -20,22 +24,54 @@ class Client
      * @var UsersService
      */
     private $usersService;
+    private $documentsService;
+    private $filesService;
+    private $slatesService;
 
     /**
      * Client constructor.
      * @param string $baseUri
      * @param array $config
+     * config['token'] = '';
+     * config['connectTimeout'] = 30; //default
+     * config['requestTimeout'] = 30; //default
      */
     private function __construct(string $baseUri, array $config = [])
     {
-        $httpClient = new HttpClient([
-            'base_uri' => $baseUri,
-            'headers' => [
-                'Authorization' => 'Bearer ' . $config['token']
-            ]
-        ]);
+        $httpClient = $this->configureClient($baseUri, $config);
 
         $this->usersService = new UsersService($httpClient);
+        $this->documentsService = new DocumentsService($httpClient);
+        $this->filesService = new FilesService($httpClient);
+        $this->slatesService = new SlatesService($httpClient);
+    }
+
+    /**
+     * @param $baseUri
+     * @param array $config
+     * @return HttpClient
+     */
+    public function configureClient($baseUri, array $config = []): HttpClient
+    {
+        $httpClient = new HttpClient([
+            'base_uri' => $this->prepareBaserUri($baseUri),
+            'headers' => [
+                'Authorization' => 'Bearer ' . $config['token']
+            ],
+            'connect_timeout' => $config['connectTimeout'] ?? 30,
+            'request_timeout' => $config['requestTimeout'] ?? 30,
+        ]);
+
+        return $httpClient;
+    }
+
+    /**
+     * @param $baseUri
+     * @return string
+     */
+    private function prepareBaserUri(string $baseUri): string
+    {
+        return rtrim($baseUri, '/') . '/';
     }
 
     /**
@@ -58,5 +94,29 @@ class Client
     public function users(): UsersService
     {
         return $this->usersService;
+    }
+
+    /**
+     * @return DocumentsService
+     */
+    public function documents(): DocumentsService
+    {
+        return $this->documentsService;
+    }
+
+    /**
+     * @return FilesService
+     */
+    public function files(): FilesService
+    {
+        return $this->filesService;
+    }
+
+    /**
+     * @return SlatesService
+     */
+    public function slates(): SlatesService
+    {
+        return $this->slatesService;
     }
 }

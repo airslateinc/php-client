@@ -1,51 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Token;
 use AirSlate\ApiClient\Entities\User;
-use AirSlate\ApiClient\Http\Client;
 use GuzzleHttp\RequestOptions;
 
 /**
  * Class UsersService
  * @package AirSlate\UsersManagement\Services
  */
-class UsersService
+class UsersService extends AbstractService
 {
-    /**
-     * @var Client
-     */
-    private $httpClient;
-
-    /**
-     * UsersService constructor.
-     * @param Client $httpClient
-     */
-    public function __construct(Client $httpClient)
-    {
-        $this->httpClient = $httpClient;
-    }
-
-    /**
-     * @param string|array $include
-     * @return UsersService
-     * @throws \Exception
-     */
-    public function with($include): UsersService
-    {
-        $this->httpClient->with($include);
-
-        return $this;
-    }
-
     /**
      * Return info about authorized user.
      * @throws \Exception
      */
     public function me(): User
     {
-        $response = $this->httpClient->get('/v1/users/me');
+        $url = $this->resolveEndpoint('/users/me');
+
+        $response = $this->httpClient->get($url);
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
@@ -91,7 +68,9 @@ class UsersService
      */
     public function invite(string $organization, array $emails): array
     {
-        $response = $this->httpClient->post('/v1/organizations/' . $organization . '/users/invite', [
+        $url = $this->resolveEndpoint('/organizations/' . $organization . '/users/invite');
+
+        $response = $this->httpClient->post($url, [
             RequestOptions::JSON => [
                 'data' => [
                     'type' => 'users',
