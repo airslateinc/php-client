@@ -4,6 +4,8 @@ namespace AirSlate\ApiClient\Entities;
 
 use AirSlate\ApiClient\Exceptions\MissingDataException;
 use AirSlate\ApiClient\Exceptions\RelationNotExistException;
+use AirSlate\ApiClient\Exceptions\TypeMismatchException;
+use AirSlate\ApiClient\Helpers\Inflector;
 
 /**
  * Class BaseEntity
@@ -11,6 +13,11 @@ use AirSlate\ApiClient\Exceptions\RelationNotExistException;
  */
 class BaseEntity
 {
+    /**
+     * Type of the JSON:API resource.
+     * @var string
+     */
+    protected $type;
     /**
      * @var array
      */
@@ -65,6 +72,18 @@ class BaseEntity
     }
 
     /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        if (!empty($this->type)) {
+            return $this->type;
+        }
+
+        return Inflector::tableize(basename(str_replace('\\', '/', static::class)));
+    }
+
+    /**
      * @return array
      */
     public function getAttributes(): array
@@ -112,6 +131,11 @@ class BaseEntity
         }
 
         $model = new static();
+
+        if (($jsonApi['data']['type'] ?? '') !== $model->getType()) {
+            throw new TypeMismatchException();
+        }
+
         $model->setAttribute('id', $jsonApi['data']['id']);
         $model->setAttributes($jsonApi['data']['attributes']);
 
@@ -139,6 +163,11 @@ class BaseEntity
         $models = [];
         foreach ($jsonApi['data'] as $datum) {
             $model = new static();
+
+            if (($datum['type'] ?? '') !== $model->getType()) {
+                throw new TypeMismatchException();
+            }
+
             $model->setAttribute('id', $datum['id']);
             $model->setAttributes($datum['attributes']);
 
