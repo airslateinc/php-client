@@ -191,7 +191,7 @@ class BaseEntity
         if (!array_key_exists($relName, $this->relationships)) {
             throw new RelationNotExistException();
         }
-        $data = $this->relationships[$relName];
+        $data = $this->relationships[$relName]['data'] ?? null;
 
         if (null === $data) {
             return null;
@@ -211,5 +211,42 @@ class BaseEntity
 
         /** @var BaseEntity $className */
         return $className::createFromOne(['data' => reset($relation)]);
+    }
+
+    /**
+     * @param string $className
+     * @param string $relName
+     * @return array
+     * @throws \Exception
+     */
+    protected function hasMany(string $className, string $relName): array
+    {
+        if (!array_key_exists($relName, $this->relationships)) {
+            throw new RelationNotExistException();
+        }
+        $data = $this->relationships[$relName]['data'] ?? [];
+
+        if ([] === $data) {
+            return [];
+        }
+
+        $ids = array_column($data, 'type', 'id');
+
+        $relations = array_filter($this->included, function ($item) use ($ids) {
+            return ($item['type'] === $ids[$item['id']]) && array_key_exists($item['id'], $ids);
+        });
+
+        if (empty($relations)) {
+            return array_map(function ($key) use ($className) {
+                /** @var BaseEntity $model */
+                $model = new $className();
+                $model->setAttribute('id', $key);
+
+                return $model;
+            }, array_keys($ids));
+        }
+
+        /** @var BaseEntity $className */
+        return $className::createFromCollection(['data' => $relations]);
     }
 }
