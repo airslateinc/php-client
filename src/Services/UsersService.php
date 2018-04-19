@@ -52,6 +52,35 @@ class UsersService
     }
 
     /**
+     * @param string $organizationId
+     * @param string $userId
+     * @return User
+     * @throws \Exception
+     */
+    public function one(string $organizationId, string $userId): User
+    {
+        $response = $this->httpClient->get('/v1/organizations/' . $organizationId . '/users/' . $userId);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return User::createFromOne($content);
+    }
+
+    /**
+     * @param string $organizationId
+     * @return User[]
+     * @throws \Exception
+     */
+    public function all(string $organizationId): array
+    {
+        $response = $this->httpClient->get('/v1/organizations/' . $organizationId . '/users');
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return User::createFromCollection($content);
+    }
+
+    /**
      * Invite new users to organization.
      *
      * @param string $organization
