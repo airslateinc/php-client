@@ -2,6 +2,7 @@
 
 namespace AirSlate\ApiClient\Services;
 
+use AirSlate\ApiClient\Entities\Token;
 use AirSlate\ApiClient\Entities\User;
 use AirSlate\ApiClient\Http\Client;
 use GuzzleHttp\RequestOptions;
@@ -104,5 +105,23 @@ class UsersService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return User::createFromCollection($content);
+    }
+
+    /**
+     * @param string $email
+     * @return Token
+     * @throws \Exception
+     */
+    public function emailLogin(string $email): Token
+    {
+        $response = $this->httpClient->post('/v1/auth/email-login', [
+            RequestOptions::JSON => [
+                'email' => $email
+            ]
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Token::createFromOne($content);
     }
 }

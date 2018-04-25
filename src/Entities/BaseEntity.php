@@ -30,6 +30,10 @@ class BaseEntity
      * @var array
      */
     private $included = [];
+    /**
+     * @var array
+     */
+    private $meta = [];
 
     /**
      * @param string $name
@@ -120,6 +124,17 @@ class BaseEntity
     }
 
     /**
+     * @param null|string $name
+     * @return array|string|null
+     */
+    public function getMeta(?string $name = null)
+    {
+        return (null === $name) ?
+            $this->meta :
+            ($this->meta[$name] ?? null);
+    }
+
+    /**
      * @param array $jsonApi
      * @return static
      * @throws \Exception
@@ -141,6 +156,7 @@ class BaseEntity
 
         $model->relationships = $jsonApi['data']['relationships'] ?? [];
         $model->included = $jsonApi['included'] ?? [];
+        $model->meta = $jsonApi['meta'] ?? [];
 
         return $model;
     }
