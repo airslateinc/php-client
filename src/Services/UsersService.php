@@ -122,6 +122,6 @@ class UsersService
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
-        return Token::createFromOne($content);
+        return Token::createFromMeta($content);
     }
 }

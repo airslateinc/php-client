@@ -197,6 +197,18 @@ class BaseEntity
     }
 
     /**
+     * @param array $jsonApi
+     * @return static
+     */
+    public static function createFromMeta(array $jsonApi)
+    {
+        $model = new static();
+        $model->meta = $jsonApi['meta'] ?? [];
+
+        return $model;
+    }
+
+    /**
      * @param string $className
      * @param string $relName
      * @return null|BaseEntity
