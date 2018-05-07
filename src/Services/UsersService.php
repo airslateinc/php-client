@@ -21,7 +21,6 @@ class UsersService extends AbstractService
     public function me(): User
     {
         $url = $this->resolveEndpoint('/users/me');
-
         $response = $this->httpClient->get($url);
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
@@ -37,7 +36,8 @@ class UsersService extends AbstractService
      */
     public function one(string $organizationId, string $userId): User
     {
-        $response = $this->httpClient->get('/organizations/' . $organizationId . '/users/' . $userId);
+        $url = $this->resolveEndpoint('/organizations/' . $organizationId . '/users/' . $userId);
+        $response = $this->httpClient->get($url);
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
@@ -51,7 +51,8 @@ class UsersService extends AbstractService
      */
     public function all(string $organizationId): array
     {
-        $response = $this->httpClient->get('/organizations/' . $organizationId . '/users');
+        $url = $this->resolveEndpoint('/organizations/' . $organizationId . '/users');
+        $response = $this->httpClient->get($url);
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
@@ -69,7 +70,6 @@ class UsersService extends AbstractService
     public function invite(string $organization, array $emails): array
     {
         $url = $this->resolveEndpoint('/organizations/' . $organization . '/users/invite');
-
         $response = $this->httpClient->post($url, [
             RequestOptions::JSON => [
                 'data' => [
@@ -94,7 +94,8 @@ class UsersService extends AbstractService
      */
     public function emailLogin(string $email): Token
     {
-        $response = $this->httpClient->post('/auth/email-login', [
+        $url = $this->resolveEndpoint('/auth/email-login');
+        $response = $this->httpClient->post($url, [
             RequestOptions::JSON => [
                 'email' => $email
             ]
@@ -112,7 +113,8 @@ class UsersService extends AbstractService
      */
     public function simplifiedRegister(string $email): User
     {
-        $response = $this->httpClient->post('/auth/simplified-register', [
+        $url = $this->resolveEndpoint('/auth/simplified-register');
+        $response = $this->httpClient->post($url, [
             RequestOptions::JSON => [
                 'email' => $email
             ]

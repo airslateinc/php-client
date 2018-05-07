@@ -65,4 +65,16 @@ abstract class AbstractService
 
         return $this;
     }
+
+    /**
+     * @param string $key
+     * @param string| array $values
+     * @return static
+     */
+    public function addFilter(string $key, $values)
+    {
+        $this->httpClient->addFilter($key, $values);
+
+        return $this;
+    }
 }

@@ -94,18 +94,42 @@ $client = Client::instance('https://api.airslate.xyz', $config);
 $user = $client->users()->me();
 ```
 
-### Retrieve "me" with included organization
-```php
-/**
- * @var AirSlate\ApiClient\Entities\User $user
- */
-$user = $client->users()->with('organization')->me();
-```
-
 ### Invite users to organization
 ```php
 /**
  * @var AirSlate\ApiClient\Entities\User[] $users
  */
 $users = $client->users()->invite(string $organizationId, array $emails);
+```
+
+### With functionality
+```php
+/**
+ * @param string|array $values
+ */
+ AbstractService::with($values);
+```
+
+Example:
+```php
+$client->users()
+    ->with('organizations')
+    ->me();
+```
+
+### Filtering functionality
+```php
+/**
+ * @param string $key
+ * @param string|array $values
+ */
+ AbstractService::addFilter(string $key, $values);
+```
+
+Example:
+```php
+$client->users()
+    ->addFilter('id', ['E924D100-0000-0000-00009BC6', 'A783E100-0000-0000-00009BC6'])
+    ->addFilter('email', 'blakov.oleksandr@pdffiller.team')
+    ->all('BA0C8100-0000-0000-0000D981');
 ```

@@ -15,6 +15,10 @@ class Client extends \GuzzleHttp\Client
      * @var string
      */
     private $include;
+    /**
+     * @var array
+     */
+    private $filter;
 
     /**
      * @inheritdoc
@@ -52,6 +56,26 @@ class Client extends \GuzzleHttp\Client
     }
 
     /**
+     * @param string $key
+     * @param array|string $values
+     * @return Client
+     */
+    public function addFilter(string $key, $values): Client
+    {
+        if (\is_array($values)) {
+            $values = implode(',', $values);
+        }
+
+        if (!empty($this->filter[$key])) {
+            $this->filter[$key] .= ',' . $values;
+        } else {
+            $this->filter[$key] = $values;
+        }
+
+        return $this;
+    }
+
+    /**
      * @param array $options
      * @return array
      */
@@ -59,6 +83,9 @@ class Client extends \GuzzleHttp\Client
     {
         if (null !== $this->include) {
             $options[RequestOptions::QUERY]['include'] = $this->include;
+        }
+        if (null !== $this->filter) {
+            $options[RequestOptions::QUERY]['filter'] = $this->filter;
         }
 
         return $options;
