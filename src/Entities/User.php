@@ -14,6 +14,7 @@ namespace AirSlate\ApiClient\Entities;
  * @property string $updated_at
  *
  * @property-read Organization $organization
+ * @property-read Token $token
  */
 class User extends BaseEntity
 {
@@ -24,5 +25,15 @@ class User extends BaseEntity
     public function getOrganization()
     {
         return $this->hasOne(Organization::class, 'organization');
+    }
+
+    /**
+     * @return Token
+     */
+    public function getToken(): Token
+    {
+        return Token::createFromMeta([
+            'meta' => $this->getMeta()
+        ]);
     }
 }

@@ -37,7 +37,7 @@ class UsersService extends AbstractService
      */
     public function one(string $organizationId, string $userId): User
     {
-        $response = $this->httpClient->get('/v1/organizations/' . $organizationId . '/users/' . $userId);
+        $response = $this->httpClient->get('/organizations/' . $organizationId . '/users/' . $userId);
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
@@ -51,7 +51,7 @@ class UsersService extends AbstractService
      */
     public function all(string $organizationId): array
     {
-        $response = $this->httpClient->get('/v1/organizations/' . $organizationId . '/users');
+        $response = $this->httpClient->get('/organizations/' . $organizationId . '/users');
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
@@ -90,10 +90,11 @@ class UsersService extends AbstractService
      * @param string $email
      * @return Token
      * @throws \Exception
+     * @deprecated will be removed in new version
      */
     public function emailLogin(string $email): Token
     {
-        $response = $this->httpClient->post('/v1/auth/email-login', [
+        $response = $this->httpClient->post('/auth/email-login', [
             RequestOptions::JSON => [
                 'email' => $email
             ]
@@ -102,5 +103,23 @@ class UsersService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Token::createFromMeta($content);
+    }
+
+    /**
+     * @param string $email
+     * @return User
+     * @throws \Exception
+     */
+    public function simplifiedRegister(string $email): User
+    {
+        $response = $this->httpClient->post('/auth/simplified-register', [
+            RequestOptions::JSON => [
+                'email' => $email
+            ]
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return User::createFromOne($content);
     }
 }
