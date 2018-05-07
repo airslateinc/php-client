@@ -17,6 +17,7 @@ namespace AirSlate\ApiClient\Entities;
  * @property string $updated_at
  *
  * @property-read User $owner
+ * @property-read User[] $users
  */
 class Organization extends BaseEntity
 {
@@ -27,5 +28,14 @@ class Organization extends BaseEntity
     public function getOwner()
     {
         return $this->hasOne(User::class, 'owner');
+    }
+
+    /**
+     * @return User[]
+     * @throws \Exception
+     */
+    public function getUsers(): array
+    {
+        return $this->hasMany(User::class, 'users');
     }
 }

@@ -1,9 +1,9 @@
 <?php
-
 declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
+use AirSlate\ApiClient\Entities\Organization;
 use AirSlate\ApiClient\Entities\Token;
 use AirSlate\ApiClient\Entities\User;
 use GuzzleHttp\RequestOptions;
@@ -14,6 +14,21 @@ use GuzzleHttp\RequestOptions;
  */
 class UsersService extends AbstractService
 {
+    /**
+     * @param string $organizationId
+     * @return Organization
+     * @throws \Exception
+     */
+    public function organization(string $organizationId): Organization
+    {
+        $url = $this->resolveEndpoint('/organizations/' . $organizationId);
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Organization::createFromOne($content);
+    }
+
     /**
      * Return info about authorized user.
      * @throws \Exception
