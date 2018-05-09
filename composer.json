@@ -9,6 +9,8 @@
     },
     "require": {
         "php": ">=7.1",
-        "guzzlehttp/guzzle": "6.2.*|6.3.*"
+        "guzzlehttp/guzzle": "6.2.*|6.3.*",
+        "doctrine/annotations": "~1.6",
+        "jms/serializer": "~1.11"
     }
 }

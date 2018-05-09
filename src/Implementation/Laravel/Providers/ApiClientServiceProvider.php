@@ -3,7 +3,11 @@
 namespace AirSlate\ApiClient\Implementation\Laravel\Providers;
 
 use AirSlate\ApiClient\Client;
+use AirSlate\ApiClient\Services\EntityManager;
+use Doctrine\Common\Annotations\AnnotationReader;
 use Illuminate\Support\ServiceProvider;
+use AirSlate\ApiClient\Http\Client as HttpClient;
+use JMS\Serializer\SerializerBuilder;
 
 /**
  * Class ApiClientServiceProvider
@@ -42,6 +46,32 @@ class ApiClientServiceProvider extends ServiceProvider
                 [
                     'token' => $this->app->get('request')->bearerToken()
                 ]
+            );
+        });
+
+        $this->app->singleton(HttpClient::class, function ($app) {
+            $config = $app->make('config');
+
+            return new HttpClient([
+                'base_uri' => $config->get('airslate-api.base_uri')
+            ]);
+        });
+
+        $this->app->singleton(EntityManager\Annotation\Resolver::class, function ($app) {
+            return new EntityManager\Annotation\Resolver(
+                new AnnotationReader()
+            );
+        });
+
+        $this->app->singleton(SerializerInterface::class, function () {
+            return SerializerBuilder::create()->build();
+        });
+
+        $this->app->singleton(EntityManager::class, function ($app) {
+            return new EntityManager(
+                $app->get(HttpClient::class),
+                $app->get(SerializerInterface::class),
+                $app->get(EntityManager\Annotation\Resolver::class)
             );
         });
     }
