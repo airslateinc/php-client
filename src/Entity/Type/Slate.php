@@ -2,27 +2,37 @@
 declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Entity\Type;
+
+use AirSlate\ApiClient\Entity\AbstractType;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Class Slate
  * @package AirSlate\ApiClient\Entity\Type
  */
-class Slate
+class Slate extends AbstractType
 {
     /**
-     * @var integer
+     * @var array
      *
      * @Serializer\Expose()
-     * @Serializer\Type("integer")
+     * @Serializer\Type("AirSlate\ApiClient\Entity\Attribute\Slate")
      */
-    private $id;
+    protected $attributes;
 
     /**
-     * @return int
+     * @return \AirSlate\ApiClient\Entity\Attribute\Slate
      */
-    public function getId(): int
+    public function getAttributes()
     {
-        return $this->id;
+        return $this->attributes;
+    }
+
+    /**
+     * @param \AirSlate\ApiClient\Entity\Attribute\Slate $attributes
+     */
+    public function setAttributes($attributes): void
+    {
+        $this->attributes = $attributes;
     }
 }

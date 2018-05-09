@@ -11,25 +11,12 @@ use JMS\Serializer\Annotation as Serializer;
 class AbstractEntity
 {
     /**
-     * @var object
+     * @var array
+     *
+     * @Serializer\Expose()
+     * @Serializer\Type("AirSlate\ApiClient\Entity\AbstractType")
      */
     protected $data;
-
-    /**
-     * @var array
-     *
-     * @Serializer\Expose()
-     * @Serializer\Type("array")
-     */
-    protected $attributes = [];
-
-    /**
-     * @var array
-     *
-     * @Serializer\Expose()
-     * @Serializer\Type("array")
-     */
-    protected $relationships = [];
 
     /**
      * @var array
@@ -48,7 +35,7 @@ class AbstractEntity
     protected $meta = [];
 
     /**
-     * @return object
+     * @return \AirSlate\ApiClient\Entity\AbstractType
      */
     public function getData()
     {
@@ -56,41 +43,11 @@ class AbstractEntity
     }
 
     /**
-     * @return array
+     * @param \AirSlate\ApiClient\Entity\AbstractType $data
      */
-    public function getAttributes(): array
+    public function setData($data): void
     {
-        return $this->attributes;
-    }
-
-    /**
-     * @param array $attributes
-     * @return $this
-     */
-    public function setAttributes(array $attributes)
-    {
-        $this->attributes = $attributes;
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getRelationships(): array
-    {
-        return $this->relationships;
-    }
-
-    /**
-     * @param array $relationships
-     * @return $this
-     */
-    public function setRelationships(array $relationships)
-    {
-        $this->relationships = $relationships;
-
-        return $this;
+        $this->data = $data;
     }
 
     /**
@@ -102,14 +59,11 @@ class AbstractEntity
     }
 
     /**
-     * @param array $included
-     * @return $this
+     * @param $included
      */
-    public function setIncluded(array $included)
+    public function setIncluded($included): void
     {
         $this->included = $included;
-
-        return $this;
     }
 
     /**
@@ -121,13 +75,10 @@ class AbstractEntity
     }
 
     /**
-     * @param array $meta
-     * @return $this
+     * @param $meta
      */
-    public function setMeta(array $meta)
+    public function setMeta($meta): void
     {
         $this->meta = $meta;
-
-        return $this;
     }
 }

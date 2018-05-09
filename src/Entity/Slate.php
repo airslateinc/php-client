@@ -32,13 +32,11 @@ class Slate extends AbstractEntity
     }
 
     /**
-     * @param array $data
+     * @param \AirSlate\ApiClient\Entity\Type\Slate $data
      * @return $this
      */
-    public function setData(array $data)
+    public function setData($data): void
     {
         $this->data = $data;
-
-        return $this;
     }
 }
