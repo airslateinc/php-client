@@ -66,6 +66,7 @@ class FederatedSearchClient
             'base_uri' => $this->prepareBaserUri($baseUri),
             'headers' => [
                 'Authorization' => 'Bearer ' . $config['token'],
+                'X-Request-Id' => $config['requestId'],
             ],
             'connect_timeout' => $config['connectTimeout'] ?? 30,
             'request_timeout' => $config['requestTimeout'] ?? 30,

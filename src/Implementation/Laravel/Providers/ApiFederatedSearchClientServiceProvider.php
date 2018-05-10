@@ -37,10 +37,14 @@ class ApiFederatedSearchClientServiceProvider extends ServiceProvider
         $this->app->singleton(FederatedSearchClient::class, function ($app) {
             /** @var \Illuminate\Contracts\Foundation\Application $app */
             $config = $app->make('config');
+            /** @var  $request \Illuminate\Http\Request */
+            $request = $app->get('request');
+
             return FederatedSearchClient::instance(
                 $config->get('airslate-federated-search-api.base_uri'),
                 [
-                    'token' => $this->app->get('request')->bearerToken()
+                    'token' => $request->bearerToken(),
+                    'requestId' => $request->header('X-Request-Id'),
                 ]
             );
         });

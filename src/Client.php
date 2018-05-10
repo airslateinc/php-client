@@ -33,6 +33,7 @@ class Client
      * @param string $baseUri
      * @param array $config
      * config['token'] = '';
+     * config['requestId'] = '';
      * config['connectTimeout'] = 30; //default
      * config['requestTimeout'] = 30; //default
      */
@@ -56,7 +57,8 @@ class Client
         $httpClient = new HttpClient([
             'base_uri' => $this->prepareBaserUri($baseUri),
             'headers' => [
-                'Authorization' => 'Bearer ' . $config['token']
+                'Authorization' => 'Bearer ' . $config['token'],
+                'X-Request-Id' => $config['requestId'],
             ],
             'connect_timeout' => $config['connectTimeout'] ?? 30,
             'request_timeout' => $config['requestTimeout'] ?? 30,
