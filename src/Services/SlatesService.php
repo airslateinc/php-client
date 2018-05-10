@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Slate;
+use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Models\Slate\Create;
 use GuzzleHttp\RequestOptions;
 
@@ -78,5 +79,29 @@ class SlatesService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Slate::createFromOne($content);
+    }
+
+    /**
+     * @param string $slateId
+     *
+     * @return bool
+     *
+     * @throws DomainException
+     */
+    public function checkAccess(string $slateId) : bool
+    {
+        $url = $this->resolveEndpoint("slates/{$slateId}/public");
+        $result = true;
+
+        try {
+            $this->httpClient->get($url);
+        } catch (DomainException $e) {
+            if ($e->getCode() !== 403) {
+                throw $e;
+            }
+            $result = false;
+        }
+
+        return $result;
     }
 }

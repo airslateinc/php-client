@@ -3,6 +3,7 @@
 namespace AirSlate\ApiClient\Http;
 
 use AirSlate\ApiClient\Exceptions\DomainException;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -28,6 +29,12 @@ class Client extends \GuzzleHttp\Client
     {
         try {
             $response = parent::request($method, $uri, $this->resolveOptions($options));
+        } catch (RequestException $exception) {
+            $code = $exception->getCode();
+            if ($exception->hasResponse()) {
+                $code = $exception->getResponse()->getStatusCode();
+            }
+            throw new DomainException($exception->getMessage(), $code);
         } catch (\Exception $exception) {
             throw new DomainException($exception->getMessage());
         }
