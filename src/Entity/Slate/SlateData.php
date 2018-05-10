@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Entity\Slate;
 
-use AirSlate\ApiClient\Entity\AbstractData;
+use AirSlate\ApiClient\Entity\BaseData;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Class SlateData
  * @package AirSlate\ApiClient\Entity\Type
  */
-class SlateData extends AbstractData
+class SlateData extends BaseData
 {
     /**
      * @var array

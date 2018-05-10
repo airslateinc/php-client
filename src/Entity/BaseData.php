@@ -5,10 +5,10 @@ namespace AirSlate\ApiClient\Entity;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
- * Class AbstractType
- * @package AirSlate\ApiClient\Entity\Type
+ * Class BaseData
+ * @package AirSlate\ApiClient\Entity
  */
-class AbstractData
+class BaseData
 {
     /**
      * @var string

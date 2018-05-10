@@ -13,7 +13,7 @@ use AirSlate\ApiClient\Services\EntityManager\Annotation\HttpEntity;
  * @HttpEntity("slates")
  * @Serializer\ExclusionPolicy("all")
  */
-class Slate extends AbstractEntity
+class Slate extends BaseEntity
 {
     /**
      * @var array

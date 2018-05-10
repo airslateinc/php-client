@@ -80,14 +80,15 @@ class EntityManager
      * @param array $queryParams
      * @return array|\JMS\Serializer\scalar|mixed|object
      */
-    public function create($entity, array $uriParams = array(), array $queryParams = array())
+    public function create($entity, array $uriParams = [], array $queryParams = [])
     {
         if (is_object($entity)) {
             $entityType = $this->getEntityType($entity);
             $options = $this->getRequestOptions($entity);
 
             $closure = function () use ($entityType, $uriParams, $options) {
-                return $this->client->requestAsync(Request::METHOD_POST,
+                return $this->client->requestAsync(
+                    Request::METHOD_POST,
                     $this->annotationResolver->getEndpoint($entityType, $uriParams, false),
                     $options
                 );
@@ -96,6 +97,62 @@ class EntityManager
             return $this->sendAndDeserialize($closure, $entityType);
         } else {
             throw new \InvalidArgumentException('Parameter 1 passed to "create" method must be object');
+        }
+    }
+
+    /**
+     * @param object $entity
+     * @param array $uriParams
+     * @param array $queryParams
+     * @return array|\JMS\Serializer\scalar|mixed|object
+     */
+    public function update($entity, $uriParams = [], $queryParams = [])
+    {
+        if (is_object($entity)) {
+            if ($id = $this->getIdValue($entity)) {
+                $uriParams['id'] = $id;
+            }
+
+            $entityType = $this->getEntityType($entity);
+            $options = $this->getRequestOptions($entity);
+            $closure = function () use ($entityType, $uriParams, $options) {
+                return $this->client->requestAsync(
+                    Request::METHOD_PATCH,
+                    $this->annotationResolver->getEndpoint($entityType, $uriParams),
+                    $options
+                );
+            };
+
+            return $this->sendAndDeserialize($closure, $entityType);
+        } else {
+            throw new \InvalidArgumentException('Parameter 1 passed to "update" method is not an object');
+        }
+    }
+
+    /**
+     * @param object $entity
+     * @param array $uriParams
+     * @param array $queryParams
+     * @return array|\JMS\Serializer\scalar|mixed|object
+     */
+    public function delete($entity, $uriParams = array(), $queryParams = array())
+    {
+        if (is_object($entity)) {
+            if ($id = $this->getIdValue($entity)) {
+                $uriParams['id'] = $id;
+            }
+
+            $entityType = $this->getEntityType($entity);
+            $closure = function () use ($entityType, $uriParams) {
+                return $this->client->requestAsync(
+                    Request::METHOD_DELETE,
+                    $this->annotationResolver->getEndpoint($entityType, $uriParams)
+                );
+            };
+
+            return $this->sendAndDeserialize($closure, $entityType);
+        } else {
+            throw new \InvalidArgumentException('Parameter 1 passed to "delete" method is not an object');
         }
     }
 
@@ -158,5 +215,24 @@ class EntityManager
         }
 
         return trim($entity, '\\');
+    }
+
+    /**
+     * @param object $entity
+     * @return bool|string
+     */
+    protected function getIdValue($entity)
+    {
+        $idProperty = $this->annotationResolver->getIdProperty($this->getEntityType($entity));
+        if ($idProperty) {
+            $entityIdGetter = 'get' . ucfirst($idProperty);
+            if (method_exists($entity, $entityIdGetter)) {
+                return $entity->$entityIdGetter();
+            } else {
+                throw new \BadMethodCallException('Id getter does not exist');
+            }
+        }
+
+        return false;
     }
 }

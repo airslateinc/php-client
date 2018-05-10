@@ -57,6 +57,18 @@ class Resolver
     }
 
     /**
+     * @param string $entityType
+     *
+     * @return string
+     */
+    public function getIdProperty(string $entityType)
+    {
+        $annotation = $this->getAnnotation($entityType);
+
+        return $annotation->getIdProperty();
+    }
+
+    /**
      * @param string $type
      * @return HttpEntity
      * @throws \ReflectionException

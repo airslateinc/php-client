@@ -5,16 +5,16 @@ namespace AirSlate\ApiClient\Entity;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
- * Class AbstractEntity
+ * Class BaseEntity
  * @package AirSlate\ApiClient\Entity
  */
-class AbstractEntity
+class BaseEntity
 {
     /**
      * @var array
      *
      * @Serializer\Expose()
-     * @Serializer\Type("AirSlate\ApiClient\Entity\AbstractType")
+     * @Serializer\Type("AirSlate\ApiClient\Entity\BaseData")
      */
     protected $data;
 
@@ -35,7 +35,7 @@ class AbstractEntity
     protected $meta = [];
 
     /**
-     * @return \AirSlate\ApiClient\Entity\AbstractType
+     * @return \AirSlate\ApiClient\Entity\BaseData
      */
     public function getData()
     {
@@ -43,7 +43,7 @@ class AbstractEntity
     }
 
     /**
-     * @param \AirSlate\ApiClient\Entity\AbstractType $data
+     * @param \AirSlate\ApiClient\Entity\BaseData $data
      */
     public function setData($data): void
     {
