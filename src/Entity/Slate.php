@@ -19,12 +19,20 @@ class Slate extends AbstractEntity
      * @var array
      *
      * @Serializer\Expose()
-     * @Serializer\Type("AirSlate\ApiClient\Entity\Type\Slate")
+     * @Serializer\Type("AirSlate\ApiClient\Entity\Slate\SlateData")
      */
     protected $data;
 
     /**
-     * @return \AirSlate\ApiClient\Entity\Type\Slate
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->getData()->getId();
+    }
+
+    /**
+     * @return \AirSlate\ApiClient\Entity\Slate\SlateData
      */
     public function getData()
     {
@@ -32,7 +40,7 @@ class Slate extends AbstractEntity
     }
 
     /**
-     * @param \AirSlate\ApiClient\Entity\Type\Slate $data
+     * @param \AirSlate\ApiClient\Entity\Slate\SlateData $data
      * @return $this
      */
     public function setData($data): void

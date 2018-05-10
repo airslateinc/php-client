@@ -53,7 +53,10 @@ class ApiClientServiceProvider extends ServiceProvider
             $config = $app->make('config');
 
             return new HttpClient([
-                'base_uri' => $config->get('airslate-api.base_uri')
+                'base_uri' => $config->get('airslate-api.base_uri'),
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ]
             ]);
         });
 

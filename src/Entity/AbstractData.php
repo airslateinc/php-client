@@ -8,23 +8,23 @@ use JMS\Serializer\Annotation as Serializer;
  * Class AbstractType
  * @package AirSlate\ApiClient\Entity\Type
  */
-class AbstractType
+class AbstractData
 {
     /**
-     * @var array
+     * @var string
      *
      * @Serializer\Expose()
      * @Serializer\Type("string")
      */
-    protected $type;
+    protected $type = '';
 
     /**
-     * @var array
+     * @var string
      *
      * @Serializer\Expose()
      * @Serializer\Type("string")
      */
-    protected $id;
+    protected $id = '';
 
     /**
      * @var array
@@ -41,6 +41,38 @@ class AbstractType
      * @Serializer\Type("array")
      */
     protected $relationships = [];
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setType(string $type): void
+    {
+        $this->type = $type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $id
+     */
+    public function setId(string $id): void
+    {
+        $this->id = $id;
+    }
 
     /**
      * @return array

@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace AirSlate\ApiClient\Entity\Attribute;
+namespace AirSlate\ApiClient\Entity\Slate;
 
 use JMS\Serializer\Annotation as Serializer;
 
 /**
- * Class Slate
- * @package AirSlate\ApiClient\Entity\Attribute
+ * Class SlateAttributes
+ * @package AirSlate\ApiClient\Entity\Slate
  */
-class Slate
+class SlateAttributes
 {
     /**
-     * @var array
+     * @var string
      *
      * @Serializer\Expose()
      * @Serializer\Type("string")
@@ -20,7 +20,7 @@ class Slate
     protected $name;
 
     /**
-     * @var array
+     * @var string
      *
      * @Serializer\Expose()
      * @Serializer\Type("string")
@@ -28,7 +28,7 @@ class Slate
     protected $description;
 
     /**
-     * @var array
+     * @var string
      *
      * @Serializer\Expose()
      * @Serializer\Type("string")
@@ -36,7 +36,7 @@ class Slate
     protected $created_at;
 
     /**
-     * @var array
+     * @var string
      *
      * @Serializer\Expose()
      * @Serializer\Type("string")
@@ -44,7 +44,7 @@ class Slate
     protected $updated_at;
 
     /**
-     * @return array
+     * @return string
      */
     public function getName(): array
     {
@@ -52,55 +52,55 @@ class Slate
     }
 
     /**
-     * @param array $name
+     * @param string $name
      */
-    public function setName(array $name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public function getDescription(): array
+    public function getDescription(): string
     {
         return $this->description;
     }
 
     /**
-     * @param array $description
+     * @param string $description
      */
-    public function setDescription(array $description): void
+    public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public function getCreatedAt(): array
+    public function getCreatedAt(): string
     {
         return $this->created_at;
     }
 
     /**
-     * @param array $created_at
+     * @param string $created_at
      */
-    public function setCreatedAt(array $created_at): void
+    public function setCreatedAt(string $created_at): void
     {
         $this->created_at = $created_at;
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public function getUpdatedAt(): array
+    public function getUpdatedAt(): string
     {
         return $this->updated_at;
     }
 
     /**
-     * @param array $updated_at
+     * @param string $updated_at
      */
     public function setUpdatedAt(array $updated_at): void
     {

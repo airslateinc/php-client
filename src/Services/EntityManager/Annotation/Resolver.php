@@ -37,7 +37,7 @@ class Resolver
      *
      * @return string
      */
-    public function getEndpoint($entityType, array $uriParams = [], $verifyIdProperty = true)
+    public function getEndpoint(string $entityType, array $uriParams = [], $verifyIdProperty = true)
     {
         $annotation = $this->getAnnotation($entityType);
         $uri = $this->replaceUriParams($annotation->getUri(), $uriParams);
