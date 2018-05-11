@@ -21,11 +21,24 @@ class Client
      */
     static private $instance;
     /**
+     * @var HttpClient
+     */
+    private $httpClient;
+    /**
      * @var UsersService
      */
     private $usersService;
+    /**
+     * @var DocumentsService
+     */
     private $documentsService;
+    /**
+     * @var FilesService
+     */
     private $filesService;
+    /**
+     * @var SlatesService
+     */
     private $slatesService;
 
     /**
@@ -39,12 +52,7 @@ class Client
      */
     private function __construct(string $baseUri, array $config = [])
     {
-        $httpClient = $this->configureClient($baseUri, $config);
-
-        $this->usersService = new UsersService($httpClient);
-        $this->documentsService = new DocumentsService($httpClient);
-        $this->filesService = new FilesService($httpClient);
-        $this->slatesService = new SlatesService($httpClient);
+        $this->httpClient = $this->configureClient($baseUri, $config);
     }
 
     /**
@@ -95,6 +103,10 @@ class Client
      */
     public function users(): UsersService
     {
+        if (!$this->usersService) {
+            $this->usersService = new UsersService($this->httpClient);
+        }
+
         return $this->usersService;
     }
 
@@ -103,6 +115,10 @@ class Client
      */
     public function documents(): DocumentsService
     {
+        if (!$this->documentsService) {
+            $this->documentsService = new DocumentsService($this->httpClient);
+        }
+
         return $this->documentsService;
     }
 
@@ -111,6 +127,10 @@ class Client
      */
     public function files(): FilesService
     {
+        if (!$this->filesService) {
+            $this->filesService = new FilesService($this->httpClient);
+        }
+
         return $this->filesService;
     }
 
@@ -119,6 +139,10 @@ class Client
      */
     public function slates(): SlatesService
     {
+        if (!$this->slatesService) {
+            $this->slatesService = new SlatesService($this->httpClient);
+        }
+
         return $this->slatesService;
     }
 }
