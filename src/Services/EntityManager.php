@@ -6,9 +6,10 @@ namespace AirSlate\ApiClient\Services;
 use AirSlate\ApiClient\Entity\Errors;
 use AirSlate\ApiClient\Services\EntityManager\Annotation\Resolver;
 use AirSlate\ApiClient\Services\EntityManager\Exception\UnprocessableEntityException;
-use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer;
+use JMS\Serializer\SerializerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,12 +21,12 @@ use Symfony\Component\HttpFoundation\Response;
 class EntityManager
 {
     /**
-     * @var Client
+     * @var ClientInterface
      */
     protected $client;
 
     /**
-     * @var Serializer
+     * @var SerializerInterface
      */
     protected $serializer;
 
@@ -41,13 +42,13 @@ class EntityManager
 
     /**
      * EntityManager constructor.
-     * @param Client $client
-     * @param Serializer $serializer
+     * @param ClientInterface $client
+     * @param SerializerInterface $serializer
      * @param Resolver $annotationResolver
      */
     public function __construct(
-        Client $client,
-        Serializer $serializer,
+        ClientInterface $client,
+        SerializerInterface $serializer,
         Resolver $annotationResolver
     )
     {

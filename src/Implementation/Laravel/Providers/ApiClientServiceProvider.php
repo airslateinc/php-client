@@ -5,6 +5,7 @@ namespace AirSlate\ApiClient\Implementation\Laravel\Providers;
 use AirSlate\ApiClient\Client;
 use AirSlate\ApiClient\Services\EntityManager;
 use Doctrine\Common\Annotations\AnnotationReader;
+use Illuminate\Config\Repository;
 use Illuminate\Support\ServiceProvider;
 use AirSlate\ApiClient\Http\Client as HttpClient;
 use JMS\Serializer\SerializerBuilder;
@@ -38,25 +39,18 @@ class ApiClientServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(Client::class, function ($app) {
-            /** @var \Illuminate\Contracts\Foundation\Application $app */
-            $config = $app->make('config');
-            return Client::instance(
-                $config->get('airslate-api.base_uri'),
-                [
-                    'token' => $this->app->get('request')->bearerToken()
-                ]
-            );
-        });
-
         $this->app->singleton(HttpClient::class, function ($app) {
+            /** @var Repository $config */
             $config = $app->make('config');
 
             return new HttpClient([
                 'base_uri' => $config->get('airslate-api.base_uri'),
                 'headers' => [
                     'Content-Type' => 'application/json',
-                ]
+                    'Authorization' => 'Bearer ' . $config->get('airslate-api.access_token'),
+                ],
+                'connect_timeout' => $config->get('airslate-api.connect_timeout', 30),
+                'request_timeout' => $config->get('airslate-api.request_timeout', 30),
             ]);
         });
 
