@@ -5,8 +5,10 @@ namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Document as DocumentEntity;
 use AirSlate\ApiClient\Entities\Document;
+use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Models\Document\Create as CreateModel;
 use AirSlate\ApiClient\Models\Document\Duplicate as DuplicateModel;
+use AirSlate\ApiClient\Models\Document\Export as ExportModel;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -92,5 +94,31 @@ class DocumentsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Document::createFromCollection($content);
+    }
+
+    /**
+     * Export documents
+     *
+     * @param ExportModel $document
+     *
+     * @return mixed
+     *
+     * @throws \Exception
+     */
+    public function export(ExportModel $document): array
+    {
+        $url = $this->resolveEndpoint('/export/bulk');
+
+        try {
+            $response = $this->httpClient->post($url, [
+                RequestOptions::JSON => $document->toArray(),
+            ]);
+
+            $content = \GuzzleHttp\json_decode($response->getBody(), true);
+        } catch (DomainException $e) {
+            $content = \GuzzleHttp\json_decode($e->getMessage(), true);
+        }
+
+        return $content;
     }
 }
