@@ -2,12 +2,11 @@
 
 namespace AirSlate\ApiClient\Implementation\Laravel\Providers;
 
-use AirSlate\ApiClient\Client;
 use AirSlate\ApiClient\Services\EntityManager;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Illuminate\Config\Repository;
 use Illuminate\Support\ServiceProvider;
-use AirSlate\ApiClient\Http\Client as HttpClient;
+use GuzzleHttp\Client;
 use JMS\Serializer\SerializerBuilder;
 
 /**
@@ -16,6 +15,8 @@ use JMS\Serializer\SerializerBuilder;
  */
 class ApiClientServiceProvider extends ServiceProvider
 {
+    const HTTP_CLIENT_SERVICE_NAME = 'air-slate-http-client';
+
     /**
      * Bootstrap any application services.
      *
@@ -39,11 +40,11 @@ class ApiClientServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(HttpClient::class, function ($app) {
+        $this->app->singleton(self::HTTP_CLIENT_SERVICE_NAME, function ($app) {
             /** @var Repository $config */
             $config = $app->make('config');
 
-            return new HttpClient([
+            return new Client([
                 'base_uri' => $config->get('airslate-api.base_uri'),
                 'headers' => [
                     'Content-Type' => 'application/json',
@@ -66,7 +67,7 @@ class ApiClientServiceProvider extends ServiceProvider
 
         $this->app->singleton(EntityManager::class, function ($app) {
             return new EntityManager(
-                $app->get(HttpClient::class),
+                $app->get(self::HTTP_CLIENT_SERVICE_NAME),
                 $app->get(SerializerInterface::class),
                 $app->get(EntityManager\Annotation\Resolver::class)
             );
