@@ -13,18 +13,18 @@ namespace AirSlate\ApiClient\Entities;
  * @property string $created_at
  * @property string $updated_at
  *
- * @property-read Organization $organization
+ * @property-read Organization[] $organizations
  * @property-read Token $token
  */
 class User extends BaseEntity
 {
     /**
-     * @return BaseEntity|Organization|null
+     * @return array
      * @throws \Exception
      */
-    public function getOrganization()
+    public function getOrganizations(): array
     {
-        return $this->hasOne(Organization::class, 'organization');
+        return $this->hasMany(Organization::class, 'organizations');
     }
 
     /**
