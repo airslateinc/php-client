@@ -242,7 +242,7 @@ class EntityManager
             throw new UnprocessableEntityException('You are missing required data during saving process');
         }
 
-        if ($this->annotationResolver->getResponseType($type)) {
+        if ($responseType = $this->annotationResolver->getResponseType($type)) {
             $type = $responseType;
         }
 
