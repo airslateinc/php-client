@@ -3,37 +3,29 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Entity;
 
-use AirSlate\ApiClient\Entity\Slate\SlateData;
+use AirSlate\ApiClient\Entity\User\UserData;
 use JMS\Serializer\Annotation as Serializer;
 use AirSlate\ApiClient\Services\EntityManager\Annotation\HttpEntity;
 
 /**
- * Class Slate
+ * Class User
  * @package AirSlate\ApiClient\Entity
  *
- * @HttpEntity("slates/{id}")
+ * @HttpEntity("organizations/{orgId}/users/{id}")
  * @Serializer\ExclusionPolicy("all")
  */
-class Slate extends BaseEntity
+class User extends BaseEntity
 {
     /**
-     * @var array
+     * @var SlateData
      *
      * @Serializer\Expose()
-     * @Serializer\Type("AirSlate\ApiClient\Entity\Slate\SlateData")
+     * @Serializer\Type("AirSlate\ApiClient\Entity\User\UserData")
      */
     protected $data;
 
     /**
-     * @return string
-     */
-    public function getId()
-    {
-        return $this->getData()->getId();
-    }
-
-    /**
-     * @return SlateData
+     * @return UserData
      */
     public function getData()
     {
@@ -41,7 +33,7 @@ class Slate extends BaseEntity
     }
 
     /**
-     * @param SlateData $data
+     * @param UserData $data
      * @return $this
      */
     public function setData($data): void

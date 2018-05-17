@@ -17,7 +17,7 @@ class Resolver
     protected $annotationReader;
 
     /**
-     * @var array HttpEntity[]
+     * @var array
      */
     protected $annotations = [];
 
@@ -37,23 +37,11 @@ class Resolver
      *
      * @return string
      */
-    public function getEndpoint(string $entityType, array $uriParams = [], $verifyIdProperty = true)
+    public function getEndpoint(string $entityType, array $uriParams = []): string
     {
-        $annotation = $this->getAnnotation($entityType);
-        $uri = $this->replaceUriParams($annotation->getUri(), $uriParams);
+        $annotation = $this->getAnnotation($entityType, HttpEntity::class);
 
-        // add id param if entity requires ID
-        if ($verifyIdProperty && $annotation->getIdProperty()) {
-            if (isset($uriParams['id'])) {
-                $uri .= '/' . $uriParams['id'];
-            } else {
-                throw new \Exception(
-                    sprintf('Entity %s requires "id" for uri params', $entityType)
-                );
-            }
-        }
-
-        return $uri;
+        return $this->replaceUriParams($annotation->getUri(), $uriParams);
     }
 
     /**
@@ -61,26 +49,48 @@ class Resolver
      *
      * @return string
      */
-    public function getIdProperty(string $entityType)
+    public function getIdProperty(string $entityType): string
     {
-        $annotation = $this->getAnnotation($entityType);
+        $annotation = $this->getAnnotation($entityType, HttpEntity::class);
 
         return $annotation->getIdProperty();
     }
 
     /**
-     * @param string $type
-     * @return HttpEntity
+     * @param string $entityType
+     * @return string|null
      * @throws \ReflectionException
      */
-    protected function getAnnotation(string $type): HttpEntity
+    public function getResponseType(string $entityType): ?string
     {
-        if (isset($this->annotations[$type]) === false) {
-            $class = new \ReflectionClass($type);
-            $this->annotations[$type] = $this->annotationReader->getClassAnnotation($class, HttpEntity::class);
+        $annotation = $this->getAnnotation($entityType, ResponseType::class);
+        if ($annotation) {
+            return $annotation->getType();
         }
 
-        return $this->annotations[$type];
+        return null;
+    }
+
+    /**
+     * @param string $type
+     * @return HttpEntity|ResponseType
+     * @throws \ReflectionException
+     */
+    protected function getAnnotation(string $type, string $annotationType)
+    {
+        if (isset($this->annotations[$annotationType]) === false) {
+            $this->annotations[$annotationType] = [];
+        }
+
+        if (isset($this->annotations[$annotationType][$type]) === false) {
+            $class = new \ReflectionClass($type);
+            $this->annotations[$annotationType][$type] = $this->annotationReader->getClassAnnotation(
+                $class,
+                $annotationType
+            );
+        }
+
+        return $this->annotations[$annotationType][$type];
     }
 
     /**

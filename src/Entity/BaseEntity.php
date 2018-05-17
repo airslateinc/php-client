@@ -35,7 +35,7 @@ class BaseEntity
     protected $meta = [];
 
     /**
-     * @return \AirSlate\ApiClient\Entity\BaseData
+     * @return BaseData
      */
     public function getData()
     {
@@ -43,11 +43,19 @@ class BaseEntity
     }
 
     /**
-     * @param \AirSlate\ApiClient\Entity\BaseData $data
+     * @param BaseData $data
      */
     public function setData($data): void
     {
         $this->data = $data;
+    }
+
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->getData()->getId();
     }
 
     /**
