@@ -41,7 +41,7 @@ class Resolver
     {
         $annotation = $this->getAnnotation($entityType, HttpEntity::class);
 
-        return $this->replaceUriParams($annotation->getUri(), $uriParams);
+        return trim($this->replaceUriParams($annotation->getUri(), $uriParams), '/');
     }
 
     /**
