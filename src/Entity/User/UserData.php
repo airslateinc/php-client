@@ -39,7 +39,7 @@ class UserData extends BaseData
     /**
      * @param UserAttributes $attributes
      */
-    public function setAttributes(UserAttributes $attributes): void
+    public function setAttributes($attributes): void
     {
         $this->attributes = $attributes;
     }
