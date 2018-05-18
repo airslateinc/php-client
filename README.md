@@ -68,7 +68,7 @@ Each entity describes:
 Developers can get EntityManager instance by using DI container via `app()` helper function:
 
 ```php
-app(AirSlate\ApiClient\Services\EntityManager::class);
+app(AirSlate\ApiClient\EntityManager::class);
 ```
 
 ### Entity Manager Usage 
@@ -135,8 +135,8 @@ namespace AirSlate\ApiClient\Entity;
 
 use AirSlate\ApiClient\Entity\Invite\InviteData;
 use JMS\Serializer\Annotation as Serializer;
-use AirSlate\ApiClient\Services\EntityManager\Annotation\HttpEntity;
-use AirSlate\ApiClient\Services\EntityManager\Annotation\ResponseType;
+use AirSlate\ApiClient\EntityManager\Annotation\HttpEntity;
+use AirSlate\ApiClient\EntityManager\Annotation\ResponseType;
 
 /**
  * Class Invite

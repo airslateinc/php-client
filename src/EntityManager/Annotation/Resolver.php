@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace AirSlate\ApiClient\Services\EntityManager\Annotation;
+namespace AirSlate\ApiClient\EntityManager\Annotation;
 
 use Doctrine\Common\Annotations\Reader;
 
 /**
  * Class Resolver
- * @package AirSlate\ApiClient\Services\EntityManager\Annotation
+ * @package AirSlate\ApiClient\EntityManager\Annotation
  */
 class Resolver
 {

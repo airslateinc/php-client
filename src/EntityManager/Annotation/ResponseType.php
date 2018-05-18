@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace AirSlate\ApiClient\Services\EntityManager\Annotation;
+namespace AirSlate\ApiClient\EntityManager\Annotation;
 
 /**
  * Class ResponseType
- * @package AirSlate\ApiClient\Services\EntityManager
+ * @package AirSlate\ApiClient\EntityManager\Annotation
  *
  * @Annotation
  */

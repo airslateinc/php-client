@@ -5,8 +5,8 @@ namespace AirSlate\ApiClient\Entity;
 
 use AirSlate\ApiClient\Entity\Invite\InviteData;
 use JMS\Serializer\Annotation as Serializer;
-use AirSlate\ApiClient\Services\EntityManager\Annotation\HttpEntity;
-use AirSlate\ApiClient\Services\EntityManager\Annotation\ResponseType;
+use AirSlate\ApiClient\EntityManager\Annotation\HttpEntity;
+use AirSlate\ApiClient\EntityManager\Annotation\ResponseType;
 
 /**
  * Class Invite

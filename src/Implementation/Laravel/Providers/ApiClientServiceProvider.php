@@ -2,7 +2,7 @@
 
 namespace AirSlate\ApiClient\Implementation\Laravel\Providers;
 
-use AirSlate\ApiClient\Services\EntityManager;
+use AirSlate\ApiClient\EntityManager;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Illuminate\Config\Repository;
 use Illuminate\Support\ServiceProvider;

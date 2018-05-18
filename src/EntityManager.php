@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace AirSlate\ApiClient\Services;
+namespace AirSlate\ApiClient;
 
 use AirSlate\ApiClient\Entity\Errors;
-use AirSlate\ApiClient\Services\EntityManager\Annotation\Resolver;
-use AirSlate\ApiClient\Services\EntityManager\Exception\UnprocessableEntityException;
+use AirSlate\ApiClient\EntityManager\Annotation\Resolver;
+use AirSlate\ApiClient\EntityManager\Exception\UnprocessableEntityException;
 use GuzzleHttp\ClientInterface;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer;
@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class EntityManager
- * @package AirSlate\ApiClient\Services
+ * @package AirSlate\ApiClient
  */
 class EntityManager
 {

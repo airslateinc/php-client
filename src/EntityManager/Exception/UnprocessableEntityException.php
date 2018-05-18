@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace AirSlate\ApiClient\Services\EntityManager\Exception;
+namespace AirSlate\ApiClient\EntityManager\Exception;
 
 use AirSlate\ApiClient\Entity\Errors;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
  * Class UnprocessableEntityException
- * @package AirSlate\ApiClient\Services\EntityManager\Annotation
+ * @package AirSlate\ApiClient\EntityManager\Annotation
  */
 class UnprocessableEntityException extends UnprocessableEntityHttpException
 {

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace AirSlate\ApiClient\Services\EntityManager\Annotation;
+namespace AirSlate\ApiClient\EntityManager\Annotation;
 
 /**
- * Class HttpEntisty
- * @package AirSlate\ApiClient\Services\EntityManager
+ * Class HttpEntity
+ * @package AirSlate\ApiClient\EntityManager\Annotation
  *
  * @Annotation
  */

@@ -5,7 +5,7 @@ namespace AirSlate\ApiClient\Entity;
 
 use AirSlate\ApiClient\Entity\User\UserData;
 use JMS\Serializer\Annotation as Serializer;
-use AirSlate\ApiClient\Services\EntityManager\Annotation\HttpEntity;
+use AirSlate\ApiClient\EntityManager\Annotation\HttpEntity;
 
 /**
  * Class User
