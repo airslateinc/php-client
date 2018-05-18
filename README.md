@@ -54,10 +54,10 @@ AS_API_BASE_URI=https://api.airslate.com
 
 ## Entity manager
 
-Entity manager is main object which control communication with 3rd party REST api where JSON is used as main data type.
+Entity manager is main object which controls communication with 3rd party REST api where JSON is used as main data type.
 It's responsible for saving objects to, and fetching objects from, the API.
 
-Overal idea has been taken from Doctrine ORM, where entities are responsible for DB row data and table,
+Overal idea has been taken from Doctrine ORM, where entities are responsible for row data and table,
 which will be used for CRUD operations.
 
 Each entity describes:
