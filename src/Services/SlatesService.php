@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Slate;
+use AirSlate\ApiClient\Entities\Slates\Document;
 use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Models\Slate\Create;
 use GuzzleHttp\RequestOptions;
@@ -103,5 +104,21 @@ class SlatesService extends AbstractService
         }
 
         return $result;
+    }
+
+    /**
+     * @param string $documentUid
+     *
+     * @return Document
+     */
+    public function getDocumentType(string $documentUid) : Document
+    {
+        $url = $this->resolveEndpoint("slates/documents/{$documentUid}");
+
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Document::createFromMeta($content);
     }
 }
