@@ -46,7 +46,7 @@ class SlateAttributes
     /**
      * @return string
      */
-    public function getName(): array
+    public function getName(): string
     {
         return $this->name;
     }
