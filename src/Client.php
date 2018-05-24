@@ -85,6 +85,8 @@ class Client
     {
         $hash = md5($baseUri . ':' . json_encode($config));
 
+        self::$instance[$hash] = self::$instance[$hash] ?? null;
+
         if (!self::$instance[$hash]) {
             self::$instance[$hash] = new self($baseUri, $config);
         }
