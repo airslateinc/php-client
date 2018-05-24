@@ -83,11 +83,13 @@ class Client
      */
     public static function instance(string $baseUri, array $config = []): Client
     {
-        if (!self::$instance) {
-            self::$instance = new self($baseUri, $config);
+        $hash = md5($baseUri . ':' . json_encode($config));
+
+        if (!self::$instance[$hash]) {
+            self::$instance[$hash] = new self($baseUri, $config);
         }
 
-        return self::$instance;
+        return self::$instance[$hash];
     }
 
     /**
