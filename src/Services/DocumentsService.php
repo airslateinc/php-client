@@ -9,6 +9,7 @@ use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Models\Document\Create as CreateModel;
 use AirSlate\ApiClient\Models\Document\Duplicate as DuplicateModel;
 use AirSlate\ApiClient\Models\Document\Export as ExportModel;
+use AirSlate\ApiClient\Models\Document\Upload as UploadModel;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -112,6 +113,29 @@ class DocumentsService extends AbstractService
         try {
             $response = $this->httpClient->post($url, [
                 RequestOptions::JSON => $document->toArray(),
+            ]);
+
+            $content = \GuzzleHttp\json_decode($response->getBody(), true);
+        } catch (DomainException $e) {
+            $content = \GuzzleHttp\json_decode($e->getMessage(), true);
+        }
+
+        return $content;
+    }
+
+    /**
+     * Upload document
+     *
+     * @param UploadModel $upload
+     * @return mixed
+     */
+    public function upload(UploadModel $upload)
+    {
+        $url = $this->resolveEndpoint('/documents/upload');
+
+        try {
+            $response = $this->httpClient->post($url, [
+                RequestOptions::JSON => $upload->toArray(),
             ]);
 
             $content = \GuzzleHttp\json_decode($response->getBody(), true);
