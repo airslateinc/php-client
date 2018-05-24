@@ -56,15 +56,36 @@ class Client
     {
         $httpClient = new HttpClient([
             'base_uri' => $this->prepareBaserUri($baseUri),
-            'headers' => [
-                'Authorization' => 'Bearer ' . $config['token'],
-                'X-Request-Id' => $config['requestId'],
-            ],
+            'headers' => $this->prepareHeaders($config),
             'connect_timeout' => $config['connectTimeout'] ?? 30,
             'request_timeout' => $config['requestTimeout'] ?? 30,
         ]);
 
         return $httpClient;
+    }
+
+    /**
+     * @param array $config
+     * @return array
+     */
+    private function getDefaultHeaders(array $config): array
+    {
+        return [
+            'Authorization' => 'Bearer ' . ($config['token'] ?? ''),
+            'X-Request-Id' => $config['requestId'] ?? ''
+        ];
+    }
+
+    /**
+     * @param array $config
+     * @return array
+     */
+    private function prepareHeaders(array $config): array
+    {
+        return array_merge(
+            $this->getDefaultHeaders($config),
+            $config['headers'] ?? []
+        );
     }
 
     /**
