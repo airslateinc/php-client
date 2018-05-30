@@ -8,6 +8,7 @@ use Illuminate\Config\Repository;
 use Illuminate\Support\ServiceProvider;
 use GuzzleHttp\Client;
 use JMS\Serializer\SerializerBuilder;
+use JMS\Serializer\SerializerInterface;
 
 /**
  * Class ApiClientServiceProvider
