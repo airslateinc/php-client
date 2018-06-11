@@ -124,6 +124,28 @@ class DocumentsService extends AbstractService
     }
 
     /**
+     * Check the export status
+     *
+     * @param string $exportId
+     *
+     * @return array
+     */
+    public function exportStatus(string $exportId): array
+    {
+        $url = $this->resolveEndpoint("/export/$exportId/status");
+
+        try {
+            $response = $this->httpClient->get($url);
+
+            $content = \GuzzleHttp\json_decode($response->getBody(), true);
+        } catch (DomainException $e) {
+            $content = \GuzzleHttp\json_decode($e->getMessage(), true);
+        }
+
+        return $content;
+    }
+
+    /**
      * Upload document
      *
      * @param UploadModel $upload
