@@ -19,7 +19,7 @@ class AddonsService extends AbstractService
         string $clientSecret,
         string $organizationId
     ) {
-        $url = $this->resolveEndpoint('/addon_token');
+        $url = $this->resolveEndpoint('/addon-token');
 
         $response = $this->httpClient->post($url, [
                 RequestOptions::FORM_PARAMS => [
