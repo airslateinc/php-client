@@ -66,4 +66,20 @@ class AddonsService extends AbstractService
 
         return Addon::createFromCollection($content);
     }
+
+    /**
+     * @return OrganizationAddonsService
+     */
+    public function organizationAddons(): OrganizationAddonsService
+    {
+        return new OrganizationAddonsService($this->httpClient);
+    }
+
+    /**
+     * @return SlateAddonsService
+     */
+    public function slateAddons(): SlateAddonsService
+    {
+        return new SlateAddonsService($this->httpClient);
+    }
 }
