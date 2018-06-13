@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient;
 
+use AirSlate\ApiClient\Contracts\PoolInterface;
 use AirSlate\ApiClient\Entity\Errors;
 use AirSlate\ApiClient\EntityManager\Annotation\Resolver;
 use AirSlate\ApiClient\EntityManager\Exception\UnprocessableEntityException;
@@ -43,22 +44,57 @@ class EntityManager
      * @var string
      */
     protected $updateHttpMethod = Request::METHOD_PATCH;
-
+    
+    /**
+     * @var PoolInterface
+     */
+    protected $pool;
+    
     /**
      * EntityManager constructor.
+     *
      * @param ClientInterface $client
      * @param SerializerInterface $serializer
      * @param Resolver $annotationResolver
+     * @param PoolInterface $pool
      */
     public function __construct(
         ClientInterface $client,
         SerializerInterface $serializer,
-        Resolver $annotationResolver
+        Resolver $annotationResolver,
+        PoolInterface $pool = null
     )
     {
         $this->client = $client;
         $this->serializer = $serializer;
         $this->annotationResolver = $annotationResolver;
+        $this->pool = $pool;
+    }
+    
+    /**
+     *
+     */
+    public function openPool()
+    {
+        if (!$this->pool) {
+            throw new \LogicException('Pool service doesn\'t exists');
+        }
+    
+        $this->pool->open();
+    }
+    
+    /**
+     * @return mixed
+     */
+    public function sendPool()
+    {
+        if (!$this->pool) {
+            throw new \LogicException('Pool service doesn\'t exists');
+        }
+        
+        $this->pool->send($this->client);
+        
+        return $this->pool->getResponses();
     }
     
     /**
@@ -230,17 +266,27 @@ class EntityManager
      * @param \Closure $requestClosure
      * @param $type
      *
-     * @return object
-     *
-     * @throws UnprocessableEntityException
-     * @throws \ReflectionException
+     * @return mixed
      */
     protected function sendAndDeserialize(\Closure $requestClosure, $type)
     {
-        /** @var ResponseInterface $response */
-        $response = $requestClosure()->wait();
-
-        return $this->deserialize($response, $type);
+        if (!($this->pool && $this->pool->isOpen())) {
+            return call_user_func($this->callbackDeserialize($type), $requestClosure()->wait());
+        }
+    
+        $this->pool->addRequest($requestClosure, $this->callbackDeserialize($type));
+    }
+    
+    /**
+     * @param $type
+     *
+     * @return \Closure
+     */
+    protected function callbackDeserialize($type)
+    {
+        return function ($response) use ($type) {
+            return $this->deserialize($response, $type);
+        };
     }
     
     /**
