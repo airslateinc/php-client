@@ -2,7 +2,6 @@
 
 This project makes it simple to integrate your application with:
  - [AirSlate Users Management Service](https://github.com/pdffiller/airslate-users-api)
- - [AirSlate Federated Search Management Service](https://github.com/pdffiller/fed_search_api)
 
 ## Requirements
 
@@ -41,7 +40,6 @@ Append Service Providers (usually the `config/app.php` file) as follows:
 'providers' => [
     //  ...
     AirSlate\ApiClient\Implementation\Laravel\Providers\ApiClientServiceProvider::class,
-    AirSlate\ApiClient\Implementation\Laravel\Providers\ApiFederatedSearchClientServiceProvider::class,
 ]
 ```
 
@@ -58,24 +56,12 @@ Then define environment variables to connect to AirSlate API:
 AS_API_BASE_URI=https://api.airslate.com
 ```
 
-Then define environment variables to connect to FederatedSearch API:
-
-```ini
-AS_FS_API_BASE_URI=http://search.airslate.xyz
-```
-
 ## Client instance creation
 
 Laravel users can get Client instance as usual by using `app()` facade:
 
 ```php
 app(AirSlate\ApiClient\Client::class);
-```
-
-or, for FederatedSearch
-
-```php
-app(AirSlate\ApiClient\FederatedSearchClient::class);
 ```
 
 **Note:** First you have to register Service Provider as mentioned above.
@@ -99,18 +85,6 @@ $config = [
  * Laravel users can use `app(AirSlate\ApiClient\Client::class)`.
  */
 $client = Client::instance('https://api.airslate.xyz', $config);
-```
-
-or, for FederatedSearch
-
-```php
-use AirSlate\ApiClient\FederatedSearchClient;
-
-/**
- * The $config argument must be either an array or Traversable.
- * Laravel users can use `app(AirSlate\ApiClient\FederatedSearchClient::class)`.
- */
-$client = FederatedSearchClient::instance('http://search.airslate.xyz');
 ```
 
 ### Client Usage 
@@ -161,14 +135,4 @@ $client->users()
     ->addFilter('id', ['E924D100-0000-0000-00009BC6', 'A783E100-0000-0000-00009BC6'])
     ->addFilter('email', 'blakov.oleksandr@pdffiller.team')
     ->all('BA0C8100-0000-0000-0000D981');
-```
-
-### FederatedSearchClient Usage 
-
-### Search
-```php
-/**
- * @var AirSlate\ApiClient\Entities\FederatedSearch[] $searchResults
- */
-$searchResults = $client->federatedSearch()->search(string $slateUid, string $keyword);
 ```
