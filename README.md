@@ -153,8 +153,8 @@ $searchResults = $client->federatedSearch()->search(string $slateUid, string $ke
 $addons = $client->addons()->collection();
 
 // Get organization addon
-$addonId = 'your_addon_id';
-$organizationAddon = $client->addons()->organizationAddons()->get($addonId);
+$organizationAddonId = 'your_addon_id';
+$organizationAddon = $client->addons()->organizationAddons()->get(organizationAddonId);
 
 // Attach addon to an organization
 $addonId ='your_addon_id';
