@@ -136,3 +136,42 @@ $client->users()
     ->addFilter('email', 'blakov.oleksandr@pdffiller.team')
     ->all('BA0C8100-0000-0000-0000D981');
 ```
+
+### FederatedSearchClient Usage 
+
+### Search
+```php
+/**
+ * @var AirSlate\ApiClient\Entities\FederatedSearch[] $searchResults
+ */
+$searchResults = $client->federatedSearch()->search(string $slateUid, string $keyword);
+```
+
+### Addons Usage example
+```php
+// Get addons
+$addons = $client->addons()->collection();
+
+// Get organization addon
+$organizationAddonId = 'your_addon_id';
+$organizationAddon = $client->addons()->organizationAddons()->get(organizationAddonId);
+
+// Attach addon to an organization
+$addonId ='your_addon_id';
+$createOrganizationAddonModel = \AirSlate\ApiClient\Models\OrganizationAddon\Create::fromAddonId($addonId);
+$createdOrganizationAddon = $client->addons()->organizationAddons()->create($createOrganizationAddonModel);
+
+// Attach organization addon to slate
+$slateId = 'your_slate_id';
+$organizationAddonId = 'your_organization_addon_id';
+$createdSlateAddonModel = \AirSlate\ApiClient\Models\SlateAddon\Create::fromAttributes(
+    $slateId,
+    $organizationAddonId,
+    [
+        'position' => 0,
+        'event_type' => 'POST_FILL',
+        'status' => 'ACTIVE',
+        'settings' => [],
+    ]
+);
+```

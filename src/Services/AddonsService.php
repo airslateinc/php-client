@@ -2,6 +2,7 @@
 
 namespace AirSlate\ApiClient\Services;
 
+use AirSlate\ApiClient\Entities\Addon;
 use GuzzleHttp\RequestOptions;
 
 class AddonsService extends AbstractService
@@ -33,5 +34,52 @@ class AddonsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return $content;
+    }
+
+    /**
+     * @param string $addonId
+     * @return Addon
+     * @throws \Exception
+     */
+    public function get(string $addonId)
+    {
+        $url = $this->resolveEndpoint('/addons/' . $addonId);
+
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Addon::createFromOne($content);
+    }
+
+    /**
+     * @return array
+     * @throws \Exception
+     */
+    public function collection()
+    {
+        $url = $this->resolveEndpoint('/addons');
+
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Addon::createFromCollection($content);
+    }
+
+    /**
+     * @return OrganizationAddonsService
+     */
+    public function organizationAddons(): OrganizationAddonsService
+    {
+        return new OrganizationAddonsService($this->httpClient);
+    }
+
+    /**
+     * @return SlateAddonsService
+     */
+    public function slateAddons(): SlateAddonsService
+    {
+        return new SlateAddonsService($this->httpClient);
     }
 }
