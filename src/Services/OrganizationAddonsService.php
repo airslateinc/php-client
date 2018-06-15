@@ -4,7 +4,6 @@ namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Addons\OrganizationAddon;
 use AirSlate\ApiClient\Models\OrganizationAddon\Create as CreateOrganizationAddon;
-use AirSlate\ApiClient\Models\OrganizationAddon\Update as UpdateOrganizationAddon;
 use GuzzleHttp\RequestOptions;
 
 class OrganizationAddonsService extends AbstractService
