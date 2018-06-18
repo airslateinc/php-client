@@ -48,6 +48,7 @@ class Pool implements PoolInterface
     public function send(ClientInterface $client): void
     {
         if (!$this->isOpen() || empty($this->requests)) {
+            $this->close();
             throw new \LogicException('You must open Pool before send');
         }
         
