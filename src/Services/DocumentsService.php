@@ -5,6 +5,7 @@ namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Document as DocumentEntity;
 use AirSlate\ApiClient\Entities\Document;
+use AirSlate\ApiClient\Entities\Field;
 use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Models\Document\Create as CreateModel;
 use AirSlate\ApiClient\Models\Document\Duplicate as DuplicateModel;
@@ -166,5 +167,22 @@ class DocumentsService extends AbstractService
         }
 
         return $content;
+    }
+
+    /**
+     * Extract document fields
+     * @param string $documentId
+     * @return Field[]
+     * @throws \Exception
+     */
+    public function fields(string $documentId): array
+    {
+        $url = $this->resolveEndpoint("/documents/$documentId/fields");
+
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Field::createFromCollection($content);
     }
 }
