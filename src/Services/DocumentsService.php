@@ -84,18 +84,20 @@ class DocumentsService extends AbstractService
     public function collection($filter = [], array $options = []): array
     {
         $url = $this->resolveEndpoint('/documents');
-        if (!empty($options)) {
-            $url .= '?' . http_build_query(['filter' => $filter]);
-        }
-        if (!empty($options)) {
-            $url .= '&' . http_build_query($options);
-        }
+        return $this->getDocuments($url, $filter, $options);
+    }
 
-        $response = $this->httpClient->get($url);
-
-        $content = \GuzzleHttp\json_decode($response->getBody(), true);
-
-        return Document::createFromCollection($content);
+    /**
+     * Get documents collection with content
+     * @param array $filter
+     * @param array $options
+     * @return Document[]
+     * @throws \Exception
+     */
+    public function content($filter = [], array $options = []): array
+    {
+        $url = $this->resolveEndpoint('/documents/content');
+        return $this->getDocuments($url, $filter, $options);
     }
 
     /**
@@ -184,5 +186,28 @@ class DocumentsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Field::createFromCollection($content);
+    }
+
+    /**
+     * @param $url string
+     * @param array $filter
+     * @param array $options
+     * @return array
+     * @throws \Exception
+     */
+    protected function getDocuments($url, $filter = [], array $options = [])
+    {
+        if (!empty($options)) {
+            $url .= '?' . http_build_query(['filter' => $filter]);
+        }
+        if (!empty($options)) {
+            $url .= '&' . http_build_query($options);
+        }
+
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Document::createFromCollection($content);
     }
 }
