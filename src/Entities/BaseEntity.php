@@ -6,12 +6,13 @@ use AirSlate\ApiClient\Exceptions\MissingDataException;
 use AirSlate\ApiClient\Exceptions\RelationNotExistException;
 use AirSlate\ApiClient\Exceptions\TypeMismatchException;
 use AirSlate\ApiClient\Helpers\Inflector;
+use JsonSerializable;
 
 /**
  * Class BaseEntity
  * @package AirSlate\ApiClient\Entities
  */
-class BaseEntity
+class BaseEntity implements JsonSerializable
 {
     /**
      * Type of the JSON:API resource.
@@ -327,5 +328,40 @@ class BaseEntity
     public function getMetaAttribute($name)
     {
         return $this->meta[$name] ?? null;
+    }
+    
+    public function jsonSerialize()
+    {
+        $attributes = $this->getAttributes();
+        unset($attributes['id']);
+    
+        $json = [
+            'data' => [
+                'type' => $this->getType(),
+                'id' => $this->id,
+            ]
+        ];
+    
+        if (!empty($attributes)) {
+            $json['data']['attributes'] = $attributes;
+        }
+        
+        if (!empty($this->getRelationships())) {
+            $json['data']['relationships'] = $this->getRelationships();
+        }
+        
+        if (!empty($this->getObjectMeta())) {
+            $json['data']['meta'] = $this->getObjectMeta();
+        }
+        
+        if (!empty($this->getMeta())) {
+            $json['meta'] = $this->getMeta();
+        }
+        
+        if (!empty($this->getIncluded())) {
+            $json['included'] = $this->getIncluded();
+        }
+    
+        return $json;
     }
 }

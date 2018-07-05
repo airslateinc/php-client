@@ -10,6 +10,7 @@ use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Models\Document\Create as CreateModel;
 use AirSlate\ApiClient\Models\Document\Duplicate as DuplicateModel;
 use AirSlate\ApiClient\Models\Document\Export as ExportModel;
+use AirSlate\ApiClient\Models\Document\UpdateFields;
 use AirSlate\ApiClient\Models\Document\Upload as UploadModel;
 use GuzzleHttp\RequestOptions;
 
@@ -209,5 +210,24 @@ class DocumentsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Document::createFromCollection($content);
+    }
+    
+    /**
+     * @param string $documentId
+     * @param UpdateFields $fields
+     * @return array
+     * @throws \Exception
+     */
+    public function updateFields(string $documentId, UpdateFields $fields): array
+    {
+        $url = $this->resolveEndpoint("/documents/$documentId/fields");
+        
+        $response = $this->httpClient->patch($url, [
+            RequestOptions::JSON => $fields->toArray()
+        ]);
+    
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+    
+        return Field::createFromCollection($content);
     }
 }

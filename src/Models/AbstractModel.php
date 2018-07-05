@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Models;
 
+use AirSlate\ApiClient\Entities\Field;
+
 /**
  * @package AirSlate\ApiClient\Models
  */
@@ -24,7 +26,9 @@ abstract class AbstractModel
     public function toArray(): array
     {
         return [
-            'data' => $this->data,
+            'data' => array_map(function(Field $field) {
+                return $field->jsonSerialize()['data'];
+            }, $this->data),
         ];
     }
 }
