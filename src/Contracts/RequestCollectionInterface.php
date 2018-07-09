@@ -10,7 +10,7 @@ use GuzzleHttp\ClientInterface;
  *
  * @package src\Contracts
  */
-interface PoolInterface
+interface RequestCollectionInterface
 {
     /**
      * Open pool
@@ -24,17 +24,25 @@ interface PoolInterface
     
     /**
      * @param \Closure $request
-     * @param \Closure $callback
+     * @param string $entityType
      */
-    public function addRequest($request, $callback): void;
+    public function addRequest($request, $entityType): void;
     
     /**
      * @param ClientInterface $client
+     * @param integer|null $maxConnections
      */
-    public function send(ClientInterface $client): void;
+    public function send(ClientInterface $client, $maxConnections = null): void;
     
     /**
      * @return array
      */
     public function getResponses(): array;
+    
+    /**
+     * @param integer $index
+     *
+     * @return string
+     */
+    public function getEntityType(int $index): string;
 }

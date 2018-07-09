@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
-use AirSlate\ApiClient\Contracts\PoolInterface;
+use AirSlate\ApiClient\Contracts\RequestCollectionInterface;
 use GuzzleHttp\ClientInterface;
 
 /**
@@ -11,8 +11,10 @@ use GuzzleHttp\ClientInterface;
  *
  * @package AirSlate\ApiClient\Services
  */
-class Pool implements PoolInterface
+class RequestCollection implements RequestCollectionInterface
 {
+    const DEFAULT_MAX_CONNECTIONS = 5;
+    
     /**
      * @var array
      */
@@ -45,7 +47,7 @@ class Pool implements PoolInterface
     /**
      * @inheritdoc
      */
-    public function send(ClientInterface $client): void
+    public function send(ClientInterface $client, $maxConnections = null): void
     {
         if (!$this->isOpen() || empty($this->requests)) {
             $this->close();
@@ -57,11 +59,12 @@ class Pool implements PoolInterface
         }, $this->requests);
         
         $options = [
+            'concurrency' => $maxConnections ?: self::DEFAULT_MAX_CONNECTIONS,
             'fulfilled' => function (\GuzzleHttp\Psr7\Response $response, $index) {
-                $this->responses[$index] = $this->requests[$index]['callback']($response);
+                $this->responses[$index] = $response;
             },
             'rejected' => function (\Exception $reason, $index) {
-                $this->errors[] = "Request number {$index} failed. Reason {$reason->getMessage()}";
+                $this->errors[$index] = "Request number {$index} failed. Reason {$reason->getMessage()}";
             }
         ];
         
@@ -87,11 +90,11 @@ class Pool implements PoolInterface
     /**
      * @inheritdoc
      */
-    public function addRequest($request, $callback): void
+    public function addRequest($request, $entityType): void
     {
         $this->requests[] = [
             'closure' => $request,
-            'callback' => $callback
+            'type' => $entityType,
         ];
     }
     
@@ -131,5 +134,13 @@ class Pool implements PoolInterface
         $this->errors = [];
         $this->requests = [];
         $this->responses = [];
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function getEntityType(int $index): string
+    {
+        return $this->requests[$index]['type'];
     }
 }

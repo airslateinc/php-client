@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient;
 
-use AirSlate\ApiClient\Contracts\PoolInterface;
+use AirSlate\ApiClient\Contracts\RequestCollectionInterface;
 use AirSlate\ApiClient\Entity\Errors;
 use AirSlate\ApiClient\EntityManager\Annotation\Resolver;
 use AirSlate\ApiClient\EntityManager\Exception\UnprocessableEntityException;
-use AirSlate\ApiClient\Http\Request;
-use AirSlate\ApiClient\Http\Response;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use GuzzleHttp\ClientInterface;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
@@ -46,9 +46,9 @@ class EntityManager
     protected $updateHttpMethod = Request::METHOD_PATCH;
     
     /**
-     * @var PoolInterface
+     * @var RequestCollectionInterface
      */
-    protected $pool;
+    protected $requestCollection;
     
     /**
      * EntityManager constructor.
@@ -56,45 +56,52 @@ class EntityManager
      * @param ClientInterface $client
      * @param SerializerInterface $serializer
      * @param Resolver $annotationResolver
-     * @param PoolInterface $pool
+     * @param RequestCollectionInterface $requestCollection
      */
     public function __construct(
         ClientInterface $client,
         SerializerInterface $serializer,
         Resolver $annotationResolver,
-        PoolInterface $pool = null
+        RequestCollectionInterface $requestCollection = null
     )
     {
         $this->client = $client;
         $this->serializer = $serializer;
         $this->annotationResolver = $annotationResolver;
-        $this->pool = $pool;
+        $this->requestCollection = $requestCollection;
     }
     
     /**
      *
      */
-    public function openPool()
+    public function beginTransaction()
     {
-        if (!$this->pool) {
+        if (!$this->requestCollection) {
             throw new \LogicException('Pool service doesn\'t exists');
         }
     
-        $this->pool->open();
+        $this->requestCollection->open();
     }
     
     /**
-     * @return mixed
+     * @return array
+     * @throws UnprocessableEntityException
+     * @throws \ReflectionException
      */
-    public function sendPool()
+    public function commit()
     {
-        if (!$this->pool) {
+        if (!$this->requestCollection) {
             throw new \LogicException('Pool service doesn\'t exists');
         }
         
-        $this->pool->send($this->client);
+        $this->requestCollection->send($this->client);
         
-        return $this->pool->getResponses();
+        $results = [];
+        foreach ($this->requestCollection->getResponses() as $index => $response) {
+            $results[$index] = $this->deserialize($response, $this->requestCollection->getEntityType($index));
+        }
+        
+        return $results;
     }
     
     /**
@@ -270,23 +277,13 @@ class EntityManager
      */
     protected function sendAndDeserialize(\Closure $requestClosure, $type)
     {
-        if (!($this->pool && $this->pool->isOpen())) {
-            return call_user_func($this->callbackDeserialize($type), $requestClosure()->wait());
+        if (!($this->requestCollection && $this->requestCollection->isOpen())) {
+            return function ($response) use ($type) {
+                return $this->deserialize($response, $type);
+            };
         }
     
-        $this->pool->addRequest($requestClosure, $this->callbackDeserialize($type));
-    }
-    
-    /**
-     * @param $type
-     *
-     * @return \Closure
-     */
-    protected function callbackDeserialize($type)
-    {
-        return function ($response) use ($type) {
-            return $this->deserialize($response, $type);
-        };
+        $this->requestCollection->addRequest($requestClosure, $type);
     }
     
     /**
