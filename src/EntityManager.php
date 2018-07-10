@@ -274,13 +274,15 @@ class EntityManager
      * @param $type
      *
      * @return mixed
+     * @throws UnprocessableEntityException
+     * @throws \ReflectionException
      */
     protected function sendAndDeserialize(\Closure $requestClosure, $type)
     {
         if (!($this->requestCollection && $this->requestCollection->isOpen())) {
-            return function ($response) use ($type) {
-                return $this->deserialize($response, $type);
-            };
+            $response = $requestClosure()->wait();
+            
+            return $this->deserialize($response, $type);
         }
     
         $this->requestCollection->addRequest($requestClosure, $type);
