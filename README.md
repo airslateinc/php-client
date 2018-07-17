@@ -14,12 +14,14 @@ The library can be installed using Composer.
 Add vcs repository url to the `composer.json`:
 
 ```json
-"repositories": [
+{
+  "repositories": [
     {
         "type": "vcs",
         "url": "git@github.com:pdffiller/airslate-php-client.git"
     }
-]
+  ]
+}
 ```
 
 Install
@@ -48,20 +50,25 @@ php artisan vendor:publish --tag=airslate-api
 Then define environment variables to connect to AirSlate API:
 
 ```ini
-; For development environment it is likely http://api.airslate.xyz
-AS_API_BASE_URI=https://api.airslate.com
+AS_API_BASE_URI=<airslate-domain>
 ```
 
 ## Entity manager
 
+Install
+
+```bash
+composer require pdffiller/airslate-php-client:dev-entity-manager
+```
+
+
 Entity manager is main object which controls communication with 3rd party REST api where JSON is used as main data type.
 It's responsible for saving objects to, and fetching objects from, the API.
 
-Overal idea has been taken from Doctrine ORM, where entities are responsible for row data and table,
-which will be used for CRUD operations.
+Overall idea has been taken from Doctrine ORM, where entities are responsible for row data and table, which will be used for CRUD operations.
 
 Each entity describes:
-- API resorce url (via HttpEntity annotation),
+- API resource url (via HttpEntity annotation),
 - API payload (via properties and theirs types),
 - API response type (via ResponseType annotation, optional).
 
@@ -80,8 +87,8 @@ $slateData = new Slate\SlateData();
 $slateAttributes = new Slate\SlateAttributes();
 $slateAttributes->setName('New slate via entity manager ' . rand(1, 9999));
 $slateAttributes->setDescription('This is new slate via entity manager and seems it works...' . rand(1, 9999));
-$slateEntity->setData($slateData);
 $slateData->setAttributes($slateAttributes);
+$slateEntity->setData($slateData);
 
 $headers = [
     'Organization-Domain' => 'organization-sub-domain'
@@ -96,7 +103,7 @@ $headers = [
     'Organization-Domain' => 'organization-sub-domain'
 ];
 /** @var Slate $slateEntity */
-$slateEntity = $entityManager->get(Slate::class, ['id' => 'slareId'], [], $headers);
+$slateEntity = $entityManager->get(Slate::class, ['id' => 'slateId'], [], $headers);
 ```
 
 ### Retrieve Slates collection
@@ -123,11 +130,11 @@ $userCollection = $entityManager->create(
 ### Entities
 
 We have implemented 3 base entity types, which you able to use in case,
-if you don't want to describe your entity strucutre.
-In general these entities are describing base properties for JSON API strucutre.
+if you don't want to describe your entity structure.
+In general these entities are describing base properties for JSON API structure.
 
 When you prepare entity to communicate with API endpoint you are able to define
-- Relative end point url
+- Relative endpoint url
 - Type which will be used to map response (for cases when request and response are different for the same API resource).
 
 ```php
@@ -157,15 +164,43 @@ class Invite extends BaseEntity
     protected $data;
 }
 ```
+
 Data from invite entity will be used for request payload
 API url: organizations/{orgId}/users/invite
 Response type: AirSlate\ApiClient\Entity\User\UserCollection
 
+##### Entity annotations
+Available annotations:
+ - `HttpEntity("examples/{id}")` - this annotation allows to specified endpoint URL with placeholders if needed. Example: 
+ ```php
+ /**
+  * @HttpEntity("examples/{exampleId}")
+  */
+ class Example {}
+ 
+ /**
+  * Request will be send to 
+  * GET examples/12345
+  */
+ $entityManager->get(Example::class, ['exampleId' => 12345])
+ ```
+ - `ResponseType("Entity\Type")` - this annotation allows to specify response type in case if request and response types are different.
+
+### Serialization
+We use [JMS\Serializer](https://jmsyst.com/libs/serializer) for serialization process.
+ 
+Supported serialization format:
+ - json
+ 
+##### Serializer annotations
+All annotations, except `xml`-annotations and `@Group`-annotation, are allowed. 
+ 
+
 ### P.S.
 We don't have time to describe all available resources in entities, but each team will join to this activity and 
-do it independantly.
+do it independently.
 
 What is next:
 - Parallelization for http requests
-- Possiblity to upload files and send multipart requests (via entites of course)
+- Possibility to upload files and send multipart requests (via entities of course)
  
