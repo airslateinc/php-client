@@ -26,9 +26,7 @@ abstract class AbstractModel
     public function toArray(): array
     {
         return [
-            'data' => array_map(function(Field $field) {
-                return $field->jsonSerialize()['data'];
-            }, $this->data),
+            'data' => $this->data,
         ];
     }
 }

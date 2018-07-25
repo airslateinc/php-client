@@ -25,4 +25,16 @@ class UpdateFields extends AbstractModel
         
         parent::__construct($data);
     }
+    
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'data' => array_map(function(Field $field) {
+                return $field->jsonSerialize()['data'];
+            }, $this->data),
+        ];
+    }
 }
