@@ -91,13 +91,14 @@ class EntityManager
      */
     public function create($entity, array $uriParams = [], array $queryParams = [], array $headerParams = [])
     {
+        $options = ['query' => $queryParams];
         if (is_object($entity)) {
             if ($this->getIdValue($entity) !== false) {
                 $uriParams[$this->getIdPropertyName($entity)] = '';
             }
 
             $entityType = $this->getEntityType($entity);
-            $options = $this->getRequestOptions($entity);
+            $options = array_merge($options, $this->getRequestOptions($entity));
             if ($headerParams) {
                 $options['headers'] = $headerParams;
             }
@@ -120,13 +121,14 @@ class EntityManager
      */
     public function update($entity, $uriParams = [], $queryParams = [], array $headerParams = [])
     {
+        $options = ['query' => $queryParams];
         if (is_object($entity)) {
             if ($id = $this->getIdValue($entity)) {
                 $uriParams[$this->getIdPropertyName($entity)] = $id;
             }
 
             $entityType = $this->getEntityType($entity);
-            $options = $this->getRequestOptions($entity);
+            $options = array_merge($options, $this->getRequestOptions($entity));
             if ($headerParams) {
                 $options['headers'] = $headerParams;
             }
@@ -149,12 +151,12 @@ class EntityManager
      */
     public function delete($entity, $uriParams = array(), $queryParams = array(), array $headerParams = [])
     {
+        $options = ['query' => $queryParams];
         if (is_object($entity)) {
             if ($id = $this->getIdValue($entity)) {
                 $uriParams[$this->getIdPropertyName($entity)] = $id;
             }
 
-            $options = [];
             if ($headerParams) {
                 $options['headers'] = $headerParams;
             }
