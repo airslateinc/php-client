@@ -20,6 +20,7 @@ use PHPUnit\Framework\TestCase;
  * @coversDefaultClass \AirSlate\ApiClient\EntityManager\Annotation\Resolver
  * @covers ::<protected>
  * @covers ::__construct
+ * @uses \AirSlate\ApiClient\EntityManager\Annotation\HttpEntity
  */
 class ResolverTest extends TestCase
 {

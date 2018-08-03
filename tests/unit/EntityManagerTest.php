@@ -28,6 +28,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @coversDefaultClass \AirSlate\ApiClient\EntityManager
  * @covers ::__construct
  * @uses \AirSlate\ApiClient\EntityManager\Annotation\Resolver
+ * @uses \AirSlate\ApiClient\EntityManager\Annotation\HttpEntity
  */
 class EntityManagerTest extends TestCase
 {

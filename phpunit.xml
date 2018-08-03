@@ -10,7 +10,8 @@
     <testsuites>
         <testsuite name="Entity Manager tests">
             <file>tests/unit/EntityManagerTest.php</file>
-            <file>tests/unit/AnnotationResolverTest.php</file>
+            <file>tests/unit/ResolverTest.php</file>
+            <file>tests/unit/HttpEntityTest.php</file>
         </testsuite>
     </testsuites>
 
@@ -18,6 +19,7 @@
         <whitelist processUncoveredFilesFromWhitelist="true">
             <file>src/EntityManager.php</file>
             <file>src/EntityManager/Annotation/Resolver.php</file>
+            <file>src/EntityManager/Annotation/HttpEntity.php</file>
         </whitelist>
     </filter>
     <logging>
