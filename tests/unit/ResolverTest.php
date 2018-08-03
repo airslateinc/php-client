@@ -21,6 +21,7 @@ use PHPUnit\Framework\TestCase;
  * @covers ::<protected>
  * @covers ::__construct
  * @uses \AirSlate\ApiClient\EntityManager\Annotation\HttpEntity
+ * @uses \AirSlate\ApiClient\EntityManager\Annotation\ResponseType
  */
 class ResolverTest extends TestCase
 {

@@ -12,6 +12,7 @@
             <file>tests/unit/EntityManagerTest.php</file>
             <file>tests/unit/ResolverTest.php</file>
             <file>tests/unit/HttpEntityTest.php</file>
+            <file>tests/unit/ResponseType.php</file>
         </testsuite>
     </testsuites>
 
@@ -20,6 +21,7 @@
             <file>src/EntityManager.php</file>
             <file>src/EntityManager/Annotation/Resolver.php</file>
             <file>src/EntityManager/Annotation/HttpEntity.php</file>
+            <file>src/EntityManager/Annotation/ResponseType.php</file>
         </whitelist>
     </filter>
     <logging>
