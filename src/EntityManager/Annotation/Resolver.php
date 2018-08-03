@@ -29,13 +29,13 @@ class Resolver
     {
         $this->annotationReader = $annotationReader;
     }
-
+    
     /**
      * @param string $entityType
      * @param array  $uriParams
-     * @param bool   $verifyIdProperty
      *
      * @return string
+     * @throws \ReflectionException
      */
     public function getEndpoint(string $entityType, array $uriParams = []): string
     {
@@ -43,11 +43,12 @@ class Resolver
 
         return trim($this->replaceUriParams($annotation->getUri(), $uriParams), '/');
     }
-
+    
     /**
      * @param string $entityType
      *
      * @return string
+     * @throws \ReflectionException
      */
     public function getIdProperty(string $entityType): string
     {

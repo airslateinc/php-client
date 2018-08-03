@@ -8,7 +8,6 @@ use AirSlate\ApiClient\EntityManager\Annotation\Resolver;
 use AirSlate\ApiClient\EntityManager\Exception\UnprocessableEntityException;
 use GuzzleHttp\ClientInterface;
 use JMS\Serializer\SerializationContext;
-use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,13 +60,15 @@ class EntityManager
         $this->serializer = $serializer;
         $this->annotationResolver = $annotationResolver;
     }
-
+    
     /**
      * @param string $entityType
      * @param array $uriParams
      * @param array $queryParams
      * @param array $headerParams
+     *
      * @return EntityManager|object
+     * @throws \ReflectionException
      */
     public function get(string $entityType, array $uriParams = [], array $queryParams = [], array $headerParams = [])
     {
@@ -81,13 +82,15 @@ class EntityManager
             $entityType
         );
     }
-
+    
     /**
      * @param object $entity
      * @param array $uriParams
      * @param array $queryParams
      * @param array $headerParams
-     * @return array|\JMS\Serializer\scalar|mixed|object
+     *
+     * @return array|\JMS\Serializer\mixed|object
+     * @throws \ReflectionException
      */
     public function create($entity, array $uriParams = [], array $queryParams = [], array $headerParams = [])
     {
@@ -110,13 +113,15 @@ class EntityManager
             throw new \InvalidArgumentException('Parameter 1 passed to "create" method must be object');
         }
     }
-
+    
     /**
      * @param object $entity
      * @param array $uriParams
      * @param array $queryParams
      * @param array $headerParams
-     * @return array|\JMS\Serializer\scalar|mixed|object
+     *
+     * @return array|\JMS\Serializer\mixed|object
+     * @throws \ReflectionException
      */
     public function update($entity, $uriParams = [], $queryParams = [], array $headerParams = [])
     {
@@ -139,13 +144,15 @@ class EntityManager
             throw new \InvalidArgumentException('Parameter 1 passed to "update" method is not an object');
         }
     }
-
+    
     /**
      * @param object $entity
      * @param array $uriParams
      * @param array $queryParams
      * @param array $headerParams
-     * @return array|\JMS\Serializer\scalar|mixed|object
+     *
+     * @return array|\JMS\Serializer\mixed|object
+     * @throws \ReflectionException
      */
     public function delete($entity, $uriParams = array(), $queryParams = array(), array $headerParams = [])
     {
@@ -210,11 +217,13 @@ class EntityManager
             ),
         ];
     }
-
+    
     /**
-     * @param callable $requestClosure
+     * @param \Closure $requestClosure
      * @param $type
-     * @return array|\JMS\Serializer\scalar|mixed|object
+     *
+     * @return array|\JMS\Serializer\mixed|object
+     * @throws \ReflectionException
      */
     protected function sendAndDeserialize(\Closure $requestClosure, $type)
     {
@@ -223,11 +232,13 @@ class EntityManager
 
         return $this->deserialize($response, $type);
     }
-
+    
     /**
      * @param ResponseInterface $response
      * @param $type
-     * @return array|\JMS\Serializer\scalar|mixed|object
+     *
+     * @return array|\JMS\Serializer\mixed|object
+     * @throws \ReflectionException
      */
     protected function deserialize(ResponseInterface $response, $type)
     {
@@ -262,10 +273,12 @@ class EntityManager
 
         return trim($entity, '\\');
     }
-
+    
     /**
      * @param object $entity
+     *
      * @return bool|string
+     * @throws \ReflectionException
      */
     protected function getIdValue($entity)
     {
@@ -281,10 +294,12 @@ class EntityManager
 
         return false;
     }
-
+    
     /**
-     * @param object|string $entityType
+     * @param object|string $entity
+     *
      * @return string
+     * @throws \ReflectionException
      */
     protected function getIdPropertyName($entity): string
     {
