@@ -280,7 +280,7 @@ class EntityManagerTest extends TestCase
             ->willReturn($this->promise);
     
         try {
-            $this->entityManager->delete($slate, [], [], ['Content-Type' => 'multipart/form-data']);
+            $this->entityManager->delete($slate, [], [], ['Content-Type' => 'application/json']);
         } catch (\ReflectionException $e) {
             $this->fail($e->getMessage());
         }
@@ -313,7 +313,7 @@ class EntityManagerTest extends TestCase
                 $this->assertTrue(is_callable($requestClosure));
                 $this->assertTrue(method_exists($requestClosure(), 'wait'));
                 
-                return $this->getMockForAbstractClass(Entity\Slate::class);
+                return $this->getMockBuilder(Entity\Slate::class)->getMock();
             });
         
         $entityManagerMock->get(Entity\Slate::class);
