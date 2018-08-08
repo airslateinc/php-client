@@ -5,6 +5,7 @@ namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Template;
 use AirSlate\ApiClient\Models\Template\Create;
+use AirSlate\ApiClient\Models\Template\Update;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -75,6 +76,24 @@ class TemplatesService extends AbstractService
         $url = $this->resolveEndpoint('/slates/' . $this->slateId . '/templates');
 
         $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $slate->toArray(),
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Template::createFromOne($content);
+    }
+
+    /**
+     * @param Update $slate
+     * @return Template
+     * @throws \Exception
+     */
+    public function update(Update $slate): Template
+    {
+        $url = $this->resolveEndpoint('/slates/' . $this->slateId . '/templates');
+
+        $response = $this->httpClient->patch($url, [
             RequestOptions::JSON => $slate->toArray(),
         ]);
 
