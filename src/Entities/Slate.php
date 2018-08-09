@@ -11,12 +11,21 @@ namespace AirSlate\ApiClient\Entities;
  * @property string $created_at
  * @property string $updated_at
  *
+ * @property-read Template $template
  */
-
 class Slate extends BaseEntity
 {
     /**
      * @var string
      */
     protected $type = 'slates';
+
+    /**
+     * @return BaseEntity|User|null
+     * @throws \Exception
+     */
+    public function getTemplate()
+    {
+        return $this->hasOne(Template::class, 'template');
+    }
 }

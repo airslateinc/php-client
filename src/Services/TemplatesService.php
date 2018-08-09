@@ -5,9 +5,12 @@ namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Template;
 use AirSlate\ApiClient\Models\Template\Create;
+use AirSlate\ApiClient\Models\Template\Update;
 use GuzzleHttp\RequestOptions;
 
 /**
+ * TODO slateId should become required parameter in method calls. It is bad practice to make state dependant services
+ *
  * Class TemplatesService
  * @package AirSlate\UsersManagement\Services
  */
@@ -16,12 +19,15 @@ class TemplatesService extends AbstractService
     protected $slateId;
 
     /**
+     * @param string $slateId
+     *
      * @return Template[]
      * @throws \Exception
      */
-    public function collection(): array
+    public function collection(string $slateId = null): array
     {
-        $url = $this->resolveEndpoint('/slates/' . $this->slateId . '/templates');
+        $slateId = $slateId ?? $this->slateId;
+        $url = $this->resolveEndpoint('/slates/' . $slateId . '/templates');
 
         $response = $this->httpClient->get($url);
 
@@ -47,6 +53,8 @@ class TemplatesService extends AbstractService
     }
 
     /**
+     * @deprecated
+     *
      * @return mixed
      */
     public function getSlateId()
@@ -55,6 +63,8 @@ class TemplatesService extends AbstractService
     }
 
     /**
+     * @deprecated
+     *
      * @param string $slateId
      * @return TemplatesService
      */
@@ -66,16 +76,38 @@ class TemplatesService extends AbstractService
     }
 
     /**
-     * @param Create $slate
+     * @param Create $template
+     * @param string $slateId
      * @return Template
      * @throws \Exception
      */
-    public function create(Create $slate): Template
+    public function create(Create $template, string $slateId = null): Template
     {
-        $url = $this->resolveEndpoint('/slates/' . $this->slateId . '/templates');
+        $slateId = $slateId ?? $this->slateId;
+        $url = $this->resolveEndpoint('/slates/' . $slateId . '/templates');
 
         $response = $this->httpClient->post($url, [
-            RequestOptions::JSON => $slate->toArray(),
+            RequestOptions::JSON => $template->toArray(),
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Template::createFromOne($content);
+    }
+
+    /**
+     * @param Update $template
+     * @param string $slateId
+     * @param string $templateId
+     * @return Template
+     * @throws \Exception
+     */
+    public function update(Update $template, string $slateId, string $templateId): Template
+    {
+        $url = $this->resolveEndpoint('/slates/' . $slateId . '/templates/' . $templateId);
+
+        $response = $this->httpClient->patch($url, [
+            RequestOptions::JSON => $template->toArray(),
         ]);
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
