@@ -69,6 +69,15 @@ class EntityManagerTest extends TestCase
     private $entityManager;
     
     /**
+     * @var Resolver
+     */
+    private $annotationResolver;
+    
+    /**
+     * @var Serializer
+     */
+    private $serializerMock;
+    /**
      * @throws \ReflectionException
      * @throws \Doctrine\Common\Annotations\AnnotationException
      */
@@ -77,15 +86,25 @@ class EntityManagerTest extends TestCase
         $this->response = $this->getMockForAbstractClass(ResponseInterface::class);
         $this->promise = $this->getMockForAbstractClass(Promise\PromiseInterface::class);
         $this->stream = $this->getMockForAbstractClass(StreamInterface::class);
-    
+        
         $this->clientMock = $this->getMockBuilder(Client::class)
             ->setMethods(['requestAsync'])
+            ->getMock();
+    
+        $this->annotationResolver = $this->getMockBuilder(Resolver::class)
+            ->setConstructorArgs([new AnnotationReader(new DocParser())])
+            ->setMethods(['getEndpoint', 'getIdProperty'])
+            ->getMock();
+    
+        $this->serializerMock = $this->getMockBuilder(Serializer::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['deserialize', 'serialize'])
             ->getMock();
         
         $this->serializer = SerializerBuilder::create()->build();
         $this->resolver = new Resolver(new AnnotationReader(new DocParser()));
         
-        $this->entityManager = new EntityManager($this->clientMock, $this->serializer, $this->resolver);
+        $this->entityManager = new EntityManager($this->clientMock, $this->serializer, $this->annotationResolver);
     }
     
     /**
@@ -100,8 +119,9 @@ class EntityManagerTest extends TestCase
      * @param string $content
      * @param string $expected
      * @param array $params
+     * @param string $expectedEndpoint
      */
-    public function testGet($class, $content, $expected, $params)
+    public function testGet($class, $content, $expected, $params, $expectedEndpoint)
     {
         $this->response
             ->expects($this->once())
@@ -117,11 +137,25 @@ class EntityManagerTest extends TestCase
             ->expects($this->once())
             ->method('wait')
             ->willReturn($this->response);
-
+    
         $this->clientMock
             ->expects($this->once())
             ->method('requestAsync')
+            ->with(
+                Request::METHOD_GET,
+                $expectedEndpoint,
+                ['query' => [], 'headers' => $params['headerParams']]
+            )
             ->willReturn($this->promise);
+    
+        $this->annotationResolver
+            ->expects($this->once())
+            ->method('getEndpoint')
+            ->with(
+                $this->equalTo($class),
+                $params['uriParams']
+            )
+        ->willReturn($this->resolver->getEndpoint($class, $params['uriParams']));
     
         try {
             $result = $this->entityManager->get(
@@ -132,6 +166,7 @@ class EntityManagerTest extends TestCase
             );
             
             $this->assertEquals($expected, $result->getData()->getId());
+            
         } catch (\ReflectionException $e) {
             $this->fail($e->getMessage());
         }
@@ -153,9 +188,16 @@ class EntityManagerTest extends TestCase
      * @param string $content
      * @param string $expected
      * @param array $params
+     * @param string $expectedEndpoint
+     * @param object $expectedEntity
      */
-    public function testCreate($entity, $content, $expected, $params)
+    public function testCreate($entity, $content, $expected, $params, $expectedEndpoint, $expectedEntity)
     {
+        $expectedBody = $this->serializer->serialize($expectedEntity, 'json');
+        $entityManager = new EntityManager(
+            $this->clientMock, $this->serializerMock, $this->annotationResolver
+        );
+        
         $this->response
             ->expects($this->once())
             ->method('getBody')
@@ -171,15 +213,40 @@ class EntityManagerTest extends TestCase
             ->method('wait')
             ->willReturn($this->response);
 
+        $this->serializerMock
+            ->expects($this->once())
+            ->method('serialize')
+            ->willReturn($expectedBody);
+
+        $this->serializerMock
+            ->expects($this->once())
+            ->method('deserialize')
+            ->willReturn($expectedEntity);
+            
         $this->clientMock
             ->expects($this->once())
             ->method('requestAsync')
+            ->with(
+                Request::METHOD_POST,
+                $expectedEndpoint,
+                ['headers' => $params['headerParams'], 'body'=> $expectedBody]
+            )
             ->willReturn($this->promise);
+    
+        $this->annotationResolver
+            ->expects($this->once())
+            ->method('getEndpoint')
+            ->with(
+                $this->equalTo(get_class($entity)),
+                $params['uriParams']
+            )
+            ->willReturn($this->resolver->getEndpoint(get_class($entity), $params['uriParams']));
         
         try {
+    
             $this->assertEmpty($entity->getData()->getId());
             
-            $result = $this->entityManager->create(
+            $result = $entityManager->create(
                 $entity,
                 $params['uriParams'],
                 $params['queryParams'],
@@ -210,8 +277,9 @@ class EntityManagerTest extends TestCase
      * @param string $expected
      * @param array $params
      */
-    public function testUpdate($entity, string $content, string $expected, array $params)
+    public function testUpdate($entity, string $content, string $expected, array $params, $expectedEndpoint)
     {
+        $expectedBody = $this->serializer->serialize($entity, 'json');
         $this->stream
             ->expects($this->once())
             ->method('getContents')
@@ -230,7 +298,21 @@ class EntityManagerTest extends TestCase
         $this->clientMock
             ->expects($this->once())
             ->method('requestAsync')
+            ->with(
+                Request::METHOD_PATCH,
+                $expectedEndpoint,
+                ['headers' => $params['headerParams'], 'body'=> $expectedBody]
+            )
             ->willReturn($this->promise);
+    
+        $this->annotationResolver
+            ->expects($this->once())
+            ->method('getEndpoint')
+            ->with(
+                $this->equalTo(get_class($entity)),
+                $params['uriParams']
+            )
+            ->willReturn($this->resolver->getEndpoint(get_class($entity), $params['uriParams']));
     
         try {
             $this->assertNotEquals($expected, $entity->getData()->getAttributes()->getName());
@@ -277,10 +359,26 @@ class EntityManagerTest extends TestCase
         $this->clientMock
             ->expects($this->once())
             ->method('requestAsync')
+            ->with(
+                Request::METHOD_DELETE,
+                'slates/E3D0D900-0000-0000-0000BA29',
+                ['headers' => ['Content-Type' => 'application/json']]
+            )
             ->willReturn($this->promise);
     
+        $this->annotationResolver
+            ->expects($this->once())
+            ->method('getEndpoint')
+            ->with(
+                $this->equalTo(get_class($slate)),
+                ['id'=>'E3D0D900-0000-0000-0000BA29']
+            )
+            ->willReturn($this->resolver->getEndpoint(get_class($slate), ['id'=>'E3D0D900-0000-0000-0000BA29']));
+    
         try {
-            $this->entityManager->delete($slate, [], [], ['Content-Type' => 'application/json']);
+            $this->entityManager->delete(
+                $slate, ['id'=>'E3D0D900-0000-0000-0000BA29'], [], ['Content-Type' => 'application/json']
+            );
         } catch (\ReflectionException $e) {
             $this->fail($e->getMessage());
         }
@@ -605,20 +703,22 @@ class EntityManagerTest extends TestCase
                 '{"data":{"type":"slates","id":"E3D0D900-0000-0000-0000BA29"}}',
                 'E3D0D900-0000-0000-0000BA29',
                 [
-                    'uriParams' => [],
+                    'uriParams' => ["id"=>"E3D0D900-0000-0000-0000BA29"],
                     'queryParams' => [],
                     'headerParams' => ['Content-Type' => 'application/json'],
-                ]
+                ],
+                'slates/E3D0D900-0000-0000-0000BA29'
             ],
             [
                 Entity\User::class,
                 '{"data":{"type":"users","id":"26C04700-0000-0000-00009BC6"}}',
                 '26C04700-0000-0000-00009BC6',
                 [
-                    'uriParams' => [],
+                    'uriParams' => ['orgId'=>'1234AA-000-9999', 'id'=>'26C04700-0000-0000-00009BC6'],
                     'queryParams' => [],
                     'headerParams' => ['Content-Type' => 'application/json'],
-                ]
+                ],
+                'organizations/1234AA-000-9999/users/26C04700-0000-0000-00009BC6'
             ],
         ];
     }
@@ -633,26 +733,39 @@ class EntityManagerTest extends TestCase
         
         $user = new Entity\User();
         $user->setData(new Entity\User\UserData());
+        
+        $slateExpected = new Entity\Slate();
+        $slateExpected->setData(new Entity\Slate\SlateData());
+        $slateExpected->getData()->setId("E3D0D900-0000-0000-0000BA29");
+    
+        $userExpected = new Entity\User();
+        $userExpected->setData(new Entity\User\UserData());
+        $userExpected->getData()->setId("26C04700-0000-0000-00009BC6");
+        
         return [
             [
                 $slate,
                 '{"data":{"type":"slates","id":"E3D0D900-0000-0000-0000BA29"}}',
                 'E3D0D900-0000-0000-0000BA29',
                 [
-                    'uriParams' => [],
+                    'uriParams' => ['id'=>'E3D0D900-0000-0000-0000BA29'],
                     'queryParams' => [],
                     'headerParams' => ['Content-Type' => 'application/json'],
-                ]
+                ],
+                'slates/E3D0D900-0000-0000-0000BA29',
+                $slateExpected
             ],
             [
                 $user,
                 '{"data":{"type":"users","id":"26C04700-0000-0000-00009BC6"}}',
                 '26C04700-0000-0000-00009BC6',
                 [
-                    'uriParams' => [],
+                    'uriParams' => ['orgId'=>'1234AA-000-9999', 'id'=>'26C04700-0000-0000-00009BC6'],
                     'queryParams' => [],
                     'headerParams' => ['Content-Type' => 'application/json'],
-                ]
+                ],
+                'organizations/1234AA-000-9999/users/26C04700-0000-0000-00009BC6',
+                $userExpected
             ],
         ];
     }
@@ -674,10 +787,11 @@ class EntityManagerTest extends TestCase
                 '{"data":{"type":"slates","id":"E3D0D900-0000-0000-0000BA29", "attributes":{"name": "Slate 1"}}}',
                 'Slate 1',
                 [
-                    'uriParams' => [],
+                    'uriParams' => ['id'=>'E3D0D900-0000-0000-0000BA29'],
                     'queryParams' => [],
                     'headerParams' => ['Content-Type' => 'application/json'],
-                ]
+                ],
+                'slates/E3D0D900-0000-0000-0000BA29'
             ],
         ];
     }
@@ -749,7 +863,7 @@ class EntityManagerTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->resolver, $this->clientMock, $this->promise, $this->response, $this->serializer);
-        unset($this->entityManager);
+        unset($this->resolver, $this->clientMock, $this->promise, $this->response,
+            $this->serializer, $this->annotationResolver, $this->entityManager, $this->serializerMock);
     }
 }
