@@ -703,7 +703,7 @@ class EntityManagerTest extends TestCase
                 '{"data":{"type":"slates","id":"E3D0D900-0000-0000-0000BA29"}}',
                 'E3D0D900-0000-0000-0000BA29',
                 [
-                    'uriParams' => ["id"=>"E3D0D900-0000-0000-0000BA29"],
+                    'uriParams' => ['id'=>'E3D0D900-0000-0000-0000BA29'],
                     'queryParams' => [],
                     'headerParams' => ['Content-Type' => 'application/json'],
                 ],
