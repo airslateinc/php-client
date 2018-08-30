@@ -6,6 +6,7 @@ namespace AirSlate\ApiClient;
 use AirSlate\ApiClient\Http\Client as HttpClient;
 use AirSlate\ApiClient\Services\AddonsService;
 use AirSlate\ApiClient\Services\DocumentsService;
+use AirSlate\ApiClient\Services\ExportService;
 use AirSlate\ApiClient\Services\FilesService;
 use AirSlate\ApiClient\Services\IntegrationsService;
 use AirSlate\ApiClient\Services\SlatesService;
@@ -28,6 +29,7 @@ class Client
     private $usersService;
     private $documentsService;
     private $filesService;
+    private $exportService;
     private $slatesService;
     private $addonsService;
     private $integrationsService;
@@ -48,6 +50,7 @@ class Client
         $this->usersService = new UsersService($httpClient);
         $this->documentsService = new DocumentsService($httpClient);
         $this->filesService = new FilesService($httpClient);
+        $this->exportService = new ExportService($httpClient);
         $this->slatesService = new SlatesService($httpClient);
         $this->addonsService = new AddonsService($httpClient);
         $this->integrationsService = new IntegrationsService($httpClient);
@@ -143,6 +146,14 @@ class Client
     public function files(): FilesService
     {
         return $this->filesService;
+    }
+
+    /**
+     * @return ExportService
+     */
+    public function export(): ExportService
+    {
+        return $this->exportService;
     }
 
     /**
