@@ -1,0 +1,16 @@
+{
+  "links": {
+    "self": "http://localhost:8009/v1/export/5EB94400-0000-0000-0000B250"
+  },
+  "data": {
+    "type": "export",
+    "id": "5EB94400-0000-0000-0000B250",
+    "attributes": {
+      "name": "Archive.zip",
+      "status": "Pending request",
+      "size": 0,
+      "created_at": "2018-08-16 09:54:10",
+      "updated_at": "2018-08-16 09:54:10"
+    }
+  }
+}

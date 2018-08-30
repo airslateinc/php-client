@@ -301,9 +301,11 @@ class Inflector
      * Converts a CamelCase name into an ID in lowercase.
      * Words in the ID may be concatenated using the specified character (defaults to '-').
      * For example, 'PostTag' will be converted to 'post-tag'.
+     *
      * @param string $name the string to be converted
      * @param string $separator the character used to concatenate the words in the ID
-     * @param bool|string $strict whether to insert a separator between two consecutive uppercase chars, defaults to false
+     * @param bool|string $strict whether to insert a separator between two consecutive uppercase chars,
+     * defaults to false
      * @return string the resulting ID
      */
     public static function camel2id($name, $separator = '-', $strict = false): string
@@ -313,7 +315,9 @@ class Inflector
             return strtolower(trim(preg_replace($regex, '_\0', $name), '_'));
         }
 
-        return strtolower(trim(str_replace('_', $separator, preg_replace($regex, $separator . '\0', $name)), $separator));
+        return strtolower(
+            trim(str_replace('_', $separator, preg_replace($regex, $separator . '\0', $name)), $separator)
+        );
     }
 
     /**

@@ -23,13 +23,12 @@ class AddonsService extends AbstractService
         $url = $this->resolveEndpoint('/addon-token');
 
         $response = $this->httpClient->post($url, [
-                RequestOptions::FORM_PARAMS => [
-                    'client_id' => $clientId,
-                    'client_secret' => $clientSecret,
-                    'organization_id' => $organizationId
-                ]
+            RequestOptions::FORM_PARAMS => [
+                'client_id' => $clientId,
+                'client_secret' => $clientSecret,
+                'organization_id' => $organizationId
             ]
-        );
+        ]);
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 

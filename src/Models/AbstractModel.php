@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Models;
 
-use AirSlate\ApiClient\Entities\Field;
-
 /**
  * @package AirSlate\ApiClient\Models
  */

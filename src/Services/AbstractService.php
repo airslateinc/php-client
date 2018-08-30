@@ -7,7 +7,7 @@ use AirSlate\ApiClient\Http\Client;
 
 /**
  * Class UsersService
- * @package AirSlate\UsersManagement\Services
+ * @package AirSlate\ApiClient\Services
  */
 abstract class AbstractService
 {
