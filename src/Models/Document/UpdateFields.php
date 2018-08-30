@@ -32,7 +32,7 @@ class UpdateFields extends AbstractModel
     public function toArray(): array
     {
         return [
-            'data' => array_map(function(Field $field) {
+            'data' => array_map(function (Field $field) {
                 return $field->jsonSerialize()['data'];
             }, $this->data),
         ];

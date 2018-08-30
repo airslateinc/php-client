@@ -38,5 +38,4 @@ class Upload extends AbstractModel
             ]
         ];
     }
-
 }

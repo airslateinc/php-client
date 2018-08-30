@@ -15,5 +15,4 @@ class RelationNotExistException extends DomainException
     {
         return 'No relation with this name.';
     }
-
 }

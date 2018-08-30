@@ -7,7 +7,7 @@ use AirSlate\ApiClient\Entities\Packet;
 
 /**
  * Class PacketsService
- * @package AirSlate\UsersManagement\Services
+ * @package AirSlate\ApiClient\Services
  */
 class PacketsService extends AbstractService
 {

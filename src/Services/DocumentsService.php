@@ -16,7 +16,7 @@ use GuzzleHttp\RequestOptions;
 
 /**
  * Class DocumentsService
- * @package AirSlate\UsersManagement\Services
+ * @package AirSlate\ApiClient\Services
  */
 class DocumentsService extends AbstractService
 {
@@ -109,6 +109,9 @@ class DocumentsService extends AbstractService
      * @return mixed
      *
      * @throws \Exception
+     *
+     * @deprecated
+     * @see ExportService::create()
      */
     public function export(ExportModel $document): array
     {
@@ -133,6 +136,9 @@ class DocumentsService extends AbstractService
      * @param string $exportId
      *
      * @return array
+     *
+     * @deprecated
+     * @see ExportService::get()
      */
     public function exportStatus(string $exportId): array
     {

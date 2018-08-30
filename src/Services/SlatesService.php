@@ -11,7 +11,7 @@ use GuzzleHttp\RequestOptions;
 
 /**
  * Class SlatesService
- * @package AirSlate\UsersManagement\Services
+ * @package AirSlate\ApiClient\Services
  */
 class SlatesService extends AbstractService
 {

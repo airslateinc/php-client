@@ -12,7 +12,7 @@ use GuzzleHttp\RequestOptions;
  * TODO slateId should become required parameter in method calls. It is bad practice to make state dependant services
  *
  * Class TemplatesService
- * @package AirSlate\UsersManagement\Services
+ * @package AirSlate\ApiClient\Services
  */
 class TemplatesService extends AbstractService
 {

@@ -9,7 +9,7 @@ use GuzzleHttp\RequestOptions;
 
 /**
  * Class UsersService
- * @package AirSlate\UsersManagement\Services
+ * @package AirSlate\ApiClient\Services
  */
 class FilesService extends AbstractService
 {
