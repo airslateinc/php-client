@@ -6,6 +6,7 @@ namespace AirSlate\ApiClient;
 use AirSlate\ApiClient\Http\Client as HttpClient;
 use AirSlate\ApiClient\Services\AddonsService;
 use AirSlate\ApiClient\Services\DocumentsService;
+use AirSlate\ApiClient\Services\ExportService;
 use AirSlate\ApiClient\Services\FilesService;
 use AirSlate\ApiClient\Services\IntegrationsService;
 use AirSlate\ApiClient\Services\SlatesService;
@@ -19,17 +20,42 @@ class Client
 {
     /**
      * Client instances.
-     * @var Client
+     * @var Client[]
      */
-    static private $instance;
+    static private $instances;
+
+    /**
+     * @var HttpClient
+     */
+    private $httpClient;
+
     /**
      * @var UsersService
      */
     private $usersService;
+    /**
+     * @var DocumentsService
+     */
     private $documentsService;
+    /**
+     * @var FilesService
+     */
     private $filesService;
+    /**
+     * @var ExportService
+     */
+    private $exportService;
+    /**
+     * @var SlatesService
+     */
     private $slatesService;
+    /**
+     * @var AddonsService
+     */
     private $addonsService;
+    /**
+     * @var IntegrationsService
+     */
     private $integrationsService;
 
     /**
@@ -43,14 +69,7 @@ class Client
      */
     private function __construct(string $baseUri, array $config = [])
     {
-        $httpClient = $this->configureClient($baseUri, $config);
-
-        $this->usersService = new UsersService($httpClient);
-        $this->documentsService = new DocumentsService($httpClient);
-        $this->filesService = new FilesService($httpClient);
-        $this->slatesService = new SlatesService($httpClient);
-        $this->addonsService = new AddonsService($httpClient);
-        $this->integrationsService = new IntegrationsService($httpClient);
+        $this->httpClient = $this->configureClient($baseUri, $config);
     }
 
     /**
@@ -112,13 +131,13 @@ class Client
     {
         $hash = md5($baseUri . ':' . json_encode($config));
 
-        self::$instance[$hash] = self::$instance[$hash] ?? null;
+        self::$instances[$hash] = self::$instances[$hash] ?? null;
 
-        if (!self::$instance[$hash]) {
-            self::$instance[$hash] = new self($baseUri, $config);
+        if (!self::$instances[$hash]) {
+            self::$instances[$hash] = new self($baseUri, $config);
         }
 
-        return self::$instance[$hash];
+        return self::$instances[$hash];
     }
 
     /**
@@ -126,6 +145,10 @@ class Client
      */
     public function users(): UsersService
     {
+        if (!$this->usersService) {
+            $this->usersService = new UsersService($this->httpClient);
+        }
+
         return $this->usersService;
     }
 
@@ -134,6 +157,10 @@ class Client
      */
     public function documents(): DocumentsService
     {
+        if (!$this->documentsService) {
+            $this->documentsService = new DocumentsService($this->httpClient);
+        }
+
         return $this->documentsService;
     }
 
@@ -142,7 +169,23 @@ class Client
      */
     public function files(): FilesService
     {
+        if (!$this->filesService) {
+            $this->filesService = new FilesService($this->httpClient);
+        }
+
         return $this->filesService;
+    }
+
+    /**
+     * @return ExportService
+     */
+    public function export(): ExportService
+    {
+        if (!$this->exportService) {
+            $this->exportService = new ExportService($this->httpClient);
+        }
+
+        return $this->exportService;
     }
 
     /**
@@ -150,6 +193,10 @@ class Client
      */
     public function slates(): SlatesService
     {
+        if (!$this->slatesService) {
+            $this->slatesService = new SlatesService($this->httpClient);
+        }
+
         return $this->slatesService;
     }
 
@@ -158,6 +205,10 @@ class Client
      */
     public function addons(): AddonsService
     {
+        if (!$this->addonsService) {
+            $this->addonsService = new AddonsService($this->httpClient);
+        }
+
         return $this->addonsService;
     }
 
@@ -166,6 +217,10 @@ class Client
      */
     public function integrations(): IntegrationsService
     {
+        if (!$this->integrationsService) {
+            $this->integrationsService = new IntegrationsService($this->httpClient);
+        }
+
         return $this->integrationsService;
     }
 }
