@@ -46,7 +46,7 @@ class ExportTest extends TestCase
         /** @var Response $response */
         $response = $container[0]['response'];
 
-        $this->assertEquals('v1/export', $request->getUri()->getPath());
+        $this->assertEquals('v1/document-export', $request->getUri()->getPath());
 
         $fixtureDecoded = json_decode($fixture, true);
         $this->assertEquals($fixtureDecoded, $result);
