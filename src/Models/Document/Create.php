@@ -6,19 +6,18 @@ namespace AirSlate\ApiClient\Models\Document;
 use AirSlate\ApiClient\Models\AbstractModel;
 
 /**
- * Class Document
- * @package AirSlate\ApiClient\Models
+ * Class Create
+ * @package AirSlate\ApiClient\Models\Document
  *
- * @method addPages(string $id): Document
- * @method addAttributes(string $id): Document
- * @method addContent(string $id): Document
- * @method addFields(string $id): Document
- * @method addRoles(string $id): Document
- * @method addComments(string $id): Document
- * @method addOriginal(string $id): Document
- * @method addImage(string $id): Document
- * @method addPdf(string $id): Document
- * @method setName(string $name): Document
+ * @method addPages(string $id): Create
+ * @method addAttributes(string $id): Create
+ * @method addContent(string $id): Create
+ * @method addFields(string $id): Create
+ * @method addRoles(string $id): Create
+ * @method addComments(string $id): Create
+ * @method addOriginal(string $id): Create
+ * @method addImage(string $id): Create
+ * @method addPdf(string $id): Create
  */
 class Create extends AbstractModel
 {
@@ -40,23 +39,30 @@ class Create extends AbstractModel
     private $name = 'Default Document Name';
 
     /**
+     * @var int
+     */
+    private $pagesCount = 0;
+
+    /**
+     * @var int
+     */
+    private $visiblePagesCount = 0;
+
+    /**
      * @param string $name
      * @param array $arguments
      * @return $this
+     * @throws \InvalidArgumentException
      */
     public function __call(string $name, array $arguments): Create
     {
-        if ($name === 'setName') {
-            $this->name = (string)$arguments[0];
-            return $this;
-        }
         if (!array_key_exists($name, $this->methodToField)) {
             throw new \InvalidArgumentException(sprintf('Method %s not allowed', $name));
         }
         $this->data[$this->methodToField[$name]] = [
             'data' => [
                 'type' => 'files',
-                'id' => (string) $arguments[0],
+                'id' => (string)$arguments[0],
             ]
         ];
         return $this;
@@ -73,8 +79,45 @@ class Create extends AbstractModel
                 'attributes' => [
                     'name' => $this->name,
                 ],
+                'meta' => [
+                    'num_pages' => $this->pagesCount,
+                    'num_visible_pages' => $this->visiblePagesCount,
+                ],
                 'relationships' => $this->data,
             ]
         ];
+    }
+
+    /**
+     * @param string $name
+     * @return Create|static
+     */
+    public function setName(string $name): Create
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @param int $pagesCount
+     * @return Create|static
+     */
+    public function setPagesCount(int $pagesCount): Create
+    {
+        $this->pagesCount = $pagesCount;
+
+        return $this;
+    }
+
+    /**
+     * @param int $pagesCount
+     * @return Create|static
+     */
+    public function setVisiblePagesCount(int $pagesCount): Create
+    {
+        $this->visiblePagesCount = $pagesCount;
+
+        return $this;
     }
 }
