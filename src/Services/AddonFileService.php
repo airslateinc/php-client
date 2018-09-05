@@ -13,7 +13,10 @@ class AddonFileService extends AbstractService
      */
     public function one(string $addonFileId): AddonFileEntity
     {
-        $response = $this->httpClient->get('addon-files/' . $addonFileId);
+        $url = $this->resolveEndpoint('/addon-files/' . $addonFileId);
+        
+        $response = $this->httpClient->get($url);
+        
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
         
         return AddonFileEntity::createFromOne($content);
