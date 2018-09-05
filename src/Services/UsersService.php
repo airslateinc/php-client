@@ -51,7 +51,7 @@ class UsersService extends AbstractService
      */
     public function one(string $organizationId, string $userId): User
     {
-        $url = $this->resolveEndpoint('/organizations/' . $organizationId . '/users/' . $userId);
+        $url = $this->resolveEndpoint('/users/' . $userId);
         $response = $this->httpClient->get($url);
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
@@ -125,6 +125,7 @@ class UsersService extends AbstractService
      * @param string $email
      * @return User
      * @throws \Exception
+     * @deprecated you should use internal client for this
      */
     public function simplifiedRegister(string $email): User
     {
