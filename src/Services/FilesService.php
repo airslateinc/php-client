@@ -32,17 +32,4 @@ class FilesService extends AbstractService
 
         return FileEntity::createFromCollection($content);
     }
-    
-    /**
-     * @param string $fileId
-     * @return FileEntity
-     * @throws \Exception
-     */
-    public function one(string $fileId): FileEntity
-    {
-        $response = $this->httpClient->get('files/' . $fileId);
-        $content = \GuzzleHttp\json_decode($response->getBody(), true);
-        
-        return FileEntity::createFromOne($content);
-    }
 }
