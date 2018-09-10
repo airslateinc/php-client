@@ -229,21 +229,13 @@ class Client
         return $this->integrationsService;
     }
 
-    public function eventBus(string $clientId, string $clientSecret): EventBusService
+    /**
+     * @return EventBusService
+     */
+    public function eventBus(): EventBusService
     {
         if (!$this->eventBusService) {
-            // create not authorized client service and get token
-            $eventBusService = new EventBusService($this->httpClient);
-            $token = $eventBusService->getAccessToken($clientId, $clientSecret);
-
-            // create new client with token
-            $baseUri = $this->httpClient->getConfig()['base_uri'];
-            $config = ['token' => $token->getAccessToken()];
-            $eventBusClient = $this->configureClient((string)$baseUri, $config);
-
-            // set client in service save service in class
-            $eventBusService->setClient($eventBusClient);
-            $this->eventBusService = $eventBusService;
+            $this->eventBusService = new EventBusService($this->httpClient);
         }
 
         return $this->eventBusService;

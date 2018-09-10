@@ -5,6 +5,7 @@ namespace AirSlate\ApiClient\Services;
 use AirSlate\ApiClient\Entities\EventBus\Event;
 use AirSlate\ApiClient\Entities\Token;
 use AirSlate\ApiClient\Entities\EventBus\Webhook;
+use AirSlate\ApiClient\Http\Client as HttpClient;
 use GuzzleHttp\RequestOptions;
 
 class EventBusService extends AbstractService
@@ -12,20 +13,20 @@ class EventBusService extends AbstractService
     const PATH_PREFIX = '/event-bus';
     const PATH_WEBHOOKS = '/webhooks';
     const PATH_EVENTS = '/events';
+    const PATH_TOKEN = '/oauth/token';
 
     /**
-     * Get access token for addon
+     * Get access token for event-bus service
      *
      * @param string $clientId
      * @param string $clientSecret
      * @return Token
      */
-    public function getAccessToken(
+    protected function getAccessToken(
         string $clientId,
         string $clientSecret
-    )
-    {
-        $url = $this->resolveEndpoint(self::PATH_PREFIX . '/oauth/token');
+    ) {
+        $url = $this->resolveEndpoint(self::PATH_PREFIX . self::PATH_TOKEN);
 
         $response = $this->httpClient->post($url, [
             RequestOptions::FORM_PARAMS => [
@@ -39,6 +40,18 @@ class EventBusService extends AbstractService
         $accessToken = Token::createFromMeta(['meta' => $content]);
 
         return $accessToken;
+    }
+
+    public function authorize(string $clientId, string $clientSecret): self
+    {
+        $token = $this->getAccessToken($clientId, $clientSecret);
+        $config = $this->httpClient->getConfig();
+        $config['headers']['Authorization'] = "Bearer {$token->getAccessToken()}";
+
+        $client = new HttpClient($config);
+        $this->setClient($client);
+
+        return $this;
     }
 
     public function pushEvent(Event $event): Event

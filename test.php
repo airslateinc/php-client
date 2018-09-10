@@ -21,7 +21,8 @@ $config = [
  */
 $client = Client::instance('http://127.0.0.1:8019', $config);
 
-$eventBus = $client->eventBus('1', 'dfbPnQbPM3B7JoFGO5oMVC0lqicbcOpb3O4pfFhj');
+$eventBus = $client->eventBus();
+$eventBus->authorize('1', 'dfbPnQbPM3B7JoFGO5oMVC0lqicbcOpb3O4pfFhj');
 
 // create webhook
 
