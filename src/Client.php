@@ -6,6 +6,7 @@ namespace AirSlate\ApiClient;
 use AirSlate\ApiClient\Http\Client as HttpClient;
 use AirSlate\ApiClient\Services\AddonsService;
 use AirSlate\ApiClient\Services\DocumentsService;
+use AirSlate\ApiClient\Services\EventBusService;
 use AirSlate\ApiClient\Services\ExportService;
 use AirSlate\ApiClient\Services\FilesService;
 use AirSlate\ApiClient\Services\IntegrationsService;
@@ -57,6 +58,10 @@ class Client
      * @var IntegrationsService
      */
     private $integrationsService;
+    /**
+     * @var EventBusService
+     */
+    private $eventBusService;
 
     /**
      * Client constructor.
@@ -222,5 +227,25 @@ class Client
         }
 
         return $this->integrationsService;
+    }
+
+    public function eventBus(string $clientId, string $clientSecret): EventBusService
+    {
+        if (!$this->eventBusService) {
+            // create not authorized client service and get token
+            $eventBusService = new EventBusService($this->httpClient);
+            $token = $eventBusService->getAccessToken($clientId, $clientSecret);
+
+            // create new client with token
+            $baseUri = $this->httpClient->getConfig()['base_uri'];
+            $config = ['token' => $token->getAccessToken()];
+            $eventBusClient = $this->configureClient((string)$baseUri, $config);
+
+            // set client in service save service in class
+            $eventBusService->setClient($eventBusClient);
+            $this->eventBusService = $eventBusService;
+        }
+
+        return $this->eventBusService;
     }
 }
