@@ -1,0 +1,10 @@
+{
+  "data": {
+    "type": "message-bus-callback",
+    "id": "B9679100-0000-0000-0000C10F",
+    "attributes": {
+      "routing_key": "test",
+      "callback_url": "https:\/\/webhook.site"
+    }
+  }
+}
