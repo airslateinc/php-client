@@ -77,4 +77,16 @@ abstract class AbstractService
 
         return $this;
     }
+    
+    /**
+     * @param string $key
+     * @param $values
+     * @return $this
+     */
+    public function addQueryParam(string $key, $values)
+    {
+        $this->httpClient->addQueryParam($key, $values);
+        
+        return $this;
+    }
 }
