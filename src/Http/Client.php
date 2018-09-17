@@ -20,6 +20,11 @@ class Client extends \GuzzleHttp\Client
      * @var array
      */
     private $filter;
+    
+    /**
+     * @var array
+     */
+    private $queryParams;
 
     /**
      * @inheritdoc
@@ -81,6 +86,22 @@ class Client extends \GuzzleHttp\Client
 
         return $this;
     }
+    
+    /**
+     * @param string $key
+     * @param $values
+     * @return Client
+     */
+    public function addQueryParam(string $key, $values): Client
+    {
+        if (\is_array($values)) {
+            $values = implode(',', $values);
+        }
+        
+        $this->queryParams[$key] = $values;
+        
+        return $this;
+    }
 
     /**
      * @param array $options
@@ -93,6 +114,9 @@ class Client extends \GuzzleHttp\Client
         }
         if (null !== $this->filter) {
             $options[RequestOptions::QUERY]['filter'] = $this->filter;
+        }
+        if (null !== $this->queryParams) {
+            $options[RequestOptions::QUERY] = array_merge($options[RequestOptions::QUERY], $this->queryParams);
         }
 
         return $options;
