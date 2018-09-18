@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
+use AirSlate\ApiClient\Entities\Document;
 use AirSlate\ApiClient\Entities\Template;
 use AirSlate\ApiClient\Models\Template\Create;
 use AirSlate\ApiClient\Models\Template\Update;
@@ -113,5 +114,22 @@ class TemplatesService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Template::createFromOne($content);
+    }
+    
+    /**
+     * @param string $slateId
+     * @param string $templateId
+     * @return array
+     * @throws \Exception
+     */
+    public function documents(string $slateId, string $templateId): array
+    {
+        $url = $this->resolveEndpoint('/slates/' . $slateId . '/templates/' . $templateId . '/documents');
+    
+        $response = $this->httpClient->get($url);
+    
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+    
+        return Document::createFromCollection($content);
     }
 }
