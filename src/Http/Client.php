@@ -33,7 +33,11 @@ class Client extends \GuzzleHttp\Client
     public function request($method, $uri = '', array $options = [])
     {
         try {
-            $response = parent::request($method, $uri, $this->resolveOptions($options));
+            $resolvedOptions = $this->resolveOptions($options);
+            
+            $this->clearOptions();
+            
+            $response = parent::request($method, $uri, $resolvedOptions);
         } catch (RequestException $exception) {
             $code = $exception->getCode();
             if ($exception->hasResponse()) {
@@ -120,5 +124,12 @@ class Client extends \GuzzleHttp\Client
         }
 
         return $options;
+    }
+    
+    private function clearOptions(): void
+    {
+        $this->include = null;
+        $this->filter = null;
+        $this->queryParams = null;
     }
 }
