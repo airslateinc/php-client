@@ -14,6 +14,7 @@ class EventBusService extends AbstractService
     const PATH_WEBHOOKS = '/webhooks';
     const PATH_EVENTS = '/events';
     const PATH_TOKEN = '/oauth/token';
+    private const ENDPOINT_METRICS_ACTIVE_USERS = '/audit-trail/metrics/organizations/{organizationId}/active-users';
 
     /**
      * Get access token for event-bus service
@@ -122,5 +123,38 @@ class EventBusService extends AbstractService
         $response = $this->httpClient->delete($url);
 
         return $response && $response->getStatusCode() === 204;
+    }
+
+    /**
+     * @param string $organizationId
+     * @param \DateTime|null $dateFrom
+     * @param \DateTime|null $dateTo
+     * @param int $activities
+     * @return int
+     */
+    public function getActiveUsersCountForPeriod(
+        string $organizationId,
+        \DateTime $dateFrom = null,
+        \DateTime $dateTo = null,
+        int $activities = 1
+    ): int {
+        if ($dateFrom instanceof \DateTime) {
+            $this->addFilter('date_from', $dateFrom->format('Y-m-d H:i:s'));
+        }
+
+        if ($dateTo instanceof \DateTime) {
+            $this->addFilter('date_to', $dateTo->format('Y-m-d H:i:s'));
+        }
+
+        $this->addFilter('activities', $activities);
+
+        $response = $this->httpClient->get(
+            \strtr(self::PATH_PREFIX . self::ENDPOINT_METRICS_ACTIVE_USERS, [
+                '{organizationId}' => $organizationId,
+            ])
+        );
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return $content['meta']['active_users'];
     }
 }
