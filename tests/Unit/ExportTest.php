@@ -24,7 +24,7 @@ class ExportTest extends TestCase
 
     public function testServiceCreate()
     {
-        $fixture = file_get_contents(__DIR__ . '/fixtures/export_created.json');
+        $fixture = file_get_contents(__DIR__ . '/fixtures/export/export_created.json');
         $mock = new MockHandler([
             new Response(200, [], $fixture),
         ]);

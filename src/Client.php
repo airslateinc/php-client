@@ -6,6 +6,7 @@ namespace AirSlate\ApiClient;
 use AirSlate\ApiClient\Http\Client as HttpClient;
 use AirSlate\ApiClient\Services\AddonsService;
 use AirSlate\ApiClient\Services\DocumentsService;
+use AirSlate\ApiClient\Services\EventBusService;
 use AirSlate\ApiClient\Services\ExportService;
 use AirSlate\ApiClient\Services\FilesService;
 use AirSlate\ApiClient\Services\IntegrationsService;
@@ -57,6 +58,10 @@ class Client
      * @var IntegrationsService
      */
     private $integrationsService;
+    /**
+     * @var EventBusService
+     */
+    private $eventBusService;
 
     /**
      * Client constructor.
@@ -222,5 +227,17 @@ class Client
         }
 
         return $this->integrationsService;
+    }
+
+    /**
+     * @return EventBusService
+     */
+    public function eventBus(): EventBusService
+    {
+        if (!$this->eventBusService) {
+            $this->eventBusService = new EventBusService($this->httpClient);
+        }
+
+        return $this->eventBusService;
     }
 }
