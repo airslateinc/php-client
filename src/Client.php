@@ -9,7 +9,6 @@ use AirSlate\ApiClient\Services\DocumentsService;
 use AirSlate\ApiClient\Services\EventBusService;
 use AirSlate\ApiClient\Services\ExportService;
 use AirSlate\ApiClient\Services\FilesService;
-use AirSlate\ApiClient\Services\IntegrationsService;
 use AirSlate\ApiClient\Services\SlatesService;
 use AirSlate\ApiClient\Services\UsersService;
 
@@ -54,10 +53,6 @@ class Client
      * @var AddonsService
      */
     private $addonsService;
-    /**
-     * @var IntegrationsService
-     */
-    private $integrationsService;
     /**
      * @var EventBusService
      */
@@ -216,19 +211,7 @@ class Client
 
         return $this->addonsService;
     }
-
-    /**
-     * @return IntegrationsService
-     */
-    public function integrations(): IntegrationsService
-    {
-        if (!$this->integrationsService) {
-            $this->integrationsService = new IntegrationsService($this->httpClient);
-        }
-
-        return $this->integrationsService;
-    }
-
+    
     /**
      * @return EventBusService
      */
