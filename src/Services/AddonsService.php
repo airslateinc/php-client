@@ -89,4 +89,12 @@ class AddonsService extends AbstractService
     {
         return new AddonFileService($this->httpClient);
     }
+    
+    /**
+     * @return AddonIntegrationsService
+     */
+    public function addonIntegrations(): AddonIntegrationsService
+    {
+        return new AddonIntegrationsService($this->httpClient);
+    }
 }
