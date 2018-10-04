@@ -21,4 +21,17 @@ class AddonFileService extends AbstractService
         
         return AddonFileEntity::createFromOne($content);
     }
+
+    /**
+     * @param string $addonFileId
+     * @return \Psr\Http\Message\StreamInterface
+     */
+    public function download(string $addonFileId)
+    {
+        $url = $this->resolveEndpoint("/addon-files/$addonFileId/download");
+
+        $response = $this->httpClient->get($url);
+
+        return $response->getBody();
+    }
 }
