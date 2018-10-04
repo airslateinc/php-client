@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Slate;
+use AirSlate\ApiClient\Entities\SlateLinks;
 use AirSlate\ApiClient\Entities\Slates\Document;
 use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Models\Slate\Create;
@@ -62,6 +63,22 @@ class SlatesService extends AbstractService
     public function templates(string $slateId): TemplatesService
     {
         return (new TemplatesService($this->httpClient))->setSlateId($slateId);
+    }
+
+    /**
+     * @param string $slateId
+     * @return SlateLinks
+     * @throws \Exception
+     */
+    public function links(string $slateId): SlateLinks
+    {
+        $url = $this->resolveEndpoint("/slates/$slateId/links");
+
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return SlateLinks::createFromOne($content);
     }
 
     /**
