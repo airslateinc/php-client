@@ -23,17 +23,14 @@ class TemplateDocument extends AbstractModel
         ];
         parent::__construct($data);
     }
-    
+
     /**
      * @return array
      */
     public function toArray(): array
     {
         return [
-            'data' => [
-                'type' => 'templates',
-                'relationships' => $this->data,
-            ]
+            'data' => $this->data
         ];
     }
 }
