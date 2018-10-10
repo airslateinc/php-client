@@ -6,6 +6,7 @@ namespace AirSlate\ApiClient\Services;
 use AirSlate\ApiClient\Entities\Document;
 use AirSlate\ApiClient\Entities\Template;
 use AirSlate\ApiClient\Models\Template\Create;
+use AirSlate\ApiClient\Models\Template\TemplateDocument;
 use AirSlate\ApiClient\Models\Template\Update;
 use GuzzleHttp\RequestOptions;
 
@@ -136,21 +137,16 @@ class TemplatesService extends AbstractService
     /**
      * @param string $slateId
      * @param string $templateId
-     * @param string $documentId
+     * @param TemplateDocument $document
      * @return Template
      * @throws \Exception
      */
-    public function addDocument(string $slateId, string $templateId, string $documentId): Template
+    public function addDocument(string $slateId, string $templateId, TemplateDocument $document): Template
     {
         $url = $this->resolveEndpoint('/slates/' . $slateId . '/templates/' . $templateId . '/documents');
 
         $response = $this->httpClient->post($url, [
-            RequestOptions::JSON => [
-                'data' => [
-                    'id' => $documentId,
-                    'type' => 'documents'
-                ]
-            ]
+            RequestOptions::JSON => $document->toArray(),
         ]);
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
