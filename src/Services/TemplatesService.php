@@ -115,7 +115,7 @@ class TemplatesService extends AbstractService
 
         return Template::createFromOne($content);
     }
-    
+
     /**
      * @param string $slateId
      * @param string $templateId
@@ -125,11 +125,36 @@ class TemplatesService extends AbstractService
     public function documents(string $slateId, string $templateId): array
     {
         $url = $this->resolveEndpoint('/slates/' . $slateId . '/templates/' . $templateId . '/documents');
-    
+
         $response = $this->httpClient->get($url);
-    
+
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
-    
+
         return Document::createFromCollection($content);
+    }
+
+    /**
+     * @param string $slateId
+     * @param string $templateId
+     * @param string $documentId
+     * @return Template
+     * @throws \Exception
+     */
+    public function addDocument(string $slateId, string $templateId, string $documentId): Template
+    {
+        $url = $this->resolveEndpoint('/slates/' . $slateId . '/templates/' . $templateId . '/documents');
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => [
+                'data' => [
+                    'id' => $documentId,
+                    'type' => 'documents'
+                ]
+            ]
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Template::createFromOne($content);
     }
 }
