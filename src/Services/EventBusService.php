@@ -148,10 +148,12 @@ class EventBusService extends AbstractService
 
         $this->addFilter('activities', $activities);
 
+        $url = $this->resolveEndpoint(self::PATH_PREFIX . self::ENDPOINT_METRICS_ACTIVE_USERS);
         $response = $this->httpClient->get(
-            \strtr(self::PATH_PREFIX . self::ENDPOINT_METRICS_ACTIVE_USERS, [
-                '{organizationId}' => $organizationId,
-            ])
+            \strtr(
+                $url,
+                ['{organizationId}' => $organizationId]
+            )
         );
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
