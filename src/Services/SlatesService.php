@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
+use AirSlate\ApiClient\Entities\Packet;
 use AirSlate\ApiClient\Entities\Slate;
 use AirSlate\ApiClient\Entities\SlateLinks;
 use AirSlate\ApiClient\Entities\Slates\Document;
@@ -97,6 +98,22 @@ class SlatesService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Slate::createFromOne($content);
+    }
+
+    /**
+     * @param string $slateId
+     * @return Packet
+     * @throws \Exception
+     */
+    public function fillPacket(string $slateId): Packet
+    {
+        $url = $this->resolveEndpoint('/slates/' . $slateId . '/fill-packet');
+
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Packet::createFromOne($content);
     }
 
     /**

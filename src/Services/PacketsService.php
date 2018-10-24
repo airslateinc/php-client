@@ -45,6 +45,22 @@ class PacketsService extends AbstractService
     }
 
     /**
+     * @param string $templateId
+     * @return Packet
+     * @throws \Exception
+     */
+    public function finish(string $templateId): Packet
+    {
+        $url = $this->resolveEndpoint('/slates/' . $this->slateId . '/packets/' . $templateId . '/finish');
+
+        $response = $this->httpClient->patch($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Packet::createFromOne($content);
+    }
+
+    /**
      * @return mixed
      */
     public function getSlateId()

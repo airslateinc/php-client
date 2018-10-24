@@ -217,23 +217,23 @@ class DocumentsService extends AbstractService
 
         return Document::createFromCollection($content);
     }
-    
+
     /**
      * @param string $documentId
      * @param UpdateFields $fields
-     * @return array
+     * @return Document
      * @throws \Exception
      */
-    public function updateFields(string $documentId, UpdateFields $fields): array
+    public function updateFields(string $documentId, UpdateFields $fields): Document
     {
         $url = $this->resolveEndpoint("/documents/$documentId/fields");
-        
+
         $response = $this->httpClient->patch($url, [
             RequestOptions::JSON => $fields->toArray()
         ]);
-    
+
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
-    
-        return Field::createFromCollection($content);
+
+        return Document::createFromOne($content);
     }
 }
