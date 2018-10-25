@@ -6,6 +6,7 @@ namespace AirSlate\ApiClient\Services;
 use AirSlate\ApiClient\Entities\Document;
 use AirSlate\ApiClient\Entities\Template;
 use AirSlate\ApiClient\Models\Template\Create;
+use AirSlate\ApiClient\Models\Template\TemplateDocument;
 use AirSlate\ApiClient\Models\Template\Update;
 use GuzzleHttp\RequestOptions;
 
@@ -115,7 +116,7 @@ class TemplatesService extends AbstractService
 
         return Template::createFromOne($content);
     }
-    
+
     /**
      * @param string $slateId
      * @param string $templateId
@@ -125,11 +126,31 @@ class TemplatesService extends AbstractService
     public function documents(string $slateId, string $templateId): array
     {
         $url = $this->resolveEndpoint('/slates/' . $slateId . '/templates/' . $templateId . '/documents');
-    
+
         $response = $this->httpClient->get($url);
-    
+
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
-    
+
         return Document::createFromCollection($content);
+    }
+
+    /**
+     * @param string $slateId
+     * @param string $templateId
+     * @param TemplateDocument $document
+     * @return Template
+     * @throws \Exception
+     */
+    public function addDocument(string $slateId, string $templateId, TemplateDocument $document): Template
+    {
+        $url = $this->resolveEndpoint('/slates/' . $slateId . '/templates/' . $templateId . '/documents');
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $document->toArray(),
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Template::createFromOne($content);
     }
 }
