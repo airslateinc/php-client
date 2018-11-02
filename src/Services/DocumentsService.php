@@ -5,8 +5,10 @@ namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Document as DocumentEntity;
 use AirSlate\ApiClient\Entities\Document;
+use AirSlate\ApiClient\Entities\DocumentAttachment;
 use AirSlate\ApiClient\Entities\Field;
 use AirSlate\ApiClient\Exceptions\DomainException;
+use AirSlate\ApiClient\Models\Document\AddAttachments;
 use AirSlate\ApiClient\Models\Document\Create as CreateModel;
 use AirSlate\ApiClient\Models\Document\Duplicate as DuplicateModel;
 use AirSlate\ApiClient\Models\Document\Export as ExportModel;
@@ -235,5 +237,18 @@ class DocumentsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
     
         return Field::createFromCollection($content);
+    }
+
+    public function addAttachments(string $documentId, AddAttachments $addAttachments)
+    {
+        $url = $this->resolveEndpoint("/documents/$documentId/attachments");
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $addAttachments->toArray()
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return DocumentAttachment::createFromCollection($content);
     }
 }
