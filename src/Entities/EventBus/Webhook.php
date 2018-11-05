@@ -18,7 +18,7 @@ class Webhook extends BaseEntity
     /**
      * @var string
      */
-    protected $type = 'message-bus-callback';
+    protected $type = 'applications-callback';
 
     /**
      * @return array

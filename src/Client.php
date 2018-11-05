@@ -213,6 +213,7 @@ class Client
     }
     
     /**
+     * @deprecated This service is going to be moved to separate client
      * @return EventBusService
      */
     public function eventBus(): EventBusService
