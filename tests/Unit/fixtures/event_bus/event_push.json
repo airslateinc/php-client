@@ -1,6 +1,6 @@
 {
   "data": {
-    "type": "message-bus-event",
+    "type": "applications-message-bus-event",
     "id": "a73185e87615fe065d5289ded510fd22",
     "attributes": {
       "routing_key": "test",
