@@ -47,14 +47,13 @@ class PacketsService extends AbstractService
     }
 
     /**
-     * @param string $slateId
      * @param string $packetId
      * @param string $email
      * @return User
      */
-    public function send(string $slateId, string $packetId, string $email): User
+    public function send(string $packetId, string $email): User
     {
-        $url = $this->resolveEndpoint("/slates/{$slateId}/packets/{$packetId}/send");
+        $url = $this->resolveEndpoint("/slates/{$this->slateId}/packets/{$packetId}/send");
 
         $payload = [
             'data' => [
