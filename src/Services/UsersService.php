@@ -105,44 +105,4 @@ class UsersService extends AbstractService
 
         return User::createFromCollection($content);
     }
-
-    /**
-     * @param string $email
-     * @return Token
-     * @throws \Exception
-     * @deprecated will be removed in new version
-     */
-    public function emailLogin(string $email): Token
-    {
-        $url = $this->resolveEndpoint('/auth/email-login');
-        $response = $this->httpClient->post($url, [
-            RequestOptions::JSON => [
-                'email' => $email
-            ]
-        ]);
-
-        $content = \GuzzleHttp\json_decode($response->getBody(), true);
-
-        return Token::createFromMeta($content);
-    }
-
-    /**
-     * @param string $email
-     * @return User
-     * @throws \Exception
-     * @deprecated you should use internal client for this
-     */
-    public function simplifiedRegister(string $email): User
-    {
-        $url = $this->resolveEndpoint('/auth/simplified-register');
-        $response = $this->httpClient->post($url, [
-            RequestOptions::JSON => [
-                'email' => $email
-            ]
-        ]);
-
-        $content = \GuzzleHttp\json_decode($response->getBody(), true);
-
-        return User::createFromOne($content);
-    }
 }
