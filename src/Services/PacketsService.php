@@ -49,9 +49,9 @@ class PacketsService extends AbstractService
     /**
      * @param string $packetId
      * @param string $email
-     * @return User
+     * @return void
      */
-    public function send(string $packetId, string $email): User
+    public function send(string $packetId, string $email): void
     {
         $url = $this->resolveEndpoint("/slates/{$this->slateId}/packets/{$packetId}/send");
 
@@ -63,13 +63,9 @@ class PacketsService extends AbstractService
                 ],
             ],
         ];
-        $response = $this->httpClient->patch($url, [
+        $this->httpClient->patch($url, [
             RequestOptions::JSON => $payload,
         ]);
-
-        $content = \GuzzleHttp\json_decode($response->getBody(), true);
-
-        return User::createFromOne($content);
     }
 
     /**
