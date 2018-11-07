@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Packet;
+use AirSlate\ApiClient\Entities\User;
+use GuzzleHttp\RequestOptions;
 
 /**
  * Class PacketsService
@@ -42,6 +44,33 @@ class PacketsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Packet::createFromOne($content);
+    }
+
+    /**
+     * @param string $slateId
+     * @param string $packetId
+     * @param string $email
+     * @return User
+     */
+    public function send(string $slateId, string $packetId, string $email): User
+    {
+        $url = $this->resolveEndpoint("/slates/{$slateId}/packets/{$packetId}/send");
+
+        $payload = [
+            'data' => [
+                'type' => 'users',
+                'attributes' => [
+                    'email' => $email,
+                ],
+            ],
+        ];
+        $response = $this->httpClient->patch($url, [
+            RequestOptions::JSON => $payload,
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return User::createFromOne($content);
     }
 
     /**
