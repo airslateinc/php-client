@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Organization;
+use AirSlate\ApiClient\Entities\OrganizationUser;
 use AirSlate\ApiClient\Entities\Token;
 use AirSlate\ApiClient\Entities\User;
 use GuzzleHttp\RequestOptions;
@@ -77,6 +78,23 @@ class UsersService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return User::createFromCollection($content);
+    }
+
+    /**
+     * Fetch organization users by organization id
+     *
+     * @param string $organizationId
+     * @return array
+     * @throws \Exception
+     */
+    public function organizationUsers(string $organizationId): array
+    {
+        $url = $this->resolveEndpoint('/organizations/' . $organizationId . '/organization-users');
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return OrganizationUser::createFromCollection($content);
     }
 
     /**
