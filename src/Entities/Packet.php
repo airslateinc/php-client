@@ -29,4 +29,13 @@ class Packet extends BaseEntity
     {
         return $this->hasMany(Document::class, 'documents');
     }
+
+    /**
+     * @return User
+     * @throws \Exception
+     */
+    public function getAuthor(): User
+    {
+        return $this->hasOne(User::class, 'authors');
+    }
 }
