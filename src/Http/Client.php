@@ -120,7 +120,9 @@ class Client extends \GuzzleHttp\Client
             $options[RequestOptions::QUERY]['filter'] = $this->filter;
         }
         if (null !== $this->queryParams) {
-            $options[RequestOptions::QUERY] = array_merge($options[RequestOptions::QUERY], $this->queryParams);
+            foreach ($this->queryParams as $param => $value) {
+                $options[RequestOptions::QUERY][$param] = $value;
+            }
         }
 
         return $options;
