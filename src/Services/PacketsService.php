@@ -72,7 +72,7 @@ class PacketsService extends AbstractService
      * @param string $email
      * @return void
      */
-    public function revokeSend(string $packetId, string $email): void
+    public function revokeSendAccess(string $packetId, string $email): void
     {
         $url = $this->resolveEndpoint("/slates/{$this->slateId}/packets/{$packetId}/send");
 
