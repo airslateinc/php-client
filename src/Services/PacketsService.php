@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Packet;
-use AirSlate\ApiClient\Entities\User;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -64,6 +63,28 @@ class PacketsService extends AbstractService
             ],
         ];
         $this->httpClient->patch($url, [
+            RequestOptions::JSON => $payload,
+        ]);
+    }
+
+    /**
+     * @param string $packetId
+     * @param string $email
+     * @return void
+     */
+    public function revokeSend(string $packetId, string $email): void
+    {
+        $url = $this->resolveEndpoint("/slates/{$this->slateId}/packets/{$packetId}/send");
+
+        $payload = [
+            'data' => [
+                'type' => 'users',
+                'attributes' => [
+                    'email' => $email,
+                ],
+            ],
+        ];
+        $this->httpClient->delete($url, [
             RequestOptions::JSON => $payload,
         ]);
     }
