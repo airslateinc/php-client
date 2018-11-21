@@ -3,14 +3,17 @@
 namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\EventBus\Event;
+use AirSlate\ApiClient\Entities\Organization;
 use AirSlate\ApiClient\Entities\Token;
 use AirSlate\ApiClient\Entities\EventBus\Webhook;
+use AirSlate\ApiClient\Entities\User;
 use AirSlate\ApiClient\Http\Client as HttpClient;
 use GuzzleHttp\RequestOptions;
 
 class EventBusService extends AbstractService
 {
-    const PATH_PREFIX = '/event-bus';
+    const PATH_EVENT_BUS_PREFIX = '/event-bus';
+    const PATH_APPLICATIONS_PREFIX = '/applications';
     const PATH_WEBHOOKS = '/webhooks';
     const PATH_EVENTS = '/events';
     const PATH_TOKEN = '/oauth/token';
@@ -27,7 +30,7 @@ class EventBusService extends AbstractService
         string $clientId,
         string $clientSecret
     ) {
-        $url = $this->resolveEndpoint(self::PATH_PREFIX . self::PATH_TOKEN);
+        $url = $this->resolveEndpoint(self::PATH_EVENT_BUS_PREFIX . self::PATH_TOKEN);
 
         $response = $this->httpClient->post($url, [
             RequestOptions::FORM_PARAMS => [
@@ -57,7 +60,7 @@ class EventBusService extends AbstractService
 
     public function pushEvent(Event $event): Event
     {
-        $url = $this->resolveEndpoint(self::PATH_PREFIX . self::PATH_EVENTS);
+        $url = $this->resolveEndpoint(self::PATH_EVENT_BUS_PREFIX . self::PATH_EVENTS);
 
         $response = $this->httpClient->post($url, [
             RequestOptions::JSON => $event->toArray(),
@@ -70,7 +73,7 @@ class EventBusService extends AbstractService
 
     public function createWebhook(Webhook $webhook): Webhook
     {
-        $url = $this->resolveEndpoint(self::PATH_PREFIX . self::PATH_WEBHOOKS);
+        $url = $this->resolveEndpoint(self::PATH_EVENT_BUS_PREFIX . self::PATH_WEBHOOKS);
 
         $response = $this->httpClient->post($url, [
             RequestOptions::JSON => $webhook->toArray(),
@@ -88,7 +91,7 @@ class EventBusService extends AbstractService
      */
     public function getWebhook(string $webhookId)
     {
-        $url = $this->resolveEndpoint(self::PATH_PREFIX . self::PATH_WEBHOOKS . '/' . $webhookId);
+        $url = $this->resolveEndpoint(self::PATH_EVENT_BUS_PREFIX . self::PATH_WEBHOOKS . '/' . $webhookId);
 
         $response = $this->httpClient->get($url);
 
@@ -103,7 +106,7 @@ class EventBusService extends AbstractService
      */
     public function getWebhooksCollection()
     {
-        $url = $this->resolveEndpoint(self::PATH_PREFIX . self::PATH_WEBHOOKS);
+        $url = $this->resolveEndpoint(self::PATH_EVENT_BUS_PREFIX . self::PATH_WEBHOOKS);
 
         $response = $this->httpClient->get($url);
 
@@ -118,7 +121,7 @@ class EventBusService extends AbstractService
      */
     public function deleteWebhook(string $webhookId): bool
     {
-        $url = $this->resolveEndpoint(self::PATH_PREFIX . self::PATH_WEBHOOKS . '/' . $webhookId);
+        $url = $this->resolveEndpoint(self::PATH_EVENT_BUS_PREFIX . self::PATH_WEBHOOKS . '/' . $webhookId);
 
         $response = $this->httpClient->delete($url);
 
@@ -148,7 +151,7 @@ class EventBusService extends AbstractService
 
         $this->addFilter('activities', $activities);
 
-        $url = $this->resolveEndpoint(self::PATH_PREFIX . self::ENDPOINT_METRICS_ACTIVE_USERS);
+        $url = $this->resolveEndpoint(self::PATH_EVENT_BUS_PREFIX . self::ENDPOINT_METRICS_ACTIVE_USERS);
         $response = $this->httpClient->get(
             \strtr(
                 $url,
@@ -158,5 +161,81 @@ class EventBusService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return $content['meta']['active_users'];
+    }
+
+    /**
+     * Get organization
+     *
+     * @param string $organizationId
+     * @return Organization
+     * @throws \Exception
+     */
+    public function getOrganization(string $organizationId): Organization
+    {
+        $url = $this->resolveEndpoint(self::PATH_APPLICATIONS_PREFIX . '/organizations/{organizationId}');
+        $response = $this->httpClient->get(
+            \strtr(
+                $url,
+                ['{organizationId}' => $organizationId]
+            )
+        );
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Organization::createFromOne($content);
+    }
+
+    /**
+     * Get organizations collection
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function getOrganizationsCollection(): array
+    {
+        $url = $this->resolveEndpoint(self::PATH_APPLICATIONS_PREFIX . '/organizations');
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Organization::createFromApiResponse($content);
+    }
+
+    /**
+     * Get user entity
+     *
+     * @param string $userId
+     * @return User
+     * @throws \Exception
+     */
+    public function getUser(string $userId): User
+    {
+        $url = $this->resolveEndpoint(self::PATH_APPLICATIONS_PREFIX . '/users/{userId}');
+        $response = $this->httpClient->get(
+            \strtr(
+                $url,
+                ['{userId}' => $userId]
+            )
+        );
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return User::createFromOne($content);
+    }
+
+    /**
+     * Get users collection
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function getUsersCollection(): array
+    {
+        $url = $this->resolveEndpoint(self::PATH_APPLICATIONS_PREFIX . '/users');
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return User::createFromApiResponse($content);
     }
 }

@@ -224,6 +224,20 @@ class BaseEntity implements JsonSerializable
 
     /**
      * @param array $jsonApi
+     * @return array
+     * @throws \Exception
+     */
+    public static function createFromApiResponse(array $jsonApi): array
+    {
+        if (empty($jsonApi)) {
+            return [];
+        }
+
+        return array_map('static::createFromOne', $jsonApi);
+    }
+
+    /**
+     * @param array $jsonApi
      * @return static
      */
     public static function createFromMeta(array $jsonApi)
