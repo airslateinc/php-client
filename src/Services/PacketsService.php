@@ -62,7 +62,7 @@ class PacketsService extends AbstractService
                 ],
             ],
         ];
-        $this->httpClient->patch($url, [
+        $this->httpClient->post($url, [
             RequestOptions::JSON => $payload,
         ]);
     }
