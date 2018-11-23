@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
-use AirSlate\ApiClient\Entities\Document as DocumentEntity;
 use AirSlate\ApiClient\Entities\Document;
 use AirSlate\ApiClient\Entities\DocumentAttachment;
 use AirSlate\ApiClient\Entities\Field;
@@ -26,10 +25,10 @@ class DocumentsService extends AbstractService
      * Create document
      *
      * @param CreateModel $document
-     * @return DocumentEntity
+     * @return Document
      * @throws \Exception
      */
-    public function create(CreateModel $document)
+    public function create(CreateModel $document): Document
     {
         $url = $this->resolveEndpoint('/documents');
 
@@ -37,14 +36,15 @@ class DocumentsService extends AbstractService
             RequestOptions::JSON => $document->toArray(),
         ]);
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
-        return DocumentEntity::createFromOne($content);
+
+        return Document::createFromOne($content);
     }
 
     /**
      * Duplicate documents
      *
      * @param DuplicateModel $document
-     * @return DocumentEntity[]
+     * @return Document[]|array
      * @throws \Exception
      */
     public function duplicate(DuplicateModel $document): array
@@ -57,7 +57,7 @@ class DocumentsService extends AbstractService
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
-        return DocumentEntity::createFromCollection($content);
+        return Document::createFromCollection($content);
     }
 
     /**
@@ -219,24 +219,24 @@ class DocumentsService extends AbstractService
 
         return Document::createFromCollection($content);
     }
-    
+
     /**
      * @param string $documentId
      * @param UpdateFields $fields
-     * @return array
+     * @return Document
      * @throws \Exception
      */
-    public function updateFields(string $documentId, UpdateFields $fields): array
+    public function updateFields(string $documentId, UpdateFields $fields): Document
     {
         $url = $this->resolveEndpoint("/documents/$documentId/fields");
-        
+
         $response = $this->httpClient->patch($url, [
             RequestOptions::JSON => $fields->toArray()
         ]);
-    
+
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
-    
-        return Field::createFromCollection($content);
+
+        return Document::createFromOne($content);
     }
 
     public function addAttachments(string $documentId, AddAttachments $addAttachments)
