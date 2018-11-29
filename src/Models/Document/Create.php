@@ -49,6 +49,11 @@ class Create extends AbstractModel
     private $visiblePagesCount = 0;
 
     /**
+     * @var string
+     */
+    private $type = 'PDF';
+
+    /**
      * @param string $name
      * @param array $arguments
      * @return $this
@@ -78,6 +83,7 @@ class Create extends AbstractModel
                 'type' => 'documents',
                 'attributes' => [
                     'name' => $this->name,
+                    'type' => $this->type,
                 ],
                 'meta' => [
                     'num_pages' => $this->pagesCount,
@@ -117,6 +123,17 @@ class Create extends AbstractModel
     public function setVisiblePagesCount(int $pagesCount): Create
     {
         $this->visiblePagesCount = $pagesCount;
+
+        return $this;
+    }
+
+    /**
+     * @param string $type
+     * @return Create
+     */
+    public function setType(string $type): Create
+    {
+        $this->type = $type;
 
         return $this;
     }

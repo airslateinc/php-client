@@ -9,6 +9,7 @@ use AirSlate\ApiClient\Entities\SlateLinks;
 use AirSlate\ApiClient\Entities\Slates\Document;
 use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Models\Slate\Create;
+use AirSlate\ApiClient\Models\Slate\Update;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -107,6 +108,25 @@ class SlatesService extends AbstractService
         $url = $this->resolveEndpoint('/slates');
 
         $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $slate->toArray(),
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Slate::createFromOne($content);
+    }
+
+    /**
+     * @param string $slateId
+     * @param Update $slate
+     * @return Slate
+     * @throws \Exception
+     */
+    public function update(string $slateId, Update $slate): Slate
+    {
+        $url = $this->resolveEndpoint("/slates/{$slateId}");
+
+        $response = $this->httpClient->patch($url, [
             RequestOptions::JSON => $slate->toArray(),
         ]);
 
