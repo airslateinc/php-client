@@ -8,6 +8,7 @@ namespace AirSlate\ApiClient\Entities;
  *
  * @property string $id
  * @property string $email
+ * @property string $username
  * @property string $first_name
  * @property string $last_name
  * @property string $created_at

@@ -134,6 +134,7 @@ Example:
 $client->users()
     ->addFilter('id', ['E924D100-0000-0000-00009BC6', 'A783E100-0000-0000-00009BC6'])
     ->addFilter('email', 'blakov.oleksandr@pdffiller.team')
+    ->addFilter('username', 'blakov')
     ->all('BA0C8100-0000-0000-0000D981');
 ```
 
