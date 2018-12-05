@@ -6,6 +6,7 @@ namespace AirSlate\ApiClient\Services;
 use AirSlate\ApiClient\Entities\Slate;
 use AirSlate\ApiClient\Entities\SlateInvite;
 use AirSlate\ApiClient\Entities\SlateLinks;
+use AirSlate\ApiClient\Entities\Slates\Collaborator;
 use AirSlate\ApiClient\Entities\Slates\Document;
 use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Models\Slate\Create;
@@ -70,6 +71,7 @@ class SlatesService extends AbstractService
     /**
      * @param string $slateId
      * @return array|SlateInvite[]
+     * @throws \Exception
      */
     public function invites(string $slateId): array
     {
@@ -80,6 +82,22 @@ class SlatesService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return SlateInvite::createFromCollection($content);
+    }
+
+    /**
+     * @param string $slateId
+     * @return array
+     * @throws \Exception
+     */
+    public function collaborators(string $slateId): array
+    {
+        $url = $this->resolveEndpoint("/slates/$slateId/collaborators");
+
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Collaborator::createFromCollection($content);
     }
 
     /**
