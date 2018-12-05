@@ -5,8 +5,8 @@ namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Organization;
 use AirSlate\ApiClient\Entities\OrganizationUser;
-use AirSlate\ApiClient\Entities\Token;
 use AirSlate\ApiClient\Entities\User;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -122,5 +122,22 @@ class UsersService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return User::createFromCollection($content);
+    }
+
+    /**
+     * Check whether the user exists
+     * @throws \Exception
+     */
+    public function exists(): bool
+    {
+        $url = $this->resolveEndpoint('/users/exists');
+
+        try {
+            $response = $this->httpClient->get($url);
+        } catch (ClientException $e) {
+            return false;
+        }
+
+        return $response && $response->getStatusCode() === 204;
     }
 }
