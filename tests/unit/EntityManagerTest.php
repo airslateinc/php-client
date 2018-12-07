@@ -229,7 +229,7 @@ class EntityManagerTest extends TestCase
             ->with(
                 Request::METHOD_POST,
                 $expectedEndpoint,
-                ['headers' => $params['headerParams'], 'body'=> $expectedBody]
+                ['headers' => $params['headerParams'], 'body'=> $expectedBody, 'query' => []]
             )
             ->willReturn($this->promise);
     
@@ -301,7 +301,7 @@ class EntityManagerTest extends TestCase
             ->with(
                 Request::METHOD_PATCH,
                 $expectedEndpoint,
-                ['headers' => $params['headerParams'], 'body'=> $expectedBody]
+                ['headers' => $params['headerParams'], 'body'=> $expectedBody, 'query' => []]
             )
             ->willReturn($this->promise);
     
@@ -362,7 +362,7 @@ class EntityManagerTest extends TestCase
             ->with(
                 Request::METHOD_DELETE,
                 'slates/E3D0D900-0000-0000-0000BA29',
-                ['headers' => ['Content-Type' => 'application/json']]
+                ['headers' => ['Content-Type' => 'application/json'], 'query' => []]
             )
             ->willReturn($this->promise);
     
