@@ -3,15 +3,16 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient;
 
+use AirSlate\ApiClient\Contracts\RequestCollectionInterface;
 use AirSlate\ApiClient\Entity\Errors;
 use AirSlate\ApiClient\EntityManager\Annotation\Resolver;
 use AirSlate\ApiClient\EntityManager\Exception\UnprocessableEntityException;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use GuzzleHttp\ClientInterface;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class EntityManager
@@ -43,22 +44,64 @@ class EntityManager
      * @var string
      */
     protected $updateHttpMethod = Request::METHOD_PATCH;
-
+    
+    /**
+     * @var RequestCollectionInterface
+     */
+    protected $requestCollection;
+    
     /**
      * EntityManager constructor.
+     *
      * @param ClientInterface $client
      * @param SerializerInterface $serializer
      * @param Resolver $annotationResolver
+     * @param RequestCollectionInterface $requestCollection
      */
     public function __construct(
         ClientInterface $client,
         SerializerInterface $serializer,
-        Resolver $annotationResolver
+        Resolver $annotationResolver,
+        RequestCollectionInterface $requestCollection = null
     )
     {
         $this->client = $client;
         $this->serializer = $serializer;
         $this->annotationResolver = $annotationResolver;
+        $this->requestCollection = $requestCollection;
+    }
+    
+    /**
+     *
+     */
+    public function openPool()
+    {
+        if (!$this->requestCollection) {
+            throw new \LogicException('Pool service doesn\'t exists');
+        }
+    
+        $this->requestCollection->open();
+    }
+    
+    /**
+     * @return array
+     * @throws UnprocessableEntityException
+     * @throws \ReflectionException
+     */
+    public function sendPool()
+    {
+        if (!$this->requestCollection) {
+            throw new \LogicException('Pool service doesn\'t exists');
+        }
+        
+        $this->requestCollection->send($this->client);
+        
+        $results = [];
+        foreach ($this->requestCollection->getResponses() as $index => $response) {
+            $results[$index] = $this->deserialize($response, $this->requestCollection->getEntityType($index));
+        }
+        
+        return $results;
     }
     
     /**
@@ -68,6 +111,8 @@ class EntityManager
      * @param array $headerParams
      *
      * @return EntityManager|object
+     *
+     * @throws UnprocessableEntityException
      * @throws \ReflectionException
      */
     public function get(string $entityType, array $uriParams = [], array $queryParams = [], array $headerParams = [])
@@ -89,7 +134,9 @@ class EntityManager
      * @param array $queryParams
      * @param array $headerParams
      *
-     * @return array|\JMS\Serializer\mixed|object
+     * @return object
+     *
+     * @throws UnprocessableEntityException
      * @throws \ReflectionException
      */
     public function create($entity, array $uriParams = [], array $queryParams = [], array $headerParams = [])
@@ -121,7 +168,9 @@ class EntityManager
      * @param array $queryParams
      * @param array $headerParams
      *
-     * @return array|\JMS\Serializer\mixed|object
+     * @return object
+     *
+     * @throws UnprocessableEntityException
      * @throws \ReflectionException
      */
     public function update($entity, $uriParams = [], $queryParams = [], array $headerParams = [])
@@ -153,7 +202,9 @@ class EntityManager
      * @param array $queryParams
      * @param array $headerParams
      *
-     * @return array|\JMS\Serializer\mixed|object
+     * @return object
+     *
+     * @throws UnprocessableEntityException
      * @throws \ReflectionException
      */
     public function delete($entity, $uriParams = array(), $queryParams = array(), array $headerParams = [])
@@ -224,22 +275,29 @@ class EntityManager
      * @param \Closure $requestClosure
      * @param $type
      *
-     * @return array|\JMS\Serializer\mixed|object
+     * @return mixed
+     * @throws UnprocessableEntityException
      * @throws \ReflectionException
      */
     protected function sendAndDeserialize(\Closure $requestClosure, $type)
     {
-        /** @var ResponseInterface $response */
-        $response = $requestClosure()->wait();
-
-        return $this->deserialize($response, $type);
+        if (!($this->requestCollection && $this->requestCollection->isOpen())) {
+            /** @var ResponseInterface $response */
+            $response = $requestClosure()->wait();
+            
+            return $this->deserialize($response, $type);
+        }
+    
+        $this->requestCollection->addRequest($requestClosure, $type);
     }
     
     /**
      * @param ResponseInterface $response
      * @param $type
      *
-     * @return array|\JMS\Serializer\mixed|object
+     * @return object
+     *
+     * @throws UnprocessableEntityException
      * @throws \ReflectionException
      */
     protected function deserialize(ResponseInterface $response, $type)
