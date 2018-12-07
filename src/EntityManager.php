@@ -74,7 +74,7 @@ class EntityManager
     /**
      *
      */
-    public function beginTransaction()
+    public function openPool()
     {
         if (!$this->requestCollection) {
             throw new \LogicException('Pool service doesn\'t exists');
@@ -88,7 +88,7 @@ class EntityManager
      * @throws UnprocessableEntityException
      * @throws \ReflectionException
      */
-    public function commit()
+    public function sendPool()
     {
         if (!$this->requestCollection) {
             throw new \LogicException('Pool service doesn\'t exists');
