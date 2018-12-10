@@ -11,28 +11,12 @@ use AirSlate\ApiClient\Entities\Document;
  */
 class Update extends Create
 {
-    /**
-     * @var string
-     */
-    public $documentId;
-
-    public function __construct(Document $document, $data)
+    public static function createFromDocument(Document $document, array $data = []): Create
     {
-        $this->setName($document->getAttribute('name'));
-        $this->setPagesCount($document->getObjectMetaAttribute('num_pages'));
-        $this->setPagesCount($document->getObjectMetaAttribute('num_visible_pages'));
-        $this->setDocumentId($document->id);
-
-        parent::__construct($data);
-    }
-
-    /**
-     * @param string $documentId
-     * @return $this
-     */
-    public function setDocumentId(string $documentId)
-    {
-        $this->documentId = $documentId;
-        return $this;
+        $model = new static($data);
+        $model->setName($document->getAttribute('name'));
+        $model->setPagesCount($document->getObjectMetaAttribute('num_pages'));
+        $model->setPagesCount($document->getObjectMetaAttribute('num_visible_pages'));
+        return $model;
     }
 }
