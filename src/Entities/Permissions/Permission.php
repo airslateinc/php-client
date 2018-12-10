@@ -1,12 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace AirSlate\ApiClient\Entities;
+namespace AirSlate\ApiClient\Entities\Permissions;
+
+use AirSlate\ApiClient\Entities\BaseEntity;
 
 /**
  * Class Permission
  *
- * @package AirSlate\ApiClient\Entities
+ * @package AirSlate\ApiClient\Entities\Permissions
  *
  * @property string $id
  * @property string $code

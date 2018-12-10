@@ -3,10 +3,11 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
-use AirSlate\ApiClient\Entities\Permission;
+use AirSlate\ApiClient\Entities\Permissions\Permission;
 
 /**
  * Class PermissionsService
+ *
  * @package AirSlate\ApiClient\Services
  */
 class PermissionsService extends AbstractService
@@ -15,18 +16,18 @@ class PermissionsService extends AbstractService
      * get all permissions available for current user
      *
      * @param array $permissionCodes filter permissions
-     * @return Permission[]
+     *
+     * @return \AirSlate\ApiClient\Entities\Permissions\Permission[]
+     *
      * @throws \Exception
      */
     public function userPermissions(array $permissionCodes = null): array
     {
-        $url = $this->resolveEndpoint('/user-permissions');
-
         if ($permissionCodes !== null) {
-            $url .= '?' . http_build_query(['filter[permission]' => join(',', $permissionCodes)]);
+            $this->addFilter('permission', $permissionCodes);
         }
 
-        $response = $this->httpClient->get($url);
+        $response = $this->httpClient->get($this->resolveEndpoint('/user-permissions'));
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
@@ -37,7 +38,9 @@ class PermissionsService extends AbstractService
      * check user permission
      *
      * @param string $permissionCode
+     *
      * @return bool
+     *
      * @throws \Exception
      */
     public function checkPermission(string $permissionCode): bool
@@ -49,7 +52,9 @@ class PermissionsService extends AbstractService
      * check any user permission
      *
      * @param array $permissionCodes
+     *
      * @return bool
+     *
      * @throws \Exception
      */
     public function checkPermissions(array $permissionCodes): bool
