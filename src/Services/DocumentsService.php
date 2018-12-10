@@ -9,6 +9,7 @@ use AirSlate\ApiClient\Entities\Field;
 use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Models\Document\AddAttachments;
 use AirSlate\ApiClient\Models\Document\Create as CreateModel;
+use AirSlate\ApiClient\Models\Document\Update as UpdateModel;
 use AirSlate\ApiClient\Models\Document\Duplicate as DuplicateModel;
 use AirSlate\ApiClient\Models\Document\Export as ExportModel;
 use AirSlate\ApiClient\Models\Document\UpdateFields;
@@ -38,6 +39,24 @@ class DocumentsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Document::createFromOne($content);
+    }
+
+    /**
+     * Update document
+     *
+     * @param UpdateModel $document
+     * @return DocumentEntity
+     * @throws \Exception
+     */
+    public function update(UpdateModel $document)
+    {
+        $url = $this->resolveEndpoint('/documents/' . $document->documentId);
+
+        $response = $this->httpClient->patch($url, [
+            RequestOptions::JSON => $document->toArray(),
+        ]);
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+        return DocumentEntity::createFromOne($content);
     }
 
     /**
