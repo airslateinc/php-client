@@ -12,9 +12,9 @@ use AirSlate\ApiClient\Entities\Document;
 class Update extends Create
 {
     /**
-     * @var
+     * @var string
      */
-    public $id;
+    public $id = '';
 
     /**
      * @param Document $document
