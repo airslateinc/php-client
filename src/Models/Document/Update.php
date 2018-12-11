@@ -11,8 +11,16 @@ use AirSlate\ApiClient\Entities\Document;
  */
 class Update extends Create
 {
+    /**
+     * @var
+     */
     public $id;
 
+    /**
+     * @param Document $document
+     * @param array $data
+     * @return Update
+     */
     public static function createFromDocument(Document $document, array $data = []): Update
     {
         $model = new static($data);
