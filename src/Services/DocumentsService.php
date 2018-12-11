@@ -41,7 +41,6 @@ class DocumentsService extends AbstractService
         return Document::createFromOne($content);
     }
 
-
     /**
      * Update document
      *
@@ -49,9 +48,9 @@ class DocumentsService extends AbstractService
      * @return DocumentEntity
      * @throws \Exception
      */
-    public function update(string $documentId, UpdateModel $document)
+    public function update(UpdateModel $document)
     {
-        $url = $this->resolveEndpoint("/documents/$documentId");
+        $url = $this->resolveEndpoint("/documents/$document->id");
 
         $response = $this->httpClient->patch($url, [
             RequestOptions::JSON => $document->toArray(),
