@@ -48,7 +48,7 @@ class DocumentsService extends AbstractService
      * @return DocumentEntity
      * @throws \Exception
      */
-    public function update(UpdateModel $document)
+    public function update(UpdateModel $document) : Document
     {
         $url = $this->resolveEndpoint("/documents/$document->id");
 
