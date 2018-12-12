@@ -45,7 +45,7 @@ class DocumentsService extends AbstractService
      * Update document
      *
      * @param UpdateModel $document
-     * @return DocumentEntity
+     * @return Document
      * @throws \Exception
      */
     public function update(UpdateModel $document) : Document
@@ -56,7 +56,7 @@ class DocumentsService extends AbstractService
             RequestOptions::JSON => $document->toArray(),
         ]);
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
-        return DocumentEntity::createFromOne($content);
+        return Document::createFromOne($content);
     }
 
     /**
