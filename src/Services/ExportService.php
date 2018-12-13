@@ -24,8 +24,7 @@ class ExportService extends AbstractService
      */
     public function create(Create $export): array
     {
-        // FIXME: change route to /export in future
-        $url = $this->resolveEndpoint('/document-export');
+        $url = $this->resolveEndpoint('/export');
 
         try {
             $response = $this->httpClient->post($url, [
@@ -49,8 +48,7 @@ class ExportService extends AbstractService
      */
     public function get(string $exportId): array
     {
-        // FIXME: change route to /export in future
-        $url = $this->resolveEndpoint("/document-export/$exportId");
+        $url = $this->resolveEndpoint("/export/$exportId");
 
         try {
             $response = $this->httpClient->get($url);
