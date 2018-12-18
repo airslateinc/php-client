@@ -35,15 +35,40 @@ class Create extends AbstractModel
     public function addDocument(string $id, array $pages = null): self
     {
         $document = [
-            'data' => [
-                'id' => $id,
-                'type' => 'documents',
-            ],
+            'id' => $id,
+            'type' => 'documents',
         ];
         if (!is_null($pages)) {
             $document['meta']['pages'] = $pages;
         }
-        $this->data['relationships']['documents'][] = $document;
+        $this->data['relationships']['documents']['data'][] = $document;
+        return $this;
+    }
+
+    public function setPacket(string $id): self
+    {
+        $this->data['relationships']['packet']['data'] = [
+            'type' => 'packets',
+            'id' => $id,
+        ];
+        return $this;
+    }
+
+    public function setRevision(string $id): self
+    {
+        $this->data['relationships']['packet_revision']['data'] = [
+            'type' => 'packet_revisions',
+            'id' => $id,
+        ];
+        return $this;
+    }
+
+    public function setSlate(string $id): self
+    {
+        $this->data['relationships']['slate']['data'] = [
+            'type' => 'slates',
+            'id' => $id,
+        ];
         return $this;
     }
 
