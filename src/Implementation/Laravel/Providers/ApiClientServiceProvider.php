@@ -2,13 +2,14 @@
 
 namespace AirSlate\ApiClient\Implementation\Laravel\Providers;
 
-use AirSlate\ApiClient\EntityManager;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Illuminate\Config\Repository;
 use Illuminate\Support\ServiceProvider;
 use GuzzleHttp\Client;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
+use SignNow\Rest\EntityManager;
+use SignNow\Rest\EntityManager\Annotation\Resolver;
 
 /**
  * Class ApiClientServiceProvider
@@ -56,8 +57,8 @@ class ApiClientServiceProvider extends ServiceProvider
             ]);
         });
 
-        $this->app->singleton(EntityManager\Annotation\Resolver::class, function ($app) {
-            return new EntityManager\Annotation\Resolver(
+        $this->app->singleton(Resolver::class, function ($app) {
+            return new Resolver(
                 new AnnotationReader()
             );
         });
