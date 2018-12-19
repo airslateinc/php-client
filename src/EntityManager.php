@@ -3,10 +3,11 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient;
 
-use AirSlate\ApiClient\Contracts\RequestCollectionInterface;
 use AirSlate\ApiClient\Entity\Errors;
 use AirSlate\ApiClient\EntityManager\Annotation\Resolver;
 use AirSlate\ApiClient\EntityManager\Exception\UnprocessableEntityException;
+use AirSlate\ApiClient\Service\Request\Pool\Item;
+use AirSlate\ApiClient\Service\Request\PoolInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use GuzzleHttp\ClientInterface;
@@ -46,9 +47,14 @@ class EntityManager
     protected $updateHttpMethod = Request::METHOD_PATCH;
     
     /**
-     * @var RequestCollectionInterface
+     * @var PoolInterface
      */
-    protected $requestCollection;
+    protected $requestPool;
+
+    /**
+     * @var bool
+     */
+    protected $isRequestPoolOpened = false;
     
     /**
      * EntityManager constructor.
@@ -56,49 +62,55 @@ class EntityManager
      * @param ClientInterface $client
      * @param SerializerInterface $serializer
      * @param Resolver $annotationResolver
-     * @param RequestCollectionInterface $requestCollection
+     * @param PoolInterface $requestPool
      */
     public function __construct(
         ClientInterface $client,
         SerializerInterface $serializer,
         Resolver $annotationResolver,
-        RequestCollectionInterface $requestCollection = null
+        PoolInterface $requestPool = null
     )
     {
         $this->client = $client;
         $this->serializer = $serializer;
         $this->annotationResolver = $annotationResolver;
-        $this->requestCollection = $requestCollection;
+        $this->requestPool = $requestPool;
     }
     
     /**
      *
      */
-    public function openPool()
+    public function openRequestPool()
     {
-        if (!$this->requestCollection) {
+        if (!$this->requestPool) {
             throw new \LogicException('Pool service doesn\'t exists');
         }
     
-        $this->requestCollection->open();
+        $this->isRequestPoolOpened = true;
     }
     
     /**
+     * @param integer $concurencyLimit maximum number of parallel calls
      * @return array
      * @throws UnprocessableEntityException
      * @throws \ReflectionException
      */
-    public function sendPool()
+    public function sendRequestPool(int $concurencyLimit = 5)
     {
-        if (!$this->requestCollection) {
-            throw new \LogicException('Pool service doesn\'t exists');
+        if ($this->requestPool == false || $this->isRequestPoolOpened === false) {
+            throw new \LogicException('Request pool service doesn\'t exists or empty');
         }
         
-        $this->requestCollection->send($this->client);
+        $this->requestPool->send($concurencyLimit);
+        $this->isRequestPoolOpened = false;
         
         $results = [];
-        foreach ($this->requestCollection->getResponses() as $index => $response) {
-            $results[$index] = $this->deserialize($response, $this->requestCollection->getEntityType($index));
+        /**
+         * @var int $index
+         * @var Item $item
+         */
+        foreach ($this->requestPool->getItems() as $index => $item) {
+            $results[$index] = $this->deserialize($item->getResponse(), $item->getSerrializationType());
         }
         
         return $results;
@@ -281,14 +293,17 @@ class EntityManager
      */
     protected function sendAndDeserialize(\Closure $requestClosure, $type)
     {
-        if (!($this->requestCollection && $this->requestCollection->isOpen())) {
+        if ($this->requestPool && $this->isRequestPoolOpened) {
+            $poolItem = new Item();
+            $poolItem->setClosure($requestClosure)
+                ->setSerrializationType($type);
+            $this->requestPool->add($poolItem);
+        } else {
             /** @var ResponseInterface $response */
             $response = $requestClosure()->wait();
-            
+
             return $this->deserialize($response, $type);
         }
-    
-        $this->requestCollection->addRequest($requestClosure, $type);
     }
     
     /**
@@ -304,7 +319,7 @@ class EntityManager
     {
         /**
          * @todo: think about moving it to other service which will be responsible for exceptions
-         * Current implementation only as example how we could store errors response
+         * Current implementation only as example how we could deal with errors
          */
         if ($response->getStatusCode() === Response::HTTP_UNPROCESSABLE_ENTITY) {
             $response = $this->serializer
