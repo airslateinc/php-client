@@ -9,6 +9,7 @@ use AirSlate\ApiClient\Services\DocumentsService;
 use AirSlate\ApiClient\Services\EventBusService;
 use AirSlate\ApiClient\Services\ExportService;
 use AirSlate\ApiClient\Services\FilesService;
+use AirSlate\ApiClient\Services\PermissionsService;
 use AirSlate\ApiClient\Services\SlatesService;
 use AirSlate\ApiClient\Services\UsersService;
 
@@ -57,6 +58,10 @@ class Client
      * @var EventBusService
      */
     private $eventBusService;
+    /**
+     * @var PermissionsService
+     */
+    private $permissionsService;
 
     /**
      * Client constructor.
@@ -223,5 +228,17 @@ class Client
         }
 
         return $this->eventBusService;
+    }
+
+    /**
+     * @return PermissionsService
+     */
+    public function permissions(): PermissionsService
+    {
+        if (!$this->permissionsService) {
+            $this->permissionsService = new PermissionsService($this->httpClient);
+        }
+
+        return $this->permissionsService;
     }
 }
