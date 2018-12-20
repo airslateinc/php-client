@@ -5,7 +5,7 @@ namespace AirSlate\ApiClient\Entity;
 
 use AirSlate\ApiClient\Entity\Slate\SlateData;
 use JMS\Serializer\Annotation as Serializer;
-use AirSlate\ApiClient\EntityManager\Annotation\HttpEntity;
+use SignNow\Rest\EntityManager\Annotation\HttpEntity;
 
 /**
  * Class Slate
@@ -17,7 +17,7 @@ use AirSlate\ApiClient\EntityManager\Annotation\HttpEntity;
 class Slate extends BaseEntity
 {
     /**
-     * @var array
+     * @var SlateData
      *
      * @Serializer\Expose()
      * @Serializer\Type("AirSlate\ApiClient\Entity\Slate\SlateData")

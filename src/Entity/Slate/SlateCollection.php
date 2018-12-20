@@ -5,7 +5,7 @@ namespace AirSlate\ApiClient\Entity\Slate;
 
 use AirSlate\ApiClient\Entity\BaseCollection;
 use JMS\Serializer\Annotation as Serializer;
-use AirSlate\ApiClient\EntityManager\Annotation\HttpEntity;
+use SignNow\Rest\EntityManager\Annotation\HttpEntity;
 
 /**
  * Class SlateCollection
