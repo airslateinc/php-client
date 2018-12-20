@@ -19,7 +19,7 @@ class ExportTest extends TestCase
         $docId = "F67D2000-0000-0000-000021F6";
         $exportDto = (new Create())->addDocument($docId);
         $array = $exportDto->toArray();
-        $this->assertEquals($docId, $array['data']['relationships']['documents'][0]['data']['id']);
+        $this->assertEquals($docId, $array['data']['relationships']['documents']['data'][0]['id']);
     }
 
     public function testServiceCreate()
