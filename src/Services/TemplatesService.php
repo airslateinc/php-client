@@ -153,4 +153,19 @@ class TemplatesService extends AbstractService
 
         return Template::createFromOne($content);
     }
+
+    /**
+     * @param string $slateId
+     * @param string $templateId
+     * @param string $documentId
+     * @return bool
+     */
+    public function deleteDocument(string $slateId, string $templateId, string $documentId)
+    {
+        $url = $this->resolveEndpoint('/slates/' . $slateId . '/templates/' .
+            $templateId . '/documents/' . $documentId);
+        $response = $this->httpClient->delete($url);
+
+        return $response && $response->getStatusCode() === 204;
+    }
 }

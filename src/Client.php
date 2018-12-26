@@ -20,12 +20,6 @@ use AirSlate\ApiClient\Services\UsersService;
 class Client
 {
     /**
-     * Client instances.
-     * @var Client[]
-     */
-    static private $instances;
-
-    /**
      * @var HttpClient
      */
     private $httpClient;
@@ -63,6 +57,12 @@ class Client
      */
     private $permissionsService;
 
+    /**
+     * Client instances.
+     * @var Client[]
+     */
+    private static $instances;
+    
     /**
      * Client constructor.
      * @param string $baseUri
