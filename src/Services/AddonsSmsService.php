@@ -25,6 +25,7 @@ class AddonsSmsService extends AbstractService
                 ],
             ],
         ];
+
         $this->httpClient->post($url, [
             RequestOptions::JSON => $payload,
         ]);
