@@ -2,7 +2,10 @@
 
 namespace AirSlate\ApiClient\Services;
 
+use AirSlate\ApiClient\Entities\Packets\RevisionDocument;
 use AirSlate\ApiClient\Entities\Packets\RevisionLinks;
+use AirSlate\ApiClient\Models\RevisionDocument\BulkUpdate;
+use GuzzleHttp\RequestOptions;
 
 class RevisionsService extends AbstractService
 {
@@ -28,6 +31,32 @@ class RevisionsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return RevisionLinks::createFromOne($content);
+    }
+
+    public function getDocuments(string $revisionId)
+    {
+        $url = $this->resolveEndpoint(
+            '/slates/' . $this->slateId . '/packets/' . $this->packetId . '/revisions/' . $revisionId . '/documents'
+        );
+
+        $response = $this->httpClient->get($url);
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return RevisionDocument::createFromCollection($content);
+    }
+
+    public function updateDocuments(string $revisionId, BulkUpdate $revisionDocuments)
+    {
+        $url = $this->resolveEndpoint(
+            '/slates/' . $this->slateId . '/packets/' . $this->packetId . '/revisions/' . $revisionId . '/documents'
+        );
+
+        $response = $this->httpClient->patch($url, [
+            RequestOptions::JSON => $revisionDocuments->toArray(),
+        ]);
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return RevisionDocument::createFromCollection($content);
     }
 
     /**
