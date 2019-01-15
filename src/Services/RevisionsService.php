@@ -36,7 +36,7 @@ class RevisionsService extends AbstractService
     public function getDocuments(string $revisionId)
     {
         $url = $this->resolveEndpoint(
-            '/slates/' . $this->slateId . '/packets/' . $this->packetId . '/revisions/' . $revisionId . '/documents'
+            '/flows/' . $this->slateId . '/packets/' . $this->packetId . '/revisions/' . $revisionId . '/documents'
         );
 
         $response = $this->httpClient->get($url);
@@ -48,7 +48,7 @@ class RevisionsService extends AbstractService
     public function updateDocuments(string $revisionId, BulkUpdate $revisionDocuments)
     {
         $url = $this->resolveEndpoint(
-            '/slates/' . $this->slateId . '/packets/' . $this->packetId . '/revisions/' . $revisionId . '/documents'
+            '/flows/' . $this->slateId . '/packets/' . $this->packetId . '/revisions/' . $revisionId . '/documents'
         );
 
         $response = $this->httpClient->patch($url, [

@@ -10,6 +10,7 @@ use AirSlate\ApiClient\Entities\Document;
  * Class RevisionDocument
  * @package AirSlate\ApiClient\Entities\Packets
  *
+ * @property string $id
  * @property bool $hidden
  * @property string $created_at
  * @property string $updated_at

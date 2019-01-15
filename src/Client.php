@@ -10,6 +10,7 @@ use AirSlate\ApiClient\Services\EventBusService;
 use AirSlate\ApiClient\Services\ExportService;
 use AirSlate\ApiClient\Services\FilesService;
 use AirSlate\ApiClient\Services\PermissionsService;
+use AirSlate\ApiClient\Services\RevisionsService;
 use AirSlate\ApiClient\Services\SlatesService;
 use AirSlate\ApiClient\Services\UsersService;
 
@@ -56,6 +57,10 @@ class Client
      * @var PermissionsService
      */
     private $permissionsService;
+    /**
+     * @var RevisionsService
+     */
+    private $revisionsService;
 
     /**
      * Client instances.
@@ -240,5 +245,14 @@ class Client
         }
 
         return $this->permissionsService;
+    }
+    
+    public function revisions(): RevisionsService
+    {
+        if (!$this->revisionsService) {
+            $this->revisionsService = new RevisionsService($this->httpClient);
+        }
+
+        return $this->revisionsService;
     }
 }
