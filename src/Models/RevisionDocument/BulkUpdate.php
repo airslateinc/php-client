@@ -7,7 +7,7 @@ use AirSlate\ApiClient\Models\AbstractModel;
 
 class BulkUpdate extends AbstractModel
 {
-    public function addRevisionDocument(string $revisionDocumentUid, $attributes = [])
+    public function addRevisionDocument(string $revisionDocumentUid, array $attributes = [])
     {
         $this->data[] = [
             'id' => $revisionDocumentUid,
