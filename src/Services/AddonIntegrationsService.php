@@ -21,4 +21,20 @@ class AddonIntegrationsService extends AbstractService
 
         return AddonIntegration::createFromOne($content);
     }
+
+    /**
+     * @param string $addonIntegrationId
+     * @return AddonIntegration
+     * @throws \Exception
+     */
+    public function refresh(string $addonIntegrationId)
+    {
+        $url = $this->resolveEndpoint("/addons/integrations/refresh-token/$addonIntegrationId");
+
+        $response = $this->httpClient->patch($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return AddonIntegration::createFromOne($content);
+    }
 }
