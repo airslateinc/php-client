@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Packet;
+use AirSlate\ApiClient\Entities\Packets\PacketSend;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -65,6 +66,22 @@ class PacketsService extends AbstractService
         $this->httpClient->post($url, [
             RequestOptions::JSON => $payload,
         ]);
+    }
+
+    /**
+     * @param string $packetId
+     * @return PacketSend[]
+     * @throws \Exception
+     */
+    public function getPacketSend(string $packetId): array
+    {
+        $url = $this->resolveEndpoint("/flows/{$this->slateId}/packets/{$packetId}/send");
+
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return PacketSend::createFromCollection($content);
     }
 
     /**
