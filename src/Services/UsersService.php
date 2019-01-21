@@ -98,6 +98,27 @@ class UsersService extends AbstractService
     }
 
     /**
+     * Fetch organization users by organization and user
+     *
+     * @param string $organizationUid
+     * @param string $userUid
+     * @return array
+     * @throws \Exception
+     */
+    public function organizationUser(string $organizationUid, string $userUid): array
+    {
+        $url = $this->resolveEndpoint('/organization-users');
+        $this->httpClient->addFilter('organization', $organizationUid);
+        $this->httpClient->addFilter('user', $userUid);
+
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return OrganizationUser::createFromCollection($content);
+    }
+
+    /**
      * Invite new users to organization.
      *
      * @param string $organization
