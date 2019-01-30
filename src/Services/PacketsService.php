@@ -5,6 +5,7 @@ namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Packet;
 use AirSlate\ApiClient\Entities\Packets\PacketSend;
+use AirSlate\ApiClient\Models\Packet\Create;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -46,6 +47,39 @@ class PacketsService extends AbstractService
         return Packet::createFromOne($content);
     }
 
+    /**
+     * @param Create $packet
+     * @return Packet
+     * @throws \Exception
+     */
+    public function create(Create $packet): Packet
+    {
+        $url = $this->resolveEndpoint('/flows/' . $this->slateId . '/packets');
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $packet->toArray(),
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Packet::createFromOne($content);
+    }
+
+    /**
+     * @param Packet $packet
+     * @return Packet
+     * @throws \Exception
+     */
+    public function finish(Packet $packet): Packet
+    {
+        $url = $this->resolveEndpoint('/flows/' . $this->slateId . '/packets/' . $packet->id . '/finish');
+
+        $response = $this->httpClient->patch($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Packet::createFromOne($content);
+    }
     /**
      * @param string $packetId
      * @param string $email
