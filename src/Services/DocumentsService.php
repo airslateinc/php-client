@@ -274,7 +274,7 @@ class DocumentsService extends AbstractService
 
     /**
      * @param string $documentId
-     * @return array
+     * @return DocumentAttachment[]
      * @throws \Exception
      */
     public function getDocumentAttachments(string $documentId): array
@@ -282,6 +282,27 @@ class DocumentsService extends AbstractService
         $url = $this->resolveEndpoint("/documents/$documentId/document-attachments");
 
         $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return DocumentAttachment::createFromCollection($content);
+    }
+
+    /**
+     * @param string $userId
+     * @param string $type
+     * @return DocumentAttachment[]
+     * @throws \Exception
+     */
+    public function getDocumentAttachmentsByUser(string $userId, string $type): array
+    {
+        $url = $this->resolveEndpoint("/documents/document-attachments");
+        $response = $this->httpClient->get($url, [
+            'query' => [
+                'user_uid' => $userId,
+                'type' => $type,
+            ],
+        ]);
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
