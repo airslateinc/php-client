@@ -167,4 +167,17 @@ class PacketsService extends AbstractService
 
         return $this;
     }
+
+    /**
+     * @param string $packetId
+     * @return bool
+     */
+    public function delete(string $packetId): bool
+    {
+        $url = $this->resolveEndpoint("/slates/{$this->slateId}/packets/{$packetId}");
+
+        $response = $this->httpClient->delete($url);
+
+        return $response && $response->getStatusCode() === 204;
+    }
 }
