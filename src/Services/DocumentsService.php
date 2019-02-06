@@ -340,4 +340,20 @@ class DocumentsService extends AbstractService
 
         $this->httpClient->delete($url);
     }
+
+    /**
+     * @param string $documentId
+     * @return Document
+     * @throws \Exception
+     */
+    public function documentContent(string $documentId): Document
+    {
+        $url = $this->resolveEndpoint("/documents/$documentId/content");
+
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Document::createFromOne($content);
+    }
 }
