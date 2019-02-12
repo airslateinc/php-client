@@ -8,6 +8,7 @@ use AirSlate\ApiClient\Entities\DocumentAttachment;
 use AirSlate\ApiClient\Entities\Field;
 use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Models\Document\AddAttachments;
+use AirSlate\ApiClient\Models\Document\AddDocumentAttachments;
 use AirSlate\ApiClient\Models\Document\Create as CreateModel;
 use AirSlate\ApiClient\Models\Document\Update as UpdateModel;
 use AirSlate\ApiClient\Models\Document\Duplicate as DuplicateModel;
@@ -269,5 +270,74 @@ class DocumentsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return DocumentAttachment::createFromCollection($content);
+    }
+
+    /**
+     * @param string $documentId
+     * @return DocumentAttachment[]
+     * @throws \Exception
+     */
+    public function getDocumentAttachments(string $documentId): array
+    {
+        $url = $this->resolveEndpoint("/documents/$documentId/document-attachments");
+
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return DocumentAttachment::createFromCollection($content);
+    }
+
+    /**
+     * @param string $userId
+     * @param string $type
+     * @return DocumentAttachment[]
+     * @throws \Exception
+     */
+    public function getDocumentAttachmentsByUser(string $userId, string $type): array
+    {
+        $url = $this->resolveEndpoint("/documents/document-attachments");
+        $response = $this->httpClient->get($url, [
+            'query' => [
+                'user_uid' => $userId,
+                'type' => $type,
+            ],
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return DocumentAttachment::createFromCollection($content);
+    }
+
+    /**
+     * @param string $documentId
+     * @param AddDocumentAttachments $addDocumentAttachments
+     * @return DocumentAttachment
+     * @throws \Exception
+     */
+    public function addDocumentAttachments(
+        string $documentId,
+        AddDocumentAttachments $addDocumentAttachments
+    ): DocumentAttachment {
+        $url = $this->resolveEndpoint("/documents/$documentId/document-attachments");
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $addDocumentAttachments->toArray()
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return DocumentAttachment::createFromOne($content);
+    }
+
+    /**
+     * @param string $documentId
+     * @param string $documentAttachmentId
+     */
+    public function deleteDocumentAttachments(string $documentId, string $documentAttachmentId): void
+    {
+        $url = $this->resolveEndpoint("/documents/$documentId/document-attachments/$documentAttachmentId");
+
+        $this->httpClient->delete($url);
     }
 }

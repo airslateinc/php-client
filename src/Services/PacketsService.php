@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Packet;
+use AirSlate\ApiClient\Entities\Packets\PacketSend;
+use AirSlate\ApiClient\Models\Packet\Create;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -46,6 +48,39 @@ class PacketsService extends AbstractService
     }
 
     /**
+     * @param Create $packet
+     * @return Packet
+     * @throws \Exception
+     */
+    public function create(Create $packet): Packet
+    {
+        $url = $this->resolveEndpoint('/flows/' . $this->slateId . '/packets');
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $packet->toArray(),
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Packet::createFromOne($content);
+    }
+
+    /**
+     * @param Packet $packet
+     * @return Packet
+     * @throws \Exception
+     */
+    public function finish(Packet $packet): Packet
+    {
+        $url = $this->resolveEndpoint('/flows/' . $this->slateId . '/packets/' . $packet->id . '/finish');
+
+        $response = $this->httpClient->patch($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Packet::createFromOne($content);
+    }
+    /**
      * @param string $packetId
      * @param string $email
      * @return void
@@ -65,6 +100,22 @@ class PacketsService extends AbstractService
         $this->httpClient->post($url, [
             RequestOptions::JSON => $payload,
         ]);
+    }
+
+    /**
+     * @param string $packetId
+     * @return PacketSend[]
+     * @throws \Exception
+     */
+    public function getPacketSend(string $packetId): array
+    {
+        $url = $this->resolveEndpoint("/flows/{$this->slateId}/packets/{$packetId}/send");
+
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return PacketSend::createFromCollection($content);
     }
 
     /**
@@ -115,5 +166,18 @@ class PacketsService extends AbstractService
         $this->slateId = $slateId;
 
         return $this;
+    }
+
+    /**
+     * @param string $packetId
+     * @return bool
+     */
+    public function delete(string $packetId): bool
+    {
+        $url = $this->resolveEndpoint("/slates/{$this->slateId}/packets/{$packetId}");
+
+        $response = $this->httpClient->delete($url);
+
+        return $response && $response->getStatusCode() === 204;
     }
 }

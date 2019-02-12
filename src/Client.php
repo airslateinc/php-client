@@ -10,8 +10,10 @@ use AirSlate\ApiClient\Services\EventBusService;
 use AirSlate\ApiClient\Services\ExportService;
 use AirSlate\ApiClient\Services\FilesService;
 use AirSlate\ApiClient\Services\PermissionsService;
+use AirSlate\ApiClient\Services\RevisionsService;
 use AirSlate\ApiClient\Services\SlatesService;
 use AirSlate\ApiClient\Services\UsersService;
+use AirSlate\ApiClient\Services\AddonsSmsService;
 
 /**
  * Class Client
@@ -56,6 +58,14 @@ class Client
      * @var PermissionsService
      */
     private $permissionsService;
+    /**
+     * @var RevisionsService
+     */
+    private $revisionsService;
+    /**
+     * @var AddonsSmsService
+     */
+    private $addonsSmsService;
 
     /**
      * Client instances.
@@ -240,5 +250,26 @@ class Client
         }
 
         return $this->permissionsService;
+    }
+    
+    public function revisions(): RevisionsService
+    {
+        if (!$this->revisionsService) {
+            $this->revisionsService = new RevisionsService($this->httpClient);
+        }
+
+        return $this->revisionsService;
+    }
+
+    /**
+     * @return AddonsSmsService
+     */
+    public function addonsSms(): AddonsSmsService
+    {
+        if (!$this->addonsSmsService) {
+            $this->addonsSmsService = new AddonsSmsService($this->httpClient);
+        }
+
+        return $this->addonsSmsService;
     }
 }
