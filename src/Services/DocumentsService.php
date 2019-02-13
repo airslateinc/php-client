@@ -5,11 +5,13 @@ namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Document;
 use AirSlate\ApiClient\Entities\DocumentAttachment;
+use AirSlate\ApiClient\Entities\DocumentPermissions;
 use AirSlate\ApiClient\Entities\Field;
 use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Models\Document\AddAttachments;
 use AirSlate\ApiClient\Models\Document\AddDocumentAttachments;
 use AirSlate\ApiClient\Models\Document\Create as CreateModel;
+use AirSlate\ApiClient\Models\Document\Event;
 use AirSlate\ApiClient\Models\Document\Update as UpdateModel;
 use AirSlate\ApiClient\Models\Document\Duplicate as DuplicateModel;
 use AirSlate\ApiClient\Models\Document\Export as ExportModel;
@@ -339,5 +341,59 @@ class DocumentsService extends AbstractService
         $url = $this->resolveEndpoint("/documents/$documentId/document-attachments/$documentAttachmentId");
 
         $this->httpClient->delete($url);
+    }
+
+    /**
+     * @param string $documentId
+     * @param string $type
+     * @return bool
+     */
+    public function event(string $documentId, string $type): bool
+    {
+        $url = $this->resolveEndpoint("/documents/$documentId/event");
+
+        $event = Event::createFromType($type);
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $event->toArray(),
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return !empty($content->response);
+    }
+
+    /**
+     * @param string $documentId
+     * @return Document
+     * @throws \Exception
+     */
+    public function documentContent(string $documentId): Document
+    {
+        $url = $this->resolveEndpoint("/documents/$documentId/content");
+
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Document::createFromOne($content);
+    }
+
+    /**
+     * @param string $documentId
+     * @return DocumentPermissions|null
+     * @throws \Exception
+     */
+    public function documentPermissions(string $documentId): ?DocumentPermissions
+    {
+        $url = $this->resolveEndpoint("/documents/$documentId/document-permissions");
+
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        $model = DocumentPermissions::createFromOne($content);
+
+        return $model->hasPermissions() ? $model : null;
     }
 }
