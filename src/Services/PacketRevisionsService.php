@@ -6,7 +6,7 @@ namespace AirSlate\ApiClient\Services;
 use AirSlate\ApiClient\Entities\PacketRevision;
 
 /**
- * Class PacketsService
+ * Class PacketRevisionsService
  * @package AirSlate\ApiClient\Services
  */
 class PacketRevisionsService extends AbstractService
