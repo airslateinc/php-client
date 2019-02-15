@@ -178,8 +178,11 @@ class BaseEntity implements JsonSerializable
             $model->setAttributes($jsonApi['data']['attributes']);
         }
 
-        $model->relationships = $jsonApi['data']['relationships'] ?? [];
-        $model->included = $jsonApi['included'] ?? [];
+        $relationships = $jsonApi['data']['relationships'] ?? [];
+        $included = $model->prepareIncludes($relationships, $jsonApi['included'] ?? []);
+
+        $model->relationships = $relationships;
+        $model->included = $included;
         $model->objectMeta = $jsonApi['data']['meta'] ?? [];
         $model->meta = $jsonApi['meta'] ?? [];
 
@@ -212,8 +215,11 @@ class BaseEntity implements JsonSerializable
             $model->setAttribute('id', $datum['id']);
             $model->setAttributes($datum['attributes']);
 
-            $model->relationships = $datum['relationships'] ?? [];
-            $model->included = $jsonApi['included'] ?? [];
+            $relationships = $datum['relationships'] ?? [];
+            $included = $model->prepareIncludes($relationships, $jsonApi['included'] ?? []);
+
+            $model->relationships = $relationships;
+            $model->included = $included;
             $model->objectMeta = $datum['meta'] ?? [];
 
             $models[] = $model;
@@ -363,5 +369,37 @@ class BaseEntity implements JsonSerializable
         }
     
         return $json;
+    }
+
+    /**
+     * @param array $relationships
+     * @param array $includes
+     * @return array
+     */
+    private function prepareIncludes(array $relationships, array $includes): array
+    {
+        if (empty($relationships)) {
+            return [];
+        }
+
+        $relationships = array_filter(
+            array_column($relationships, 'data')
+        );
+
+        $relationships = array_reduce($relationships, function ($state, $item) {
+            if (isset($item['type'], $item['id'])) {
+                $state[] = $item;
+            } else {
+                $state = array_merge($state, $item);
+            }
+            return $state;
+        }, []);
+
+        $relationshipsIds = array_column($relationships, 'type', 'id');
+
+        return array_filter($includes, function ($include) use ($relationshipsIds) {
+            return array_key_exists($include['id'], $relationshipsIds)
+                && $include['type'] === $relationshipsIds[$include['id']];
+        });
     }
 }
