@@ -11,6 +11,7 @@ use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Models\Document\AddAttachments;
 use AirSlate\ApiClient\Models\Document\AddDocumentAttachments;
 use AirSlate\ApiClient\Models\Document\Create as CreateModel;
+use AirSlate\ApiClient\Models\Document\DocumentEvent;
 use AirSlate\ApiClient\Models\Document\Event;
 use AirSlate\ApiClient\Models\Document\Update as UpdateModel;
 use AirSlate\ApiClient\Models\Document\Duplicate as DuplicateModel;
@@ -402,5 +403,22 @@ class DocumentsService extends AbstractService
         $model = DocumentPermissions::createFromOne($content);
 
         return $model->hasPermissions() ? $model : null;
+    }
+
+    /**
+     * @param DocumentEvent $documentEvent
+     * @return bool
+     */
+    public function editorEvent(DocumentEvent $documentEvent): bool
+    {
+        $url = $this->resolveEndpoint("/documents/editor-events");
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $documentEvent->toArray(),
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return !empty($content['meta']['ok']);
     }
 }
