@@ -14,6 +14,7 @@ use AirSlate\ApiClient\Services\RevisionsService;
 use AirSlate\ApiClient\Services\SlatesService;
 use AirSlate\ApiClient\Services\UsersService;
 use AirSlate\ApiClient\Services\AddonsSmsService;
+use AirSlate\ApiClient\Services\PacketRevisionsService;
 
 /**
  * Class Client
@@ -66,6 +67,10 @@ class Client
      * @var AddonsSmsService
      */
     private $addonsSmsService;
+    /**
+     * @var PacketRevisionsService
+     */
+    private $packetRevisionsService;
 
     /**
      * Client instances.
@@ -271,5 +276,17 @@ class Client
         }
 
         return $this->addonsSmsService;
+    }
+
+    /**
+     * @return PacketRevisionsService
+     */
+    public function packetRevisions(): PacketRevisionsService
+    {
+        if (!$this->packetRevisionsService) {
+            $this->packetRevisionsService = new PacketRevisionsService($this->httpClient);
+        }
+
+        return $this->packetRevisionsService;
     }
 }
