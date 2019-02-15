@@ -117,11 +117,13 @@ class DocumentEvent extends AbstractModel
                 ]
             ],
             'included' => [
-                'type' => 'editor_fields',
-                'id' => $this->fieldUid,
-                'attributes' => [
-                    'name' => $this->fieldName,
-                    'value' => $this->fieldValue,
+                [
+                    'type' => 'editor_fields',
+                    'id' => $this->fieldUid,
+                    'attributes' => [
+                        'name' => $this->fieldName,
+                        'value' => $this->fieldValue,
+                    ]
                 ]
             ],
             'meta' => [
