@@ -6,6 +6,7 @@ use AirSlate\ApiClient\Entities\Packets\RevisionDocument;
 use AirSlate\ApiClient\Entities\Packets\RevisionLinks;
 use AirSlate\ApiClient\Models\RevisionDocument\BulkUpdate;
 use GuzzleHttp\RequestOptions;
+use AirSlate\ApiClient\Entities\Packets\Revision;
 
 class RevisionsService extends AbstractService
 {
@@ -81,5 +82,20 @@ class RevisionsService extends AbstractService
         $this->packetId = $packetId;
 
         return $this;
+    }
+
+    /**
+     * @return Revision[]
+     * @throws \Exception
+     */
+    public function collection(): array
+    {
+        $url = $this->resolveEndpoint('/flows/' . $this->slateId . '/packets/' . $this->packetId . '/revisions');
+
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Revision::createFromCollection($content);
     }
 }
