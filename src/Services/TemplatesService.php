@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Document;
+use AirSlate\ApiClient\Entities\DocumentRole;
 use AirSlate\ApiClient\Entities\Template;
 use AirSlate\ApiClient\Models\Template\Create;
 use AirSlate\ApiClient\Models\Template\TemplateDocument;
@@ -132,6 +133,23 @@ class TemplatesService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Document::createFromCollection($content);
+    }
+
+    /**
+     * @param string $slateId
+     * @param string $templateId
+     * @return array
+     * @throws \Exception
+     */
+    public function roles(string $slateId, string $templateId): array
+    {
+        $url = $this->resolveEndpoint('/flows/' . $slateId . '/templates/' . $templateId . '/roles');
+
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return DocumentRole::createFromCollection($content);
     }
 
     /**
