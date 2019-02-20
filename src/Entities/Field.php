@@ -11,6 +11,7 @@ namespace AirSlate\ApiClient\Entities;
  * @property string $id
  * @property string $name
  * @property string|null $value
+ * @property array $role_label
  */
 class Field extends BaseEntity
 {
