@@ -4,6 +4,7 @@ namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Packets\RevisionDocument;
 use AirSlate\ApiClient\Entities\Packets\RevisionLinks;
+use AirSlate\ApiClient\Models\Revision\Create;
 use AirSlate\ApiClient\Models\RevisionDocument\BulkUpdate;
 use GuzzleHttp\RequestOptions;
 use AirSlate\ApiClient\Entities\Packets\Revision;
@@ -97,5 +98,23 @@ class RevisionsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Revision::createFromCollection($content);
+    }
+
+    /**
+     * @param Create $revision
+     * @return Revision
+     * @throws \Exception
+     */
+    public function create(Create $revision): Revision
+    {
+        $url = $this->resolveEndpoint('/flows/' . $this->slateId . '/packets/' . $this->packetId . '/revisions');
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $revision->toArray(),
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Revision::createFromOne($content);
     }
 }
