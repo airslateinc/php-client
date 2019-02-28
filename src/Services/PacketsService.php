@@ -6,6 +6,7 @@ namespace AirSlate\ApiClient\Services;
 use AirSlate\ApiClient\Entities\Packet;
 use AirSlate\ApiClient\Entities\Packets\PacketSend;
 use AirSlate\ApiClient\Models\Packet\Create;
+use AirSlate\ApiClient\Models\Packet\Update;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -177,6 +178,23 @@ class PacketsService extends AbstractService
         $url = $this->resolveEndpoint("/slates/{$this->slateId}/packets/{$packetId}");
 
         $response = $this->httpClient->delete($url);
+
+        return $response && $response->getStatusCode() === 204;
+    }
+
+    /**
+     * @param string $packetId
+     * @param Update $packet
+     * @return bool
+     * @throws \Exception
+     */
+    public function update(string $packetId, Update $packet): bool
+    {
+        $url = $this->resolveEndpoint("/flows/{$this->slateId}/packets/{$packetId}");
+
+        $response = $this->httpClient->patch($url, [
+            RequestOptions::JSON => $packet->toArray(),
+        ]);
 
         return $response && $response->getStatusCode() === 204;
     }
