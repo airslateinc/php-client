@@ -104,6 +104,7 @@ class Client
             'headers' => $this->prepareHeaders($config),
             'connect_timeout' => $config['connectTimeout'] ?? 30,
             'request_timeout' => $config['requestTimeout'] ?? 30,
+            'handler' => $config['handler'] ?? null
         ]);
 
         return $httpClient;
