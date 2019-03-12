@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Models\Revision;
 
+use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Models\AbstractModel;
 
 /**
@@ -19,7 +20,7 @@ class Create extends AbstractModel
     {
         return [
             'data' => [
-                'type' => 'packet_revisions',
+                'type' => EntityType::PACKET_REVISION,
             ],
         ];
     }

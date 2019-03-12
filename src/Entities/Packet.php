@@ -20,7 +20,7 @@ class Packet extends BaseEntity
     /**
      * @var string
      */
-    protected $type = 'packets';
+    protected $type = EntityType::PACKET;
 
     /**
      * @return array

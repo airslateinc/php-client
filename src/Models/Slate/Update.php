@@ -2,6 +2,8 @@
 
 namespace AirSlate\ApiClient\Models\Slate;
 
+use AirSlate\ApiClient\Entities\EntityType;
+
 class Update extends Create
 {
     /**
@@ -14,7 +16,7 @@ class Update extends Create
             throw new \Exception('You are unable to update slate without "name" attribute.');
         }
         $data = [
-            'type' => 'slates',
+            'type' => EntityType::SLATE,
             'attributes' => [
                 'name' => $this->data['name']
             ],

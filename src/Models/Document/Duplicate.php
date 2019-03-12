@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Models\Document;
 
+use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Models\AbstractModel;
 
 /**
@@ -18,7 +19,7 @@ class Duplicate extends AbstractModel
     {
         $this->data[] = [
             'id' => $id,
-            'type' => 'documents',
+            'type' => EntityType::DOCUMENT,
         ];
     }
 }

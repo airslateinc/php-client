@@ -14,5 +14,5 @@ class SlateLinks extends BaseEntity
     /**
      * @var string
      */
-    protected $type = 'slate_links';
+    protected $type = EntityType::SLATE_LINKS;
 }

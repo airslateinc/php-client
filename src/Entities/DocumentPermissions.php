@@ -22,7 +22,7 @@ use AirSlate\ApiClient\Entities\DocumentPermissions\ShowConstructor;
 class DocumentPermissions extends BaseEntity
 {
     /** @var string */
-    protected $type = 'document_permissions';
+    protected $type = EntityType::DOCUMENT_PERMISSION;
 
     /**
      * @return bool

@@ -19,7 +19,7 @@ class Template extends BaseEntity
     /**
      * @var string
      */
-    protected $type = 'templates';
+    protected $type = EntityType::TEMPLATE;
 
     /**
      * @return array

@@ -18,5 +18,5 @@ class Addon extends BaseEntity
     /**
      * @var string
      */
-    protected $type = 'addons';
+    protected $type = EntityType::ADDON;
 }

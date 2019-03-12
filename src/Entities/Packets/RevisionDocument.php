@@ -5,6 +5,7 @@ namespace AirSlate\ApiClient\Entities\Packets;
 
 use AirSlate\ApiClient\Entities\BaseEntity;
 use AirSlate\ApiClient\Entities\Document;
+use AirSlate\ApiClient\Entities\EntityType;
 
 /**
  * Class RevisionDocument
@@ -17,7 +18,7 @@ use AirSlate\ApiClient\Entities\Document;
  */
 class RevisionDocument extends BaseEntity
 {
-    protected $type = 'packet_revision_documents';
+    protected $type = EntityType::PACKET_REVISION_DOCUMENT;
 
     /**
      * @return BaseEntity|Document|null

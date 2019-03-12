@@ -16,5 +16,5 @@ class DocumentAttachment extends BaseEntity
     /**
      * @var string
      */
-    protected $type = 'document_attachments';
+    protected $type = EntityType::DOCUMENT_ATTACHMENT;
 }

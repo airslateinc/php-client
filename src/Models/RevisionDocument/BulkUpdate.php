@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Models\RevisionDocument;
 
+use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Models\AbstractModel;
 
 class BulkUpdate extends AbstractModel
@@ -11,7 +12,7 @@ class BulkUpdate extends AbstractModel
     {
         $this->data[] = [
             'id' => $revisionDocumentUid,
-            'type' => 'packet_revision_documents',
+            'type' => EntityType::PACKET_REVISION_DOCUMENT,
             'attributes' => $attributes,
         ];
     }

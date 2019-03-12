@@ -3,6 +3,7 @@
 namespace AirSlate\ApiClient\Entities\Slates;
 
 use AirSlate\ApiClient\Entities\BaseEntity;
+use AirSlate\ApiClient\Entities\EntityType;
 
 /**
  * Class Token
@@ -15,6 +16,8 @@ use AirSlate\ApiClient\Entities\BaseEntity;
  */
 class Document extends BaseEntity
 {
+    protected $type = EntityType::DOCUMENT;
+
     /**
      * @return null|string
      */

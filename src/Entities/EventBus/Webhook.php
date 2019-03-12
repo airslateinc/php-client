@@ -3,6 +3,7 @@
 namespace AirSlate\ApiClient\Entities\EventBus;
 
 use AirSlate\ApiClient\Entities\BaseEntity;
+use AirSlate\ApiClient\Entities\EntityType;
 
 /**
  * Class Webhook
@@ -18,7 +19,7 @@ class Webhook extends BaseEntity
     /**
      * @var string
      */
-    protected $type = 'applications-callback';
+    protected $type = EntityType::APPLICATIONS_CALLBACK;
 
     /**
      * @return array

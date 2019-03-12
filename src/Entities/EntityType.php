@@ -43,6 +43,6 @@ interface EntityType
     public const TOKEN = 'tokens';
     public const USER = 'users';
     public const EXPORT = 'export';
-    public const EVENTS = 'events';
+    public const EVENT = 'events';
     public const INVITE_EMAIL_ADDITION = 'invite_email_additions';
 }

@@ -22,6 +22,8 @@ namespace AirSlate\ApiClient\Entities;
  */
 class Organization extends BaseEntity
 {
+    protected $type = EntityType::ORGANIZATION;
+
     /**
      * @return BaseEntity|User|null
      * @throws \Exception

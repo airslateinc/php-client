@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Models\Slate;
 
+use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Models\AbstractModel;
 
 /**
@@ -39,7 +40,7 @@ class Create extends AbstractModel
     {
         return [
             'data' => [
-                'type' => 'slates',
+                'type' => EntityType::SLATE,
                 'attributes' => [
                     'name' => $this->data['name'] ?? '',
                     'description' => $this->data['description'] ?? '',
