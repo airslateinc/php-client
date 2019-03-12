@@ -6,7 +6,7 @@ namespace AirSlate\ApiClient\Models;
 /**
  * @package AirSlate\ApiClient\Models
  */
-interface ModelInterface
+interface ArrayableInterface
 {
     /**
      * @return array

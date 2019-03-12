@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Models\Packet\Send;
 
-use AirSlate\ApiClient\Models\ModelInterface;
+use AirSlate\ApiClient\Models\ArrayableInterface;
 
 /**
  * Class Slate
  * @package AirSlate\ApiClient\Models
  *
  */
-class Create implements ModelInterface
+class Create implements ArrayableInterface
 {
     /**
      * @var string

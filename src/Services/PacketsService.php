@@ -85,7 +85,7 @@ class PacketsService extends AbstractService
 
     /**
      * @deprecated
-     * use
+     * use \AirSlate\ApiClient\Services\PacketsService::sendPacket instead of this method
      *
      * @TODO: default access level is set to WRITE to prevent backward incompatibility
      *
