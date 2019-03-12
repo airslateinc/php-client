@@ -261,9 +261,16 @@ class DocumentsService extends AbstractService
         return Document::createFromOne($content);
     }
 
+    /**
+     * @param string $documentId
+     * @param AddAttachments $addAttachments
+     * @return array
+     * @throws \Exception
+     */
     public function addAttachments(string $documentId, AddAttachments $addAttachments)
     {
-        $url = $this->resolveEndpoint("/documents/$documentId/attachments");
+        // TODO Temp solution for migration to another endpoint
+        $url = $this->resolveEndpoint("/documents/$documentId/attachments-external");
 
         $response = $this->httpClient->post($url, [
             RequestOptions::JSON => $addAttachments->toArray()
@@ -386,7 +393,7 @@ class DocumentsService extends AbstractService
      */
     public function documentPermissions(string $documentId): ?DocumentPermissions
     {
-        $url = $this->resolveEndpoint("/documents/$documentId/document-permissions");
+        $url = $this->resolveEndpoint("/documents/$documentId/permissions");
 
         $response = $this->httpClient->get($url);
 
