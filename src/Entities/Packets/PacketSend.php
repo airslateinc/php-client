@@ -11,6 +11,7 @@ use AirSlate\ApiClient\Entities\BaseEntity;
  * @property string $id
  * @property string $email
  * @property string $user_id
+ * @property string $access_level
  * @property string $created_at
  * @property string $updated_at
  * @property string $sender_uid
@@ -18,4 +19,7 @@ use AirSlate\ApiClient\Entities\BaseEntity;
 class PacketSend extends BaseEntity
 {
     protected $type = 'packet_send';
+
+    public const ACCESS_LEVEL_READ  = 'READ';
+    public const ACCESS_LEVEL_WRITE = 'WRITE';
 }

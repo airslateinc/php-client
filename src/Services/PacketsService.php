@@ -6,6 +6,7 @@ namespace AirSlate\ApiClient\Services;
 use AirSlate\ApiClient\Entities\Packet;
 use AirSlate\ApiClient\Entities\Packets\PacketSend;
 use AirSlate\ApiClient\Models\Packet\Create;
+use AirSlate\ApiClient\Models\Packet\Send\Create as CreatePacketSend;
 use AirSlate\ApiClient\Models\Packet\Update;
 use GuzzleHttp\RequestOptions;
 
@@ -81,26 +82,87 @@ class PacketsService extends AbstractService
 
         return Packet::createFromOne($content);
     }
+
     /**
+     * @deprecated
+     * use \AirSlate\ApiClient\Services\PacketsService::sendPacket instead of this method
+     *
+     * @TODO: default access level is set to WRITE to prevent backward incompatibility
+     *
      * @param string $packetId
      * @param string $email
+     * @param string $accessLevel
+     *
      * @return void
      */
-    public function send(string $packetId, string $email): void
+    public function send(string $packetId, string $email, string $accessLevel = PacketSend::ACCESS_LEVEL_WRITE): void
     {
         $url = $this->resolveEndpoint("/slates/{$this->slateId}/packets/{$packetId}/send");
 
         $payload = [
             'data' => [
-                'type' => 'users',
+                'type' => 'packet_send',
                 'attributes' => [
                     'email' => $email,
+                    'access_level' => $accessLevel,
                 ],
             ],
         ];
         $this->httpClient->post($url, [
             RequestOptions::JSON => $payload,
         ]);
+    }
+
+    /**
+     * @param string           $packetId
+     * @param CreatePacketSend $packetSend
+     *
+     * @return PacketSend
+     *
+     * @throws \Exception
+     */
+    public function sendPacket(string $packetId, CreatePacketSend $packetSend): PacketSend
+    {
+        $url = $this->resolveEndpoint("/flows/{$this->slateId}/packets/{$packetId}/send");
+
+        $payload = [
+            'data' => $packetSend->toArray(),
+        ];
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $payload,
+        ]);
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return PacketSend::createFromOne($content);
+    }
+
+    /**
+     * @param string                   $packetId
+     * @param array|CreatePacketSend[] $packetSends
+     *
+     * @return array|PacketSend[]
+     *
+     * @throws \Exception
+     */
+    public function sendPacketBulk(string $packetId, array $packetSends): array
+    {
+        $url = $this->resolveEndpoint("/flows/{$this->slateId}/packets/{$packetId}/send/bulk");
+
+        $payload = [
+            'data' => [],
+        ];
+
+        foreach ($packetSends as $packetSend) {
+            $payload['data'][] = $packetSend->toArray();
+        }
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $payload,
+        ]);
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return PacketSend::createFromCollection($content);
     }
 
     /**

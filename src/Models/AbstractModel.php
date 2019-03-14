@@ -6,7 +6,7 @@ namespace AirSlate\ApiClient\Models;
 /**
  * @package AirSlate\ApiClient\Models
  */
-abstract class AbstractModel
+abstract class AbstractModel implements ArrayableInterface
 {
     /**
      * @var array
