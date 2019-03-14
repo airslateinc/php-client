@@ -13,8 +13,8 @@ interface EntityType
     public const ADDON_SMS = 'addons_sms';
     public const ADDON_FILE = 'addon_files';
     public const ADDON_INTEGRATION = 'addon_integrations';
-    public const APPLICATIONS_MESSAGE_BUS_EVENT = 'applications-message-bus-event';
-    public const APPLICATIONS_CALLBACK = 'applications-callback';
+    public const APPLICATION_MESSAGE_BUS_EVENT = 'applications-message-bus-event';
+    public const APPLICATION_CALLBACK = 'applications-callback';
     public const PACKET_SEND = 'packet_send';
     public const PACKET_REVISION = 'packet_revisions';
     public const PACKET_REVISION_DOCUMENT = 'packet_revision_documents';

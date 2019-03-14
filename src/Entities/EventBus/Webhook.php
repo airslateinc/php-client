@@ -19,7 +19,7 @@ class Webhook extends BaseEntity
     /**
      * @var string
      */
-    protected $type = EntityType::APPLICATIONS_CALLBACK;
+    protected $type = EntityType::APPLICATION_CALLBACK;
 
     /**
      * @return array

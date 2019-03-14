@@ -19,7 +19,7 @@ class Event extends BaseEntity
     /**
      * @var string
      */
-    protected $type = EntityType::APPLICATIONS_MESSAGE_BUS_EVENT;
+    protected $type = EntityType::APPLICATION_MESSAGE_BUS_EVENT;
 
     /**
      * @return array
