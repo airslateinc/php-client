@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Entities;
 
+use AirSlate\ApiClient\Entities\DocumentPermissions\CustomOptions;
+use AirSlate\ApiClient\Entities\DocumentPermissions\EnableComments;
+use AirSlate\ApiClient\Entities\DocumentPermissions\EnableToolbar;
+
 /**
  * Class DocumentPermissions
  * @package AirSlate\ApiClient\Entities
@@ -12,6 +16,7 @@ namespace AirSlate\ApiClient\Entities;
  * @property bool $can_fill
  * @property bool $can_download
  * @property bool $enable_validation
+ * @property array $custom_options
  */
 class DocumentPermissions extends BaseEntity
 {
@@ -64,5 +69,22 @@ class DocumentPermissions extends BaseEntity
     public function isEnableValidation(): bool
     {
         return $this->enable_validation;
+    }
+
+    /**
+     * @return CustomOptions
+     */
+    public function customOptions(): CustomOptions
+    {
+        return new CustomOptions(
+            new EnableComments(
+                $this->custom_options['enable_comments']['value'],
+                $this->custom_options['enable_comments']['override']
+            ),
+            new EnableToolbar(
+                $this->custom_options['enable_toolbar']['value'],
+                $this->custom_options['enable_toolbar']['override']
+            )
+        );
     }
 }
