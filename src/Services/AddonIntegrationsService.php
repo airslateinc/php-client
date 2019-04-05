@@ -13,7 +13,7 @@ class AddonIntegrationsService extends AbstractService
      */
     public function get(string $addonIntegrationId)
     {
-        $url = $this->resolveEndpoint("/addons/integrations/$addonIntegrationId");
+        $url = $this->resolveEndpoint("/addon-integrations/$addonIntegrationId");
 
         $response = $this->httpClient->get($url);
 
@@ -29,7 +29,7 @@ class AddonIntegrationsService extends AbstractService
      */
     public function refresh(string $addonIntegrationId)
     {
-        $url = $this->resolveEndpoint("/addons/integrations/refresh-token/$addonIntegrationId");
+        $url = $this->resolveEndpoint("/addon-integrations/refresh-token/$addonIntegrationId");
 
         $response = $this->httpClient->patch($url);
 
