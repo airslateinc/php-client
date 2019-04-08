@@ -11,7 +11,7 @@ use AirSlate\ApiClient\Entities\BaseEntity;
  *
  * @property string $id
  * @property array $config
- * @property string $fields
+ * @property array $fields
  */
 class FlowRoleDocument extends BaseEntity
 {
