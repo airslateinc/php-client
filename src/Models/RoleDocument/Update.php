@@ -2,7 +2,7 @@
 
 namespace AirSlate\ApiClient\Models\RoleDocument;
 
-use AirSlate\ApiClient\Entities\Slates\FlowRoleDocuments;
+use AirSlate\ApiClient\Entities\Slates\RoleDocuments;
 use AirSlate\ApiClient\Models\AbstractModel;
 
 class Update extends AbstractModel
@@ -10,7 +10,7 @@ class Update extends AbstractModel
     public function __construct(array $data = [])
     {
         foreach ($data as $datum) {
-            if (!$datum instanceof FlowRoleDocuments) {
+            if (!$datum instanceof RoleDocuments) {
                 throw new \InvalidArgumentException(
                     'Invalid type provided for item. Instance of FlowRoleDocuments expected.'
                 );
@@ -23,7 +23,7 @@ class Update extends AbstractModel
     public function toArray(): array
     {
         return [
-            'data' => array_map(function (FlowRoleDocuments $roleDocuments) {
+            'data' => array_map(function (RoleDocuments $roleDocuments) {
                 return $roleDocuments->jsonSerialize()['data'];
             }, $this->data),
         ];
