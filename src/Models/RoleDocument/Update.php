@@ -8,17 +8,17 @@ use AirSlate\ApiClient\Models\AbstractModel;
 
 class Update extends AbstractModel
 {
-    public function __construct(array $data = [])
+    public function __construct(array $roleDocuments = [])
     {
-        foreach ($data as $datum) {
-            if (!$datum instanceof RoleDocuments) {
+        foreach ($roleDocuments as $roleDocument) {
+            if (!$roleDocument instanceof RoleDocuments) {
                 throw new \InvalidArgumentException(
                     'Invalid type provided for item. Instance of FlowRoleDocuments expected.'
                 );
             }
         }
 
-        parent::__construct($data);
+        parent::__construct($roleDocuments);
     }
 
     public function toArray(): array
