@@ -42,7 +42,7 @@ class RoleDocumentsService extends AbstractService
 
     /**
      * @param Create $roleDocuments
-     * @return array
+     * @return RoleDocuments[]
      * @throws \Exception
      */
     public function create(Create $roleDocuments): array
@@ -60,7 +60,7 @@ class RoleDocumentsService extends AbstractService
 
     /**
      * @param Update $roleDocuments
-     * @return array
+     * @return RoleDocuments[]
      * @throws \Exception
      */
     public function update(Update $roleDocuments): array
