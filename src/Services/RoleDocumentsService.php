@@ -2,7 +2,7 @@
 
 namespace AirSlate\ApiClient\Services;
 
-use AirSlate\ApiClient\Entities\Slates\FlowRoleDocuments;
+use AirSlate\ApiClient\Entities\Slates\RoleDocuments;
 use AirSlate\ApiClient\Models\RoleDocument\Create;
 use AirSlate\ApiClient\Models\RoleDocument\Delete;
 use AirSlate\ApiClient\Models\RoleDocument\Update;
@@ -25,7 +25,7 @@ class RoleDocumentsService extends AbstractService
     }
 
     /**
-     * @return FlowRoleDocuments[]
+     * @return RoleDocuments[]
      * @throws \Exception
      */
     public function collection(): array
@@ -36,7 +36,7 @@ class RoleDocumentsService extends AbstractService
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
-        return FlowRoleDocuments::createFromCollection($content);
+        return RoleDocuments::createFromCollection($content);
     }
 
     /**
@@ -54,7 +54,7 @@ class RoleDocumentsService extends AbstractService
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
-        return FlowRoleDocuments::createFromCollection($content);
+        return RoleDocuments::createFromCollection($content);
     }
 
     /**
@@ -72,7 +72,7 @@ class RoleDocumentsService extends AbstractService
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
-        return FlowRoleDocuments::createFromCollection($content);
+        return RoleDocuments::createFromCollection($content);
     }
 
     /**
