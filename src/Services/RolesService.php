@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
-use AirSlate\ApiClient\Entities\Slates\Roles;
+use AirSlate\ApiClient\Entities\Slates\FlowRole;
 use AirSlate\ApiClient\Models\Role\Create;
 use AirSlate\ApiClient\Models\Role\Delete;
 use GuzzleHttp\RequestOptions;
@@ -25,7 +25,7 @@ class RolesService extends AbstractService
     }
 
     /**
-     * @return Roles[]
+     * @return FlowRole[]
      * @throws \Exception
      */
     public function collection(): array
@@ -36,12 +36,12 @@ class RolesService extends AbstractService
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
-        return Roles::createFromCollection($content);
+        return FlowRole::createFromCollection($content);
     }
 
     /**
      * @param Create $roles
-     * @return Roles[]
+     * @return FlowRole[]
      * @throws \Exception
      */
     public function create(Create $roles): array
@@ -54,7 +54,7 @@ class RolesService extends AbstractService
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
-        return Roles::createFromCollection($content);
+        return FlowRole::createFromCollection($content);
     }
 
     /**
