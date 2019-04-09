@@ -9,11 +9,12 @@ use GuzzleHttp\RequestOptions;
 class SlateAddonMessagesService extends AbstractService
 {
     /**
+     * @param string $slateAddonUid
      * @param CreateSlateAddonMessage $model
      */
-    public function push(CreateSlateAddonMessage $model): void
+    public function push(string $slateAddonUid, CreateSlateAddonMessage $model): void
     {
-        $url = $this->resolveEndpoint("/slate-addons/{$model->getSlateAddonId()}/message");
+        $url = $this->resolveEndpoint("/slate-addons/{$slateAddonUid}/message");
 
         $this->httpClient->post($url, [
             RequestOptions::JSON => $model->toArray()

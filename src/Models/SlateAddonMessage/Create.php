@@ -12,36 +12,21 @@ class Create extends AbstractModel
      */
     protected $attributes;
 
-    /**
-     * @var string
-     */
-    protected $slateAddonId;
-
     public function toArray(): array
     {
         return [
-            'type' => 'slate_addons_messages',
+            'type' => 'slate_addon_messages',
             'attributes' => $this->attributes,
         ];
     }
 
     /**
-     * @return string
-     */
-    public function getSlateAddonId(): string
-    {
-        return $this->slateAddonId ?? '';
-    }
-
-    /**
-     * @param string $slateAddonId
      * @param array $attributes
      * @return Create
      */
-    public static function fromAttributes(string $slateAddonId, array $attributes): self
+    public static function fromAttributes(array $attributes): self
     {
         $model = new self();
-        $model->slateAddonId = $slateAddonId;
         $model->attributes = $attributes;
 
         return $model;
