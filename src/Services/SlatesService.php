@@ -192,4 +192,22 @@ class SlatesService extends AbstractService
 
         return Document::createFromMeta($content);
     }
+
+    /**
+     * @param string $slateId
+     * @return RolesService
+     */
+    public function roles(string $slateId): RolesService
+    {
+        return (new RolesService($this->httpClient))->setSlateId($slateId);
+    }
+
+    /**
+     * @param string $slateId
+     * @return RoleDocumentsService
+     */
+    public function roleDocuments(string $slateId): RoleDocumentsService
+    {
+        return (new RoleDocumentsService($this->httpClient))->setSlateId($slateId);
+    }
 }
