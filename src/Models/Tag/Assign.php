@@ -4,13 +4,23 @@ namespace AirSlate\ApiClient\Models\Tag;
 
 use AirSlate\ApiClient\Models\AbstractModel;
 
+/**
+ * Class Assign
+ * @package AirSlate\ApiClient\Models\Tag
+ */
 class Assign extends AbstractModel
 {
+    /**
+     * @param array $names
+     */
     public function setNames(array $names)
     {
         $this->data['names'] = $names;
     }
 
+    /**
+     * @return array
+     */
     public function toArray(): array
     {
         $tags = [];
