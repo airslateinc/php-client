@@ -11,7 +11,6 @@ use AirSlate\ApiClient\Services\ExportService;
 use AirSlate\ApiClient\Services\FilesService;
 use AirSlate\ApiClient\Services\PermissionsService;
 use AirSlate\ApiClient\Services\RevisionsService;
-use AirSlate\ApiClient\Services\SlateAddonMessagesService;
 use AirSlate\ApiClient\Services\SlatesService;
 use AirSlate\ApiClient\Services\UsersService;
 use AirSlate\ApiClient\Services\AddonsSmsService;
@@ -73,10 +72,6 @@ class Client
      */
     private $packetRevisionsService;
 
-    /**
-     * @var SlateAddonMessagesService
-     */
-    private $slateAddonMessagesService;
     /**
      * Client instances.
      * @var Client[]
@@ -294,17 +289,5 @@ class Client
         }
 
         return $this->packetRevisionsService;
-    }
-
-    /**
-     * @return SlateAddonMessagesService
-     */
-    public function slateAddonMessages(): SlateAddonMessagesService
-    {
-        if (!$this->slateAddonMessagesService) {
-            $this->slateAddonMessagesService = new SlateAddonMessagesService($this->httpClient);
-        }
-
-        return $this->slateAddonMessagesService;
     }
 }
