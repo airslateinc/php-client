@@ -5,6 +5,7 @@ namespace AirSlate\ApiClient\Services;
 use AirSlate\ApiClient\Entities\Addons\SlateAddon;
 use AirSlate\ApiClient\Models\SlateAddon\Create as CreateSlateAddon;
 use AirSlate\ApiClient\Models\SlateAddon\Update as UpdateSlateAddon;
+use AirSlate\ApiClient\Models\SlateAddonMessage\Create as CreateSlateAddonMessage;
 use GuzzleHttp\RequestOptions;
 
 class SlateAddonsService extends AbstractService
@@ -73,6 +74,22 @@ class SlateAddonsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return SlateAddon::createFromOne($content);
+    }
+
+    /**
+     * @param string $slateAddonUid
+     * @param CreateSlateAddonMessage $model
+     * @return bool
+     */
+    public function pushMessage(string $slateAddonUid, CreateSlateAddonMessage $model): bool
+    {
+        $url = $this->resolveEndpoint("/slate-addons/{$slateAddonUid}/message");
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $model->toArray()
+        ]);
+
+        return $response->getStatusCode() === 200;
     }
 
     /**

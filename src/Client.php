@@ -77,7 +77,7 @@ class Client
      * @var Client[]
      */
     private static $instances;
-    
+
     /**
      * Client constructor.
      * @param string $baseUri
@@ -232,7 +232,7 @@ class Client
 
         return $this->addonsService;
     }
-    
+
     /**
      * @deprecated This service is going to be moved to separate client
      * @return EventBusService
@@ -257,7 +257,7 @@ class Client
 
         return $this->permissionsService;
     }
-    
+
     public function revisions(): RevisionsService
     {
         if (!$this->revisionsService) {
