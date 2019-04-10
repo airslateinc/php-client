@@ -5,6 +5,12 @@ namespace AirSlate\ApiClient\Models\SlateAddonMessage;
 
 use AirSlate\ApiClient\Models\AbstractModel;
 
+/**
+ * Class Create
+ * @package AirSlate\ApiClient\Models\SlateAddonMessage
+ *
+ * @property $attributes
+ */
 class Create extends AbstractModel
 {
     /**
