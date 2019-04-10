@@ -15,22 +15,13 @@ use GuzzleHttp\RequestOptions;
 class TagsService extends AbstractService
 {
     /**
-     * @var
-     */
-    private $slateId;
-
-    /**
-     * @var
-     */
-    private $packetId;
-
-    /**
+     * @param string $slateId
      * @return Tag[]
      * @throws \Exception
      */
-    public function collection(): array
+    public function collection(string $slateId): array
     {
-        $url = $this->resolveEndpoint('/flows/' . $this->slateId . '/packets/tags');
+        $url = $this->resolveEndpoint('/flows/' . $slateId . '/packets/tags');
 
         $response = $this->httpClient->get($url);
 
@@ -40,12 +31,14 @@ class TagsService extends AbstractService
     }
 
     /**
-     * @return Tag[]
+     * @param string $slateId
+     * @param string $packetId
+     * @return Slate[]
      * @throws \Exception
      */
-    public function collectionInPacket()
+    public function collectionInPacket(string $slateId, string $packetId)
     {
-        $url = $this->resolveEndpoint('/flows/' . $this->slateId . '/packets/' . $this->packetId . '/tags');
+        $url = $this->resolveEndpoint('/flows/' . $slateId . '/packets/' . $packetId . '/tags');
 
         $response = $this->httpClient->get($url);
 
@@ -55,13 +48,15 @@ class TagsService extends AbstractService
     }
 
     /**
+     * @param string $slateId
+     * @param string $packetId
      * @param Assign $assign
-     * @return Tag[]
+     * @return Slate[]
      * @throws \Exception
      */
-    public function assign(Assign $assign)
+    public function assign(string $slateId, string $packetId, Assign $assign)
     {
-        $url = $this->resolveEndpoint('/flows/' . $this->slateId . '/packets/' . $this->packetId . '/tags');
+        $url = $this->resolveEndpoint('/flows/' . $slateId . '/packets/' . $packetId . '/tags');
 
         $response = $this->httpClient->post($url, [
             RequestOptions::JSON => $assign->toArray(),
@@ -73,55 +68,19 @@ class TagsService extends AbstractService
     }
 
     /**
+     * @param string $slateId
+     * @param string $packetId
      * @param Delete $assign
      * @return bool
      */
-    public function delete(Delete $assign)
+    public function delete(string $slateId, string $packetId, Delete $assign)
     {
-        $url = $this->resolveEndpoint('/flows/' . $this->slateId . '/packets/' . $this->packetId . '/tags');
+        $url = $this->resolveEndpoint('/flows/' . $slateId . '/packets/' . $packetId . '/tags');
 
         $response = $this->httpClient->delete($url, [
             RequestOptions::JSON => $assign->toArray(),
         ]);
 
         return $response && $response->getStatusCode() === 204;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSlateId()
-    {
-        return $this->slateId;
-    }
-
-    /**
-     * @param $slateId
-     * @return TagsService
-     */
-    public function setSlateId($slateId): TagsService
-    {
-        $this->slateId = $slateId;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPacketId()
-    {
-        return $this->packetId;
-    }
-
-    /**
-     * @param $packetId
-     * @return TagsService
-     */
-    public function setPacketId($packetId): TagsService
-    {
-        $this->packetId = $packetId;
-
-        return $this;
     }
 }

@@ -212,11 +212,10 @@ class SlatesService extends AbstractService
     }
 
     /**
-     * @param string $slateId
      * @return TagsService
      */
-    public function tags(string $slateId)
+    public function tags()
     {
-        return (new TagsService($this->httpClient))->setSlateId($slateId);
+        return (new TagsService($this->httpClient));
     }
 }
