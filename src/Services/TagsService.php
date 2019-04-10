@@ -36,7 +36,7 @@ class TagsService extends AbstractService
      * @return Slate[]
      * @throws \Exception
      */
-    public function collectionInPacket(string $slateId, string $packetId)
+    public function collectionInPacket(string $slateId, string $packetId): array
     {
         $url = $this->resolveEndpoint('/flows/' . $slateId . '/packets/' . $packetId . '/tags');
 
@@ -54,7 +54,7 @@ class TagsService extends AbstractService
      * @return Slate[]
      * @throws \Exception
      */
-    public function assign(string $slateId, string $packetId, Assign $assign)
+    public function assign(string $slateId, string $packetId, Assign $assign): array
     {
         $url = $this->resolveEndpoint('/flows/' . $slateId . '/packets/' . $packetId . '/tags');
 
@@ -73,7 +73,7 @@ class TagsService extends AbstractService
      * @param Delete $assign
      * @return bool
      */
-    public function delete(string $slateId, string $packetId, Delete $assign)
+    public function delete(string $slateId, string $packetId, Delete $assign): bool
     {
         $url = $this->resolveEndpoint('/flows/' . $slateId . '/packets/' . $packetId . '/tags');
 
