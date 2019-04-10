@@ -56,26 +56,35 @@ class TagsService extends AbstractService
 
     /**
      * @param Assign $assign
+     * @return Tag[]
+     * @throws \Exception
      */
     public function assign(Assign $assign)
     {
         $url = $this->resolveEndpoint('/flows/' . $this->slateId . '/packets/' . $this->packetId . '/tags');
 
-        $this->httpClient->post($url, [
+        $response = $this->httpClient->post($url, [
             RequestOptions::JSON => $assign->toArray(),
         ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Tag::createFromCollection($content);
     }
 
     /**
      * @param Delete $assign
+     * @return bool
      */
     public function delete(Delete $assign)
     {
         $url = $this->resolveEndpoint('/flows/' . $this->slateId . '/packets/' . $this->packetId . '/tags');
 
-        $this->httpClient->delete($url, [
+        $response = $this->httpClient->delete($url, [
             RequestOptions::JSON => $assign->toArray(),
         ]);
+
+        return $response && $response->getStatusCode() === 204;
     }
 
     /**
