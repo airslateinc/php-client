@@ -78,12 +78,12 @@ class DocumentPermissions extends BaseEntity
     {
         return new CustomOptions(
             new EnableComments(
-                $this->custom_options['enable_comments']['value'],
-                $this->custom_options['enable_comments']['override']
+                $this->custom_options['enable_comments']['value'] ?? false,
+                $this->custom_options['enable_comments']['override'] ?? false
             ),
             new EnableToolbar(
-                $this->custom_options['enable_toolbar']['value'],
-                $this->custom_options['enable_toolbar']['override']
+                $this->custom_options['enable_toolbar']['value'] ?? false,
+                $this->custom_options['enable_toolbar']['override'] ?? false
             )
         );
     }
