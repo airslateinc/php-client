@@ -397,9 +397,18 @@ class BaseEntity implements JsonSerializable
 
         $relationshipsIds = array_column($relationships, 'type', 'id');
 
-        return array_filter($includes, function ($include) use ($relationshipsIds) {
-            return array_key_exists($include['id'], $relationshipsIds)
-                && $include['type'] === $relationshipsIds[$include['id']];
-        });
+        $newIncludes = [];
+        foreach ($includes as $include) {
+            $isEqualType = $include['type'] === $relationshipsIds[$include['id']];
+            $isExistsId = array_key_exists($include['id'], $relationshipsIds);
+            if ($isExistsId && $isEqualType) {
+                if (isset($include['relationships'])) {
+                    $include['included'] = $this->prepareIncludes($include['relationships'], $includes);
+                }
+                $newIncludes[] = $include;
+            }
+        }
+
+        return $newIncludes;
     }
 }
