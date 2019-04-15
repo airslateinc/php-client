@@ -260,4 +260,25 @@ class PacketsService extends AbstractService
 
         return $response && $response->getStatusCode() === 204;
     }
+
+    /**
+     * @param string $packetId
+     * @param string $revisionId
+     * @param string $email
+     * @return bool
+     */
+    public function checkAccess(string $packetId, string $revisionId, string $email): bool
+    {
+        $url = $this->resolveEndpoint("/flows/{$this->slateId}/packets/{$packetId}/revisions/{$revisionId}");
+
+        $response = $this->httpClient->get($url, [
+            RequestOptions::QUERY => [
+                'filter' => [
+                    'email' => $email
+                ],
+            ],
+        ]);
+
+        return $response && $response->getStatusCode() === 200;
+    }
 }
