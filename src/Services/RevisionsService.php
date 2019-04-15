@@ -2,6 +2,7 @@
 
 namespace AirSlate\ApiClient\Services;
 
+use AirSlate\ApiClient\Entities\DocumentRole;
 use AirSlate\ApiClient\Entities\Packets\RevisionDocument;
 use AirSlate\ApiClient\Entities\Packets\RevisionLinks;
 use AirSlate\ApiClient\Models\Revision\Create;
@@ -45,6 +46,25 @@ class RevisionsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return RevisionDocument::createFromCollection($content);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @param string $revisionId
+     * @return DocumentRole[]
+     * @throws \Exception
+     */
+    public function getRoles(string $flowUid, string $packetUid, string $revisionId): array
+    {
+        $url = $this->resolveEndpoint(
+            "/flows/{$flowUid}/packets/{$packetUid}/revisions/{$revisionId}/latest-revision/roles"
+        );
+
+        $response = $this->httpClient->get($url);
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return DocumentRole::createFromCollection($content);
     }
 
     public function updateDocuments(string $revisionId, BulkUpdate $revisionDocuments)
