@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
+use AirSlate\ApiClient\Entities\DocumentRole;
 use AirSlate\ApiClient\Entities\Packet;
 use AirSlate\ApiClient\Entities\Packets\PacketSend;
 use AirSlate\ApiClient\Models\Packet\Create;
@@ -201,6 +202,22 @@ class PacketsService extends AbstractService
         $this->httpClient->delete($url, [
             RequestOptions::JSON => $payload,
         ]);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @return DocumentRole[]
+     * @throws \Exception
+     */
+    public function getRoles(string $flowUid, string $packetUid): array
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/latest-revision/roles");
+
+        $response = $this->httpClient->get($url);
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return DocumentRole::createFromCollection($content);
     }
 
     /**
