@@ -10,6 +10,7 @@ use AirSlate\ApiClient\Entities\PacketSigningOrder;
 use AirSlate\ApiClient\Models\Packet\Create;
 use AirSlate\ApiClient\Models\Packet\Send\Create as CreatePacketSend;
 use AirSlate\ApiClient\Models\Packet\Update;
+use AirSlate\ApiClient\Models\Packet\SigningOrder\Enable;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -224,11 +225,11 @@ class PacketsService extends AbstractService
     /**
      * @param string $flowUid
      * @param string $packetUid
-     * @param Create $signingOrder
+     * @param Enable $signingOrder
      * @return PacketSigningOrder
      * @throws \Exception
      */
-    public function updateSigningOrder(string $flowUid, string $packetUid, Create $signingOrder): PacketSigningOrder
+    public function updateSigningOrder(string $flowUid, string $packetUid, Enable $signingOrder): PacketSigningOrder
     {
         $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/signing-order");
 

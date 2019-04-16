@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace AirSlate\ApiClient\Models\SigningOrder;
+namespace AirSlate\ApiClient\Models\Packet\SigningOrder;
 
 use AirSlate\ApiClient\Models\AbstractModel;
 
-class Create extends AbstractModel
+class Enable extends AbstractModel
 {
     /** @var array */
     private $included;
