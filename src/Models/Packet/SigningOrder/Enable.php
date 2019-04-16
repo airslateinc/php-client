@@ -21,7 +21,7 @@ class Enable extends AbstractModel
         $this->data[] = [
             'type' => 'packet_signing_order',
             'attributes' => [
-                'role_id' => $role,
+                'role' => $role,
                 'email' => $email,
                 'order' => $order,
             ],
