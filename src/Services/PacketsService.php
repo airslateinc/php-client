@@ -3,11 +3,14 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
+use AirSlate\ApiClient\Entities\DocumentRole;
 use AirSlate\ApiClient\Entities\Packet;
 use AirSlate\ApiClient\Entities\Packets\PacketSend;
+use AirSlate\ApiClient\Entities\Packets\PacketSigningOrder;
 use AirSlate\ApiClient\Models\Packet\Create;
 use AirSlate\ApiClient\Models\Packet\Send\Create as CreatePacketSend;
 use AirSlate\ApiClient\Models\Packet\Update;
+use AirSlate\ApiClient\Models\Packet\SigningOrder\Enable;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -201,6 +204,42 @@ class PacketsService extends AbstractService
         $this->httpClient->delete($url, [
             RequestOptions::JSON => $payload,
         ]);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @return DocumentRole[]
+     * @throws \Exception
+     */
+    public function getRoles(string $flowUid, string $packetUid): array
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/latest-revision/roles");
+
+        $response = $this->httpClient->get($url);
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return DocumentRole::createFromCollection($content);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @param Enable $signingOrder
+     * @return PacketSigningOrder
+     * @throws \Exception
+     */
+    public function updateSigningOrder(string $flowUid, string $packetUid, Enable $signingOrder): PacketSigningOrder
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/signing-order");
+
+        $response = $this->httpClient->patch($url, [
+            RequestOptions::JSON => $signingOrder->toArray(),
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return PacketSigningOrder::createFromOne($content);
     }
 
     /**
