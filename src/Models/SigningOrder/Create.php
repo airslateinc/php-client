@@ -7,6 +7,9 @@ use AirSlate\ApiClient\Models\AbstractModel;
 
 class Create extends AbstractModel
 {
+    /** @var array */
+    private $included;
+
     /**
      * @param string $role
      * @param string $email
@@ -22,6 +25,35 @@ class Create extends AbstractModel
                 'email' => $email,
                 'order' => $order,
             ],
+        ];
+    }
+
+    /**
+     * @param string $packetUid
+     * @param bool $isOrderEnabled
+     * @return void
+     */
+    public function setPacket(string $packetUid, bool $isOrderEnabled): void
+    {
+        $this->included = [
+            [
+                'id' => $packetUid,
+                'type' => 'packets',
+                'attributes' => [
+                    'signing_order_enabled' => $isOrderEnabled,
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'data' => $this->data,
+            'included' => $this->included,
         ];
     }
 }
