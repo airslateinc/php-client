@@ -20,7 +20,7 @@ class SigningOrderService extends AbstractService
      * @return PacketSigningOrder
      * @throws \Exception
      */
-    public function update(string $flowUid, string $packetUid, Create $signingOrder)
+    public function update(string $flowUid, string $packetUid, Create $signingOrder): PacketSigningOrder
     {
         $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/signing-order");
 
