@@ -6,6 +6,7 @@ namespace AirSlate\ApiClient\Services;
 use AirSlate\ApiClient\Entities\DocumentRole;
 use AirSlate\ApiClient\Entities\Packet;
 use AirSlate\ApiClient\Entities\Packets\PacketSend;
+use AirSlate\ApiClient\Entities\PacketSigningOrder;
 use AirSlate\ApiClient\Models\Packet\Create;
 use AirSlate\ApiClient\Models\Packet\Send\Create as CreatePacketSend;
 use AirSlate\ApiClient\Models\Packet\Update;
@@ -218,6 +219,26 @@ class PacketsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return DocumentRole::createFromCollection($content);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @param Create $signingOrder
+     * @return PacketSigningOrder
+     * @throws \Exception
+     */
+    public function updateSigningOrder(string $flowUid, string $packetUid, Create $signingOrder): PacketSigningOrder
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/signing-order");
+
+        $response = $this->httpClient->patch($url, [
+            RequestOptions::JSON => $signingOrder->toArray(),
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return PacketSigningOrder::createFromOne($content);
     }
 
     /**
