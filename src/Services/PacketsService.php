@@ -269,7 +269,7 @@ class PacketsService extends AbstractService
      */
     public function checkAccess(string $packetId, string $revisionId, string $email): bool
     {
-        $url = $this->resolveEndpoint("/flows/{$this->slateId}/packets/{$packetId}/revisions/{$revisionId}");
+        $url = $this->resolveEndpoint("/flows/{$this->slateId}/packets/{$packetId}/revisions/{$revisionId}/access");
 
         $response = $this->httpClient->get($url, [
             RequestOptions::QUERY => [
