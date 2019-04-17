@@ -262,14 +262,15 @@ class PacketsService extends AbstractService
     }
 
     /**
+     * @param string $flowUid
      * @param string $packetId
      * @param string $revisionId
      * @param string $email
      * @return bool
      */
-    public function checkAccess(string $packetId, string $revisionId, string $email): bool
+    public function checkAccess(string $flowUid, string $packetId, string $revisionId, string $email): bool
     {
-        $url = $this->resolveEndpoint("/flows/{$this->slateId}/packets/{$packetId}/revisions/{$revisionId}/access");
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetId}/revisions/{$revisionId}/access");
 
         $response = $this->httpClient->get($url, [
             RequestOptions::QUERY => [
