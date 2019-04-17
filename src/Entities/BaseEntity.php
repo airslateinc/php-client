@@ -42,6 +42,11 @@ class BaseEntity implements JsonSerializable
     private $objectMeta = [];
 
     /**
+     * @var array
+     */
+    private $originalIncluded = [];
+
+    /**
      * @param string $name
      * @return mixed|null
      */
@@ -157,6 +162,14 @@ class BaseEntity implements JsonSerializable
     }
 
     /**
+     * @return array
+     */
+    public function getOriginalIncluded(): array
+    {
+        return $this->originalIncluded;
+    }
+
+    /**
      * @param array $jsonApi
      * @return static
      * @throws \Exception
@@ -185,6 +198,7 @@ class BaseEntity implements JsonSerializable
         $model->included = $included;
         $model->objectMeta = $jsonApi['data']['meta'] ?? [];
         $model->meta = $jsonApi['meta'] ?? [];
+        $model->originalIncluded = $jsonApi['included'] ?? [];
 
         return $model;
     }
@@ -221,6 +235,7 @@ class BaseEntity implements JsonSerializable
             $model->relationships = $relationships;
             $model->included = $included;
             $model->objectMeta = $datum['meta'] ?? [];
+            $model->originalIncluded = $jsonApi['included'] ?? [];
 
             $models[] = $model;
         }
