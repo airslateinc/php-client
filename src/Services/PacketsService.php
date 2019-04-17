@@ -5,9 +5,14 @@ namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Packet;
 use AirSlate\ApiClient\Entities\Packets\PacketSend;
+use AirSlate\ApiClient\Entities\Packets\Revision;
+use AirSlate\ApiClient\Exceptions\DomainException;
+use AirSlate\ApiClient\Exceptions\Packets\NoSuchUserException;
+use AirSlate\ApiClient\Exceptions\Packets\UserHasNoAccessException;
 use AirSlate\ApiClient\Models\Packet\Create;
 use AirSlate\ApiClient\Models\Packet\Send\Create as CreatePacketSend;
 use AirSlate\ApiClient\Models\Packet\Update;
+use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -261,25 +266,37 @@ class PacketsService extends AbstractService
         return $response && $response->getStatusCode() === 204;
     }
 
+
     /**
      * @param string $flowUid
      * @param string $packetUid
      * @param string $revisionUid
      * @param string $email
-     * @return bool
+     * @return Revision
+     * @throws NoSuchUserException
+     * @throws UserHasNoAccessException
+     * @throws \Exception
      */
-    public function checkAccess(string $flowUid, string $packetUid, string $revisionUid, string $email): bool
+    public function checkAccess(string $flowUid, string $packetUid, string $revisionUid, string $email): Revision
     {
         $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/revisions/{$revisionUid}/access");
 
-        $response = $this->httpClient->get($url, [
-            RequestOptions::QUERY => [
-                'filter' => [
-                    'email' => $email
+        try {
+            $response = $this->httpClient->get($url, [
+                RequestOptions::QUERY => [
+                    'filter' => [
+                        'email' => $email
+                    ],
                 ],
-            ],
-        ]);
+            ]);
+        } catch (BadResponseException $e) {
+            throw new NoSuchUserException($e->getMessage());
+        } catch (DomainException $e) {
+            throw new UserHasNoAccessException($e->getMessage());
+        }
 
-        return $response && $response->getStatusCode() === 200;
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Revision::createFromOne($content);
     }
 }
