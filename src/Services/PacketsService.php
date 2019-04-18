@@ -328,9 +328,9 @@ class PacketsService extends AbstractService
                 ],
             ]);
         } catch (BadResponseException $e) {
-            throw new NoSuchUserException($e->getMessage());
+            throw new NoSuchUserException($e->getMessage(), $e->getCode(), $e);
         } catch (DomainException $e) {
-            throw new UserHasNoAccessException($e->getMessage());
+            throw new UserHasNoAccessException($e->getMessage(), $e->getCode(), $e);
         }
 
         return $response && $response->getStatusCode() === 204;
