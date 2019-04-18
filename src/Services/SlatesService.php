@@ -214,8 +214,16 @@ class SlatesService extends AbstractService
     /**
      * @return TagsService
      */
-    public function tags()
+    public function tags(): TagsService
     {
-        return (new TagsService($this->httpClient));
+        return new TagsService($this->httpClient);
+    }
+
+    /**
+     * @return RoleFieldsService
+     */
+    public function roleFields(): RoleFieldsService
+    {
+        return new RoleFieldsService($this->httpClient);
     }
 }
