@@ -12,6 +12,6 @@ class UserHasNoAccessException extends DomainException
      */
     protected function retrieveMessage(): string
     {
-        return 'User has no access to the revision';
+        return 'User has no access to the revision.';
     }
 }

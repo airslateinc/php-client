@@ -12,6 +12,6 @@ class NoSuchUserException extends DomainException
      */
     protected function retrieveMessage(): string
     {
-        return 'There is no such user in the system';
+        return 'There is no such user in the system.';
     }
 }
