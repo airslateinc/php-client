@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Models\Role;
 
+use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Models\AbstractModel;
 
 class Create extends AbstractModel
@@ -14,14 +15,14 @@ class Create extends AbstractModel
     public function addRole(string $name, string $slateId): void
     {
         $this->data[] = [
-            'type' => 'flow_roles',
+            'type' => EntityType::FLOW_ROLE,
             'attributes' => [
                 'name' => $name
             ],
             'relationships' => [
                 'flow' => [
                     'data' => [
-                        'type' => 'slates',
+                        'type' => EntityType::SLATE,
                         'id' => $slateId
                     ]
                 ]

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Models\RoleField;
 
+use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Models\AbstractModel;
 
 class Delete extends AbstractModel
@@ -13,7 +14,7 @@ class Delete extends AbstractModel
     public function addRoleField(string $roleFieldId): void
     {
         $this->data[] = [
-            'type' => 'flow_role_fields',
+            'type' => EntityType::FLOW_ROLE_FIELD,
             'id'   => $roleFieldId
         ];
     }
