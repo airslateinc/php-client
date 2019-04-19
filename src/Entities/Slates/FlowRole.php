@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient\Entities\Slates;
 
 use AirSlate\ApiClient\Entities\BaseEntity;
+use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Entities\Slate;
 
 /**
@@ -15,7 +16,7 @@ use AirSlate\ApiClient\Entities\Slate;
  */
 class FlowRole extends BaseEntity
 {
-    protected $type = 'flow_roles';
+    protected $type = EntityType::FLOW_ROLE;
 
     /**
      * @return Slate|null

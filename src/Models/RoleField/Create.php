@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace AirSlate\ApiClient\Models\RoleDocument;
+namespace AirSlate\ApiClient\Models\RoleField;
 
 use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Models\AbstractModel;
@@ -14,10 +14,10 @@ class Create extends AbstractModel
      * @param string $documentId
      * @param array $attributes
      */
-    public function addRoleDocument(string $flowRoleId, string $slateId, string $documentId, array $attributes): void
+    public function addRoleField(string $flowRoleId, string $slateId, string $documentId, array $attributes): void
     {
         $this->data[] = [
-            'type' => EntityType::FLOW_ROLE_DOCUMENT,
+            'type' => EntityType::FLOW_ROLE_FIELD,
             'attributes' => $attributes,
             'relationships' => [
                 'role' => [

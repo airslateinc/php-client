@@ -9,16 +9,16 @@ use AirSlate\ApiClient\Entities\Slate;
 use AirSlate\ApiClient\Entities\Document;
 
 /**
- * Class FlowRoleDocument
+ * Class FlowRoleField
  * @package AirSlate\ApiClient\Entities\Slates
  *
  * @property string $id
- * @property array $config
+ * @property bool $lock_unmapped_fields
  * @property array $fields
  */
-class FlowRoleDocument extends BaseEntity
+class FlowRoleField extends BaseEntity
 {
-    protected $type = EntityType::FLOW_ROLE_DOCUMENT;
+    protected $type = EntityType::FLOW_ROLE_FIELD;
 
     /**
      * @return Slate|null

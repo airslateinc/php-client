@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace AirSlate\ApiClient\Models\Role;
+namespace AirSlate\ApiClient\Models\RoleField;
 
 use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Models\AbstractModel;
@@ -9,13 +9,13 @@ use AirSlate\ApiClient\Models\AbstractModel;
 class Delete extends AbstractModel
 {
     /**
-     * @param string $roleId
+     * @param string $roleFieldId
      */
-    public function addRole(string $roleId): void
+    public function addRoleField(string $roleFieldId): void
     {
         $this->data[] = [
-            'type' => EntityType::FLOW_ROLE,
-            'id'   => $roleId
+            'type' => EntityType::FLOW_ROLE_FIELD,
+            'id'   => $roleFieldId
         ];
     }
 }
