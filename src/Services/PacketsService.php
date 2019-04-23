@@ -7,10 +7,14 @@ use AirSlate\ApiClient\Entities\DocumentRole;
 use AirSlate\ApiClient\Entities\Packet;
 use AirSlate\ApiClient\Entities\Packets\PacketSend;
 use AirSlate\ApiClient\Entities\Packets\PacketSigningOrder;
+use AirSlate\ApiClient\Exceptions\DomainException;
+use AirSlate\ApiClient\Exceptions\Packets\NoSuchUserException;
+use AirSlate\ApiClient\Exceptions\Packets\UserHasNoAccessException;
 use AirSlate\ApiClient\Models\Packet\Create;
 use AirSlate\ApiClient\Models\Packet\Send\Create as CreatePacketSend;
 use AirSlate\ApiClient\Models\Packet\Update;
 use AirSlate\ApiClient\Models\Packet\SigningOrder\Enable;
+use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -296,6 +300,38 @@ class PacketsService extends AbstractService
         $response = $this->httpClient->patch($url, [
             RequestOptions::JSON => $packet->toArray(),
         ]);
+
+        return $response && $response->getStatusCode() === 204;
+    }
+
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @param string $revisionUid
+     * @param string $email
+     * @return bool
+     * @throws NoSuchUserException
+     * @throws UserHasNoAccessException
+     * @throws \Exception
+     */
+    public function checkAccess(string $flowUid, string $packetUid, string $revisionUid, string $email): bool
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/revisions/{$revisionUid}/access");
+
+        try {
+            $response = $this->httpClient->get($url, [
+                RequestOptions::QUERY => [
+                    'filter' => [
+                        'email' => $email
+                    ],
+                ],
+            ]);
+        } catch (BadResponseException $e) {
+            throw new NoSuchUserException($e->getMessage(), $e->getCode(), $e);
+        } catch (DomainException $e) {
+            throw new UserHasNoAccessException($e->getMessage(), $e->getCode(), $e);
+        }
 
         return $response && $response->getStatusCode() === 204;
     }

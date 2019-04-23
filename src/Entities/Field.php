@@ -12,11 +12,12 @@ namespace AirSlate\ApiClient\Entities;
  * @property string $name
  * @property string|null $value
  * @property array $role_label
+ * @property array $triggers
  */
 class Field extends BaseEntity
 {
     /**
      * @var string
      */
-    protected $type = 'dictionary';
+    protected $type = EntityType::DICTIONARY;
 }

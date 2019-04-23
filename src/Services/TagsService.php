@@ -33,7 +33,7 @@ class TagsService extends AbstractService
     /**
      * @param string $slateId
      * @param string $packetId
-     * @return Slate[]
+     * @return Tag[]
      * @throws \Exception
      */
     public function collectionInPacket(string $slateId, string $packetId): array
@@ -51,7 +51,7 @@ class TagsService extends AbstractService
      * @param string $slateId
      * @param string $packetId
      * @param Assign $assign
-     * @return Slate[]
+     * @return Tag[]
      * @throws \Exception
      */
     public function assign(string $slateId, string $packetId, Assign $assign): array
