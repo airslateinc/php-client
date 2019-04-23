@@ -24,8 +24,8 @@ class Update extends AbstractModel
     public function toArray(): array
     {
         return [
-            'data' => array_map(function (FlowRoleDocument $roleDocuments) {
-                return $roleDocuments->jsonSerialize()['data'];
+            'data' => array_map(function (FlowRoleDocument $roleDocument) {
+                return $roleDocument->jsonSerialize()['data'];
             }, $this->data),
         ];
     }
