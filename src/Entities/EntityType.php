@@ -10,4 +10,5 @@ interface EntityType
     public const FLOW_ROLE_FIELD = 'flow_role_fields';
     public const SLATE = 'slates';
     public const DOCUMENT = 'documents';
+    public const DICTIONARY = 'dictionary';
 }
