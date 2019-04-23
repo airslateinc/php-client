@@ -19,5 +19,5 @@ class Field extends BaseEntity
     /**
      * @var string
      */
-    protected $type = 'dictionary';
+    protected $type = EntityType::DICTIONARY;
 }
