@@ -132,12 +132,8 @@ class PacketsService extends AbstractService
     {
         $url = $this->resolveEndpoint("/flows/{$this->slateId}/packets/{$packetId}/send");
 
-        $payload = [
-            'data' => $packetSend->toArray(),
-        ];
-
         $response = $this->httpClient->post($url, [
-            RequestOptions::JSON => $payload,
+            RequestOptions::JSON => $packetSend->toArray(),
         ]);
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
