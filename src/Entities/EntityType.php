@@ -11,4 +11,6 @@ interface EntityType
     public const SLATE = 'slates';
     public const DOCUMENT = 'documents';
     public const DICTIONARY = 'dictionary';
+    public const INVITE_EMAIL_ADDITION = 'invite_email_additions';
+    public const PACKET_SEND = 'packet_send';
 }
