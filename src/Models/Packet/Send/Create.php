@@ -15,6 +15,8 @@ class Create implements ArrayableInterface
 {
     private const INVITE_EMAIL_ADDITION_DEFAULT_ID = 'generic_id';
 
+    private const INVITE_EMAIL_ADDITION_KEY = 'invite_email_additions';
+
     /**
      * @var string
      */
@@ -72,7 +74,7 @@ class Create implements ArrayableInterface
      */
     public function setInviteEmailAddition(string $subject, string $text): void
     {
-        $this->relationships[EntityType::INVITE_EMAIL_ADDITION] = [
+        $this->relationships[self::INVITE_EMAIL_ADDITION_KEY] = [
             'type' => EntityType::INVITE_EMAIL_ADDITION,
             'id' => self::INVITE_EMAIL_ADDITION_DEFAULT_ID
         ];
