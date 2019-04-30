@@ -67,10 +67,10 @@ class Create implements ArrayableInterface
 
     /**
      * @param string $subject
-     * @param bool $text
+     * @param string $text
      * @return void
      */
-    public function setInviteEmailAddition(string $subject, bool $text): void
+    public function setInviteEmailAddition(string $subject, string $text): void
     {
         $this->relationships[EntityType::INVITE_EMAIL_ADDITION] = [
             'type' => EntityType::INVITE_EMAIL_ADDITION,
