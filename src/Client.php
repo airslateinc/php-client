@@ -103,7 +103,7 @@ class Client
             'base_uri' => $this->prepareBaserUri($baseUri),
             'headers' => $this->prepareHeaders($config),
             'connect_timeout' => $config['connectTimeout'] ?? 30,
-            'request_timeout' => $config['requestTimeout'] ?? 30,
+            'timeout' => $config['requestTimeout'] ?? 30,
             'handler' => $config['handler'] ?? null
         ]);
 
