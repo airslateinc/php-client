@@ -124,11 +124,11 @@ class PacketsService extends AbstractService
      * @param string           $packetId
      * @param CreatePacketSend $packetSend
      *
-     * @return PacketSend
+     * @return array
      *
      * @throws \Exception
      */
-    public function sendPacket(string $packetId, CreatePacketSend $packetSend): PacketSend
+    public function sendPacket(string $packetId, CreatePacketSend $packetSend): array
     {
         $url = $this->resolveEndpoint("/flows/{$this->slateId}/packets/{$packetId}/send");
 
@@ -137,7 +137,7 @@ class PacketsService extends AbstractService
         ]);
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
-        return PacketSend::createFromOne($content);
+        return PacketSend::createFromCollection($content);
     }
 
     /**
