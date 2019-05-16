@@ -51,7 +51,7 @@ class Bulk extends AbstractModel
      */
     private function setInviteEmailAddition(InviteEmailAddition $emailAddition): void
     {
-        if (array_search($emailAddition->id, array_column($this->included, 'id')) === false) {
+        if (array_search($emailAddition->getId(), array_column($this->included, 'id')) === false) {
             $this->included[] = [
                 'id' => $emailAddition->id,
                 'type' => EntityType::INVITE_EMAIL_ADDITION,
