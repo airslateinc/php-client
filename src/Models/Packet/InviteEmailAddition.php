@@ -23,7 +23,9 @@ class InviteEmailAddition
      */
     public const RELATIONSHIP_KEY = 'invite_email_additions';
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $id;
 
     /**
