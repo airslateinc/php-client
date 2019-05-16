@@ -36,7 +36,7 @@ class Bulk extends AbstractModel
         if ($emailAddition !== null) {
             $payload['relationships'][InviteEmailAddition::RELATIONSHIP_KEY] = [
                 'type' => EntityType::INVITE_EMAIL_ADDITION,
-                'id' => $emailAddition->id,
+                'id' => $emailAddition->getId(),
             ];
 
             $this->setInviteEmailAddition($emailAddition);
@@ -56,8 +56,8 @@ class Bulk extends AbstractModel
                 'id' => $emailAddition->getId(),
                 'type' => EntityType::INVITE_EMAIL_ADDITION,
                 'attributes' => [
-                    'subject' => $emailAddition->subject,
-                    'text' => $emailAddition->text,
+                    'subject' => $emailAddition->getSubject(),
+                    'text' => $emailAddition->getText(),
                 ]
             ];
         }
