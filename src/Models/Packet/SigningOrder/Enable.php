@@ -46,13 +46,11 @@ class Enable extends AbstractModel
      */
     public function setPacket(string $packetUid, bool $isOrderEnabled): void
     {
-        $this->included = [
-            [
-                'id' => $packetUid,
-                'type' => 'packets',
-                'attributes' => [
-                    'signing_order_enabled' => $isOrderEnabled,
-                ],
+        $this->included[] = [
+            'id' => $packetUid,
+            'type' => 'packets',
+            'attributes' => [
+                'signing_order_enabled' => $isOrderEnabled,
             ],
         ];
     }

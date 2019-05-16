@@ -16,7 +16,7 @@ abstract class AbstractModel implements ArrayableInterface
     /**
      * @var array
      */
-    protected $included;
+    protected $included = [];
 
     /**
      * @param array $data
