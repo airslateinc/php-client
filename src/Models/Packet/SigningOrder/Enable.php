@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient\Models\Packet\SigningOrder;
 
 use AirSlate\ApiClient\Entities\EntityType;
-use AirSlate\ApiClient\Entities\Packets\InviteEmailAddition;
 use AirSlate\ApiClient\Models\AbstractModel;
+use AirSlate\ApiClient\Models\Packet\InviteEmailAddition;
 
 class Enable extends AbstractModel
 {
