@@ -23,6 +23,9 @@ class InviteEmailAddition
      */
     public const RELATIONSHIP_KEY = 'invite_email_additions';
 
+    /** @var string */
+    private $id;
+
     /**
      * @var string
      */
@@ -35,22 +38,38 @@ class InviteEmailAddition
 
     /**
      * InviteEmailAddition constructor.
+     * @param string $id
      * @param string $subject
      * @param string $text
      */
-    public function __construct(string $subject, string $text)
+    public function __construct(string $id, string $subject, string $text)
     {
+        $this->id = $id;
         $this->subject = $subject;
         $this->text = $text;
     }
 
+    /**
+     * @return string
+     */
     public function getSubject(): string
     {
         return $this->subject;
     }
 
+    /**
+     * @return string
+     */
     public function getText(): string
     {
         return $this->text;
+    }
+
+    /**
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->id;
     }
 }
