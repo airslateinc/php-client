@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient\Models\Packet\Send;
 
 use AirSlate\ApiClient\Entities\EntityType;
-use AirSlate\ApiClient\Entities\Packets\InviteEmailAddition;
 use AirSlate\ApiClient\Models\ArrayableInterface;
+use AirSlate\ApiClient\Models\Packet\InviteEmailAddition;
 
 /**
  * Class Slate
