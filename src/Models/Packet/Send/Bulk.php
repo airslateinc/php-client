@@ -53,7 +53,7 @@ class Bulk extends AbstractModel
     {
         if (array_search($emailAddition->getId(), array_column($this->included, 'id')) === false) {
             $this->included[] = [
-                'id' => $emailAddition->id,
+                'id' => $emailAddition->getId(),
                 'type' => EntityType::INVITE_EMAIL_ADDITION,
                 'attributes' => [
                     'subject' => $emailAddition->subject,
