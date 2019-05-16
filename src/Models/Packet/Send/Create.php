@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient\Models\Packet\Send;
 
 use AirSlate\ApiClient\Entities\EntityType;
+use AirSlate\ApiClient\Entities\Packets\InviteEmailAddition;
 use AirSlate\ApiClient\Models\ArrayableInterface;
 
 /**
@@ -13,10 +14,6 @@ use AirSlate\ApiClient\Models\ArrayableInterface;
  */
 class Create implements ArrayableInterface
 {
-    private const INVITE_EMAIL_ADDITION_DEFAULT_ID = 'generic_id';
-
-    private const INVITE_EMAIL_ADDITION_KEY = 'invite_email_additions';
-
     /**
      * @var string
      */
@@ -74,13 +71,13 @@ class Create implements ArrayableInterface
      */
     public function setInviteEmailAddition(string $subject, string $text): void
     {
-        $this->relationships[self::INVITE_EMAIL_ADDITION_KEY] = [
+        $this->relationships[InviteEmailAddition::RELATIONSHIP_KEY] = [
             'type' => EntityType::INVITE_EMAIL_ADDITION,
-            'id' => self::INVITE_EMAIL_ADDITION_DEFAULT_ID
+            'id' => InviteEmailAddition::DEFAULT_ID
         ];
 
         $this->included[] = [
-            'id' => self::INVITE_EMAIL_ADDITION_DEFAULT_ID,
+            'id' => InviteEmailAddition::DEFAULT_ID,
             'type' => EntityType::INVITE_EMAIL_ADDITION,
             'attributes' => [
                 'subject' => $subject,

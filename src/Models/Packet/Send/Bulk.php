@@ -1,29 +1,35 @@
 <?php
 declare(strict_types=1);
 
-namespace AirSlate\ApiClient\Models\Packet\SigningOrder;
+namespace AirSlate\ApiClient\Models\Packet\Send;
 
 use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Entities\Packets\InviteEmailAddition;
 use AirSlate\ApiClient\Models\AbstractModel;
 
-class Enable extends AbstractModel
+/**
+ * Class Bulk
+ * @package AirSlate\ApiClient\Models\Packet\Send
+ *
+ */
+class Bulk extends AbstractModel
 {
     /**
-     * @param string $role
      * @param string $email
-     * @param int $order
-     * @param InviteEmailAddition $emailAddition
+     * @param string $accessLevel
+     * @param InviteEmailAddition|null $emailAddition
      * @return void
      */
-    public function enable(string $role, string $email, int $order, ?InviteEmailAddition $emailAddition = null): void
-    {
+    public function addPacketSend(
+        string $email,
+        string $accessLevel,
+        ?InviteEmailAddition $emailAddition = null
+    ): void {
         $payload = [
-            'type' => 'packet_signing_order',
+            'type' => EntityType::PACKET_SEND,
             'attributes' => [
-                'role' => $role,
                 'email' => $email,
-                'order' => $order,
+                'access_level' => $accessLevel,
             ],
         ];
 
@@ -37,24 +43,6 @@ class Enable extends AbstractModel
         }
 
         $this->data[] = $payload;
-    }
-
-    /**
-     * @param string $packetUid
-     * @param bool $isOrderEnabled
-     * @return void
-     */
-    public function setPacket(string $packetUid, bool $isOrderEnabled): void
-    {
-        $this->included = [
-            [
-                'id' => $packetUid,
-                'type' => 'packets',
-                'attributes' => [
-                    'signing_order_enabled' => $isOrderEnabled,
-                ],
-            ],
-        ];
     }
 
     /**
@@ -73,16 +61,5 @@ class Enable extends AbstractModel
                 ]
             ];
         }
-    }
-
-    /**
-     * @return array
-     */
-    public function toArray(): array
-    {
-        return [
-            'data' => $this->data,
-            'included' => $this->included,
-        ];
     }
 }
