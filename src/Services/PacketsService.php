@@ -12,6 +12,7 @@ use AirSlate\ApiClient\Exceptions\Packets\NoSuchUserException;
 use AirSlate\ApiClient\Exceptions\Packets\UserHasNoAccessException;
 use AirSlate\ApiClient\Models\Packet\Create;
 use AirSlate\ApiClient\Models\Packet\Send\Create as CreatePacketSend;
+use AirSlate\ApiClient\Models\Packet\Send\Bulk as BulkPacketSend;
 use AirSlate\ApiClient\Models\Packet\Update;
 use AirSlate\ApiClient\Models\Packet\SigningOrder\Enable;
 use GuzzleHttp\Exception\BadResponseException;
@@ -141,27 +142,18 @@ class PacketsService extends AbstractService
     }
 
     /**
-     * @param string                   $packetId
-     * @param array|CreatePacketSend[] $packetSends
-     *
+     * @param string $packetId
+     * @param BulkPacketSend $bulkPacketSend
      * @return array|PacketSend[]
      *
      * @throws \Exception
      */
-    public function sendPacketBulk(string $packetId, array $packetSends): array
+    public function sendPacketBulk(string $packetId, BulkPacketSend $bulkPacketSend): array
     {
         $url = $this->resolveEndpoint("/flows/{$this->slateId}/packets/{$packetId}/send/bulk");
 
-        $payload = [
-            'data' => [],
-        ];
-
-        foreach ($packetSends as $packetSend) {
-            $payload['data'][] = $packetSend->toArray();
-        }
-
         $response = $this->httpClient->post($url, [
-            RequestOptions::JSON => $payload,
+            RequestOptions::JSON => $bulkPacketSend->toArray(),
         ]);
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
