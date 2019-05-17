@@ -13,6 +13,14 @@ abstract class AbstractModel implements ArrayableInterface
      */
     protected $data;
 
+    /**
+     * @var array
+     */
+    protected $included = [];
+
+    /**
+     * @param array $data
+     */
     public function __construct(array $data = [])
     {
         $this->data = $data;
@@ -23,8 +31,14 @@ abstract class AbstractModel implements ArrayableInterface
      */
     public function toArray(): array
     {
-        return [
+        $payload = [
             'data' => $this->data,
         ];
+
+        if (!empty($this->included)) {
+            $payload['included'] = $this->included;
+        }
+
+        return $payload;
     }
 }
