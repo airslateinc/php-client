@@ -217,10 +217,10 @@ class PacketsService extends AbstractService
     /**
      * @param string $flowUid
      * @param string $packetUid
-     * @return array
+     * @return PacketSigningOrder[]
      * @throws \Exception
      */
-    public function getSigningOrders(string $flowUid, string $packetUid)
+    public function getSigningOrders(string $flowUid, string $packetUid): array
     {
         $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/signing-order");
 
