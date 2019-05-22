@@ -54,6 +54,11 @@ class Create extends AbstractModel
     private $type = 'PDF';
 
     /**
+     * @var string
+     */
+    private $editorType = 'PDF';
+
+    /**
      * @param string $name
      * @param array $arguments
      * @return $this
@@ -84,6 +89,7 @@ class Create extends AbstractModel
                 'attributes' => [
                     'name' => $this->name,
                     'type' => $this->type,
+                    'editor_type' => $this->editorType,
                 ],
                 'meta' => [
                     'num_pages' => $this->pagesCount,
@@ -135,6 +141,16 @@ class Create extends AbstractModel
     {
         $this->type = $type;
 
+        return $this;
+    }
+
+    /**
+     * @param string $editorType
+     * @return Create
+     */
+    public function setEditorType (string $editorType): Create
+    {
+        $this->editorType = $editorType;
         return $this;
     }
 }
