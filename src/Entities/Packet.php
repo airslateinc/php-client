@@ -9,6 +9,7 @@ namespace AirSlate\ApiClient\Entities;
  * @property string $id
  * @property string $versions
  * @property string $status
+ * @property bool $signing_order_enabled
  * @property string $created_at
  * @property string $updated_at
  *
