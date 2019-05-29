@@ -238,6 +238,26 @@ class PacketsService extends AbstractService
      * @return array
      * @throws \Exception
      */
+    public function assignRole(string $flowUid, string $packetUid, Enable $signingOrder): array
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/signing-order");
+
+        $response = $this->httpClient->put($url, [
+            RequestOptions::JSON => $signingOrder->toArray(),
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return PacketSigningOrder::createFromCollection($content);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @param Enable $signingOrder
+     * @return array
+     * @throws \Exception
+     */
     public function updateSigningOrder(string $flowUid, string $packetUid, Enable $signingOrder): array
     {
         $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/signing-order");
