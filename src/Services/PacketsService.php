@@ -234,7 +234,7 @@ class PacketsService extends AbstractService
      */
     public function getPacketRoles(string $flowUid, string $packetUid): array
     {
-        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/packet-roles");
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/roles");
 
         $response = $this->httpClient->get($url);
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
