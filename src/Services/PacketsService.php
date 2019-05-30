@@ -203,10 +203,38 @@ class PacketsService extends AbstractService
      * @param string $packetUid
      * @return DocumentRole[]
      * @throws \Exception
+     * @deprecated 7.14.0 Use getLatestRevisionRoles instead
      */
     public function getRoles(string $flowUid, string $packetUid): array
     {
+        return $this->getLatestRevisionRoles($flowUid, $packetUid);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @return array
+     * @throws \Exception
+     */
+    public function getLatestRevisionRoles(string $flowUid, string $packetUid): array
+    {
         $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/latest-revision/roles");
+
+        $response = $this->httpClient->get($url);
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return DocumentRole::createFromCollection($content);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @return DocumentRole[]
+     * @throws \Exception
+     */
+    public function getPacketRoles(string $flowUid, string $packetUid): array
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/roles");
 
         $response = $this->httpClient->get($url);
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
@@ -225,6 +253,26 @@ class PacketsService extends AbstractService
         $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/signing-order");
 
         $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return PacketSigningOrder::createFromCollection($content);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @param Enable $signingOrder
+     * @return array
+     * @throws \Exception
+     */
+    public function bindRole(string $flowUid, string $packetUid, Enable $signingOrder): array
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/bind-user-to-role-on-init");
+
+        $response = $this->httpClient->put($url, [
+            RequestOptions::JSON => $signingOrder->toArray(),
+        ]);
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
