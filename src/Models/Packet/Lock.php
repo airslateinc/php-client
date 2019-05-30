@@ -72,6 +72,8 @@ class Lock
      */
     private function getAttributes(): array
     {
+        $attributes = [];
+
         if ($this->status !== null) {
             $attributes['status'] = $this->status;
         }
