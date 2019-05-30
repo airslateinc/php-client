@@ -203,10 +203,38 @@ class PacketsService extends AbstractService
      * @param string $packetUid
      * @return DocumentRole[]
      * @throws \Exception
+     * @deprecated 7.14.0 Use getLatestRevisionRoles instead
      */
     public function getRoles(string $flowUid, string $packetUid): array
     {
+        return $this->getLatestRevisionRoles($flowUid, $packetUid);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @return array
+     * @throws \Exception
+     */
+    public function getLatestRevisionRoles(string $flowUid, string $packetUid): array
+    {
         $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/latest-revision/roles");
+
+        $response = $this->httpClient->get($url);
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return DocumentRole::createFromCollection($content);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @return DocumentRole[]
+     * @throws \Exception
+     */
+    public function getPacketRoles(string $flowUid, string $packetUid): array
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/packet-roles");
 
         $response = $this->httpClient->get($url);
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
