@@ -343,15 +343,15 @@ class PacketsService extends AbstractService
     }
 
     /**
-     * @param string $slateId
-     * @param string $packetId
+     * @param string $flowUid
+     * @param string $packetUid
      * @param Lock $lock
      * @return bool
      * @throws \Exception
      */
-    public function lock(string $slateId, string $packetId, Lock $lock): bool
+    public function lock(string $flowUid, string $packetUid, Lock $lock): bool
     {
-        $url = $this->resolveEndpoint("/flows/{$slateId}/packets/{$packetId}/lock");
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/lock");
 
         $response = $this->httpClient->patch($url, [
             RequestOptions::JSON => $lock->toArray(),
