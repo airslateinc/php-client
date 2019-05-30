@@ -266,9 +266,9 @@ class PacketsService extends AbstractService
      * @return array
      * @throws \Exception
      */
-    public function assignRole(string $flowUid, string $packetUid, Enable $signingOrder): array
+    public function bindRole(string $flowUid, string $packetUid, Enable $signingOrder): array
     {
-        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/signing-order");
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/bind-user-to-role-on-init");
 
         $response = $this->httpClient->put($url, [
             RequestOptions::JSON => $signingOrder->toArray(),
