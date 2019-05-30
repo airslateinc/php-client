@@ -73,7 +73,7 @@ class Lock
     }
 
     /**
-     * @return mixed
+     * @return array
      */
     private function getAttributes(): array
     {
