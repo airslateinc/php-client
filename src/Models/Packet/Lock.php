@@ -18,11 +18,6 @@ class Lock
     public const STATUS_LOCKED = 'LOCKED';
 
     /**
-     * @var array
-     */
-    private const ATTRIBUTES = ['status', 'lock_after_signing_order'];
-
-    /**
      * @var string
      */
     private $status;
@@ -77,13 +72,13 @@ class Lock
      */
     private function getAttributes(): array
     {
-        $attributes = array_reduce(self::ATTRIBUTES, function ($attributes, $property) {
-            if ($this->{$property} !== null) {
-                $attributes[$property] = $this->{$property};
-            }
+        if ($this->status !== null) {
+            $attributes['status'] = $this->status;
+        }
 
-            return $attributes;
-        }, []);
+        if ($this->lock_after_signing_order !== null) {
+            $attributes['lock_after_signing_order'] = $this->lock_after_signing_order;
+        }
 
         if (!count($attributes)) {
             throw new DomainException('Send attributes are not defined');
