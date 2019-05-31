@@ -33,7 +33,7 @@ class Lock
      */
     public function setStatus(string $status): self
     {
-        if (!in_array($status, [self::STATUS_LOCKED, self::STATUS_ACTIVE])) {
+        if (!in_array($status, [self::STATUS_LOCKED, self::STATUS_ACTIVE, true])) {
             throw new DomainException('Status "' . $status . '" is not allowed');
         }
 
