@@ -11,6 +11,7 @@ use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Exceptions\Packets\NoSuchUserException;
 use AirSlate\ApiClient\Exceptions\Packets\UserHasNoAccessException;
 use AirSlate\ApiClient\Models\Packet\Create;
+use AirSlate\ApiClient\Models\Packet\Lock;
 use AirSlate\ApiClient\Models\Packet\Send\Create as CreatePacketSend;
 use AirSlate\ApiClient\Models\Packet\Send\Bulk as BulkPacketSend;
 use AirSlate\ApiClient\Models\Packet\Update;
@@ -387,5 +388,23 @@ class PacketsService extends AbstractService
         }
 
         return $response && $response->getStatusCode() === 204;
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @param Lock $lock
+     * @return bool
+     * @throws \Exception
+     */
+    public function lock(string $flowUid, string $packetUid, Lock $lock): bool
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/lock");
+
+        $response = $this->httpClient->patch($url, [
+            RequestOptions::JSON => $lock->toArray(),
+        ]);
+
+        return $response && $response->getStatusCode() === 200;
     }
 }
