@@ -16,18 +16,18 @@ class CustomOptions
     private $enableToolbar;
 
     /**
-     * @var ActiveTab
+     * @var ActiveModebarTab
      */
-    private $activeTab;
+    private $activeModebarTab;
 
     public function __construct(
         EnableComments $enableComments,
         EnableToolbar $enableToolbar,
-        ActiveTab $activeTab
+        ActiveModebarTab $activeModebarTab
     ) {
         $this->enableComments = $enableComments;
         $this->enableToolbar = $enableToolbar;
-        $this->activeTab = $activeTab;
+        $this->activeModebarTab = $activeModebarTab;
     }
 
     public function enableComments(): EnableComments
@@ -40,9 +40,9 @@ class CustomOptions
         return $this->enableToolbar;
     }
 
-    public function activeTab(): ActiveTab
+    public function activeModebarTab(): ActiveModebarTab
     {
-        return $this->activeTab;
+        return $this->activeModebarTab;
     }
 
     public function toArray(): array
@@ -50,7 +50,7 @@ class CustomOptions
         return [
             'enable_comments' => $this->enableComments->toArray(),
             'enable_toolbar' => $this->enableToolbar->toArray(),
-            'active_modebar_tab' => $this->activeTab->toArray(),
+            'active_modebar_tab' => $this->activeModebarTab->toArray(),
         ];
     }
 
@@ -59,7 +59,7 @@ class CustomOptions
         return new self(
             new EnableComments,
             new EnableToolbar,
-            new ActiveTab
+            new ActiveModebarTab
         );
     }
 }
