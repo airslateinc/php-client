@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Entities;
 
+use AirSlate\ApiClient\Entities\DocumentPermissions\ActiveTab;
 use AirSlate\ApiClient\Entities\DocumentPermissions\CustomOptions;
 use AirSlate\ApiClient\Entities\DocumentPermissions\EnableComments;
 use AirSlate\ApiClient\Entities\DocumentPermissions\EnableToolbar;
@@ -84,6 +85,9 @@ class DocumentPermissions extends BaseEntity
             new EnableToolbar(
                 $this->custom_options['enable_toolbar']['value'] ?? false,
                 $this->custom_options['enable_toolbar']['override'] ?? false
+            ),
+            new ActiveTab(
+                $this->custom_options['active_modebar_tab']['value']
             )
         );
     }
