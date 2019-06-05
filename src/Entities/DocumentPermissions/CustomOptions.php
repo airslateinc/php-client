@@ -42,7 +42,7 @@ class CustomOptions
 
     public function showConstructor(): ShowConstructor
     {
-        return $this->showConstructor();
+        return $this->showConstructor;
     }
 
     public function toArray(): array
