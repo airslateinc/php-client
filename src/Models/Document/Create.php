@@ -18,6 +18,7 @@ use AirSlate\ApiClient\Models\AbstractModel;
  * @method addOriginal(string $id): Create
  * @method addImage(string $id): Create
  * @method addPdf(string $id): Create
+ * @method addFinalPdf(string $id): Create
  */
 class Create extends AbstractModel
 {
@@ -31,6 +32,7 @@ class Create extends AbstractModel
         'addOriginal' => 'original_file',
         'addImage' => 'image_file',
         'addPdf' => 'pdf_file',
+        'addFinalPdf' => 'final_pdf_file',
     ];
 
     /**
