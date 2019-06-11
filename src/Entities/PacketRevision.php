@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Entities;
 
@@ -8,4 +9,13 @@ class PacketRevision extends BaseEntity
      * @var string
      */
     protected $type = 'packet_revisions';
+
+    /**
+     * @return Document[]
+     * @throws \Exception
+     */
+    public function getDocuments()
+    {
+        return $this->hasMany(Document::class, 'documents');
+    }
 }

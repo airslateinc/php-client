@@ -28,6 +28,14 @@ class PacketsService extends AbstractService
     protected $slateId;
 
     /**
+     * @return PacketRevisionsService
+     */
+    public function packetRevision(): PacketRevisionsService
+    {
+        return new PacketRevisionsService($this->httpClient);
+    }
+
+    /**
      * @return Packet[]
      * @throws \Exception
      */

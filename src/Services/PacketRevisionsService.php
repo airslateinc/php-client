@@ -21,4 +21,22 @@ class PacketRevisionsService extends AbstractService
 
         return PacketRevision::createFromCollection($content);
     }
+
+    /**
+     * @param string $slateId
+     * @param string $packetId
+     * @param string $revisionId
+     * @return PacketRevision
+     * @throws \Exception
+     */
+    public function oneBySlateIdAndRevisionId(string $slateId, string $packetId, string $revisionId): PacketRevision
+    {
+        $url = $this->resolveEndpoint('slates/' . $slateId . '/packets/' . $packetId . '/revisions/' . $revisionId);
+
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return PacketRevision::createFromOne($content);
+    }
 }
