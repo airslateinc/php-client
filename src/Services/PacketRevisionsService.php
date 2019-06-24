@@ -31,7 +31,7 @@ class PacketRevisionsService extends AbstractService
      */
     public function oneBySlateIdAndRevisionId(string $slateId, string $packetId, string $revisionId): PacketRevision
     {
-        $url = $this->resolveEndpoint('slates/' . $slateId . '/packets/' . $packetId . '/revisions/' . $revisionId);
+        $url = $this->resolveEndpoint('flows/' . $slateId . '/packets/' . $packetId . '/revisions/' . $revisionId);
 
         $response = $this->httpClient->get($url);
 
