@@ -14,5 +14,5 @@ class OrganizationUser extends BaseEntity
     /**
      * @var string $type
      */
-    protected $type = 'organization_users';
+    protected $type = EntityType::ORGANIZATION_USER;
 }

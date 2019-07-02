@@ -18,7 +18,7 @@ class Slate extends BaseEntity
     /**
      * @var string
      */
-    protected $type = 'slates';
+    protected $type = EntityType::SLATE;
 
     /**
      * @return BaseEntity|User|null

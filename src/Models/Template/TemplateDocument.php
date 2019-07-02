@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Models\Template;
 
+use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Models\AbstractModel;
 
 /**
@@ -19,7 +20,7 @@ class TemplateDocument extends AbstractModel
     {
         $data = [
             'id' => $documentId,
-            'type' => 'documents'
+            'type' => EntityType::DOCUMENT
         ];
         parent::__construct($data);
     }

@@ -3,6 +3,7 @@
 namespace AirSlate\ApiClient\Entities\EventBus;
 
 use AirSlate\ApiClient\Entities\BaseEntity;
+use AirSlate\ApiClient\Entities\EntityType;
 
 /**
  * Class Event
@@ -18,7 +19,7 @@ class Event extends BaseEntity
     /**
      * @var string
      */
-    protected $type = 'applications-message-bus-event';
+    protected $type = EntityType::APPLICATION_MESSAGE_BUS_EVENT;
 
     /**
      * @return array

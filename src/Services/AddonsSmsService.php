@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
+use AirSlate\ApiClient\Entities\EntityType;
 use GuzzleHttp\RequestOptions;
 
 class AddonsSmsService extends AbstractService
@@ -18,7 +19,7 @@ class AddonsSmsService extends AbstractService
 
         $payload = [
             'data' => [
-                'type' => 'addons_sms',
+                'type' => EntityType::ADDON_SMS,
                 'attributes' => [
                     'phone' => $phone,
                     'message' => $message

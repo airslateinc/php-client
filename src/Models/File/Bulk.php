@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Models\File;
 
+use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Models\AbstractModel;
 
 /**
@@ -19,7 +20,7 @@ class Bulk extends AbstractModel
     public function addFile(string $name, string $content): void
     {
         $this->data[] = [
-            'type' => 'files',
+            'type' => EntityType::FILE,
             'attributes' => [
                 'name' => $name,
                 'file' => base64_encode($content),
@@ -35,7 +36,7 @@ class Bulk extends AbstractModel
     {
         $this->data[] = [
             'data' => [
-                'type' => 'files',
+                'type' => EntityType::FILE,
                 'attributes' => [
                     'name' => $name,
                     'url' => $url,
