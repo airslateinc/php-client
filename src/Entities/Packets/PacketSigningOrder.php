@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient\Entities\Packets;
 
 use AirSlate\ApiClient\Entities\BaseEntity;
+use AirSlate\ApiClient\Entities\EntityType;
 
 /**
  * Class PacketSigningOrder
@@ -21,5 +22,5 @@ class PacketSigningOrder extends BaseEntity
     /**
      * @var string
      */
-    protected $type = 'packet_signing_order';
+    protected $type = EntityType::PACKET_SIGNING_ORDER;
 }

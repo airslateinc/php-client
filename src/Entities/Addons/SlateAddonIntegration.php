@@ -3,6 +3,7 @@
 namespace AirSlate\ApiClient\Entities\Addons;
 
 use AirSlate\ApiClient\Entities\BaseEntity;
+use AirSlate\ApiClient\Entities\EntityType;
 
 /**
  * Class SlateAddonIntegration
@@ -17,5 +18,5 @@ class SlateAddonIntegration extends BaseEntity
     /**
      * @var string
      */
-    protected $type = 'slate_addon_integrations';
+    protected $type = EntityType::SLATE_ADDON_INTEGRATION;
 }

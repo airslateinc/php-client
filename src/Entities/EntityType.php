@@ -45,4 +45,7 @@ interface EntityType
     public const EXPORT = 'export';
     public const EVENT = 'events';
     public const INVITE_EMAIL_ADDITION = 'invite_email_additions';
+    public const SLATE_ADDON_INTEGRATION = 'slate_addon_integrations';
+    public const PACKET_SIGNING_ORDER = 'packet_signing_order';
+    public const FLOW_TAG = 'flow_tags';
 }
