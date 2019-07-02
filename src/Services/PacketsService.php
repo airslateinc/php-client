@@ -10,6 +10,7 @@ use AirSlate\ApiClient\Entities\Packets\PacketSigningOrder;
 use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Exceptions\Packets\NoSuchUserException;
 use AirSlate\ApiClient\Exceptions\Packets\UserHasNoAccessException;
+use AirSlate\ApiClient\Models\Packet\ActivateOpenAsRole;
 use AirSlate\ApiClient\Models\Packet\Create;
 use AirSlate\ApiClient\Models\Packet\Lock;
 use AirSlate\ApiClient\Models\Packet\Send\Create as CreatePacketSend;
@@ -286,6 +287,24 @@ class PacketsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return PacketSigningOrder::createFromCollection($content);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @param ActivateOpenAsRole $activateOpenAsRole
+     * @return bool
+     * @throws \Exception
+     */
+    public function activateOpenAsRole(string $flowUid, string $packetUid, ActivateOpenAsRole $activateOpenAsRole): bool
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/activate-open-as-role");
+
+        $response = $this->httpClient->put($url, [
+            RequestOptions::JSON => $activateOpenAsRole->toArray(),
+        ]);
+
+        return $response && $response->getStatusCode() === 200;
     }
 
     /**
