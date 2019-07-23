@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Models\Template;
 
+use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Models\AbstractModel;
 
 /**
@@ -21,7 +22,7 @@ class Create extends AbstractModel
         }
 
         $this->data['documents']['data'][] = [
-            'type' => 'documents',
+            'type' => EntityType::DOCUMENT,
             'id' => $documentId,
         ];
     }
@@ -33,7 +34,7 @@ class Create extends AbstractModel
     {
         return [
             'data' => [
-                'type' => 'templates',
+                'type' => EntityType::TEMPLATE,
                 'relationships' => $this->data,
             ]
         ];

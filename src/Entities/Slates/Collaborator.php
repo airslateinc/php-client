@@ -3,6 +3,7 @@
 namespace AirSlate\ApiClient\Entities\Slates;
 
 use AirSlate\ApiClient\Entities\BaseEntity;
+use AirSlate\ApiClient\Entities\EntityType;
 
 /**
  * Class Collaborator
@@ -18,5 +19,5 @@ use AirSlate\ApiClient\Entities\BaseEntity;
 
 class Collaborator extends BaseEntity
 {
-    protected $type = 'slate_collaborators';
+    protected $type = EntityType::SLATE_COLLABORATOR;
 }

@@ -21,5 +21,5 @@ class File extends BaseEntity
     /**
      * @var string
      */
-    protected $type = 'files';
+    protected $type = EntityType::FILE;
 }

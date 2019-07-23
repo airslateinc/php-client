@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\DocumentRole;
+use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Entities\Packet;
 use AirSlate\ApiClient\Entities\Packets\PacketSend;
 use AirSlate\ApiClient\Entities\Packets\PacketSigningOrder;
@@ -119,7 +120,7 @@ class PacketsService extends AbstractService
 
         $payload = [
             'data' => [
-                'type' => 'packet_send',
+                'type' => EntityType::PACKET_SEND,
                 'attributes' => [
                     'email' => $email,
                     'access_level' => $accessLevel,
@@ -197,7 +198,7 @@ class PacketsService extends AbstractService
 
         $payload = [
             'data' => [
-                'type' => 'users',
+                'type' => EntityType::USER,
                 'attributes' => [
                     'email' => $email,
                 ],

@@ -8,7 +8,7 @@ class PacketRevision extends BaseEntity
     /**
      * @var string
      */
-    protected $type = 'packet_revisions';
+    protected $type = EntityType::PACKET_REVISION;
 
     /**
      * @return Document[]

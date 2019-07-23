@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Models\Document;
 
+use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Models\AbstractModel;
 
 class Event extends AbstractModel
@@ -13,7 +14,7 @@ class Event extends AbstractModel
     public function setData(string $event): void
     {
         $this->data = [
-            'type' => 'events',
+            'type' => EntityType::EVENT,
             'attributes' => [
                 'name' => $event,
             ],

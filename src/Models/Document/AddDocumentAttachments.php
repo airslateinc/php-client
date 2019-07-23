@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Models\Document;
 
+use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Models\AbstractModel;
 
 class AddDocumentAttachments extends AbstractModel
@@ -16,7 +17,7 @@ class AddDocumentAttachments extends AbstractModel
     public function addDocumentAttachments(string $category, string $type, string $fileUid, array $meta = [])
     {
         $this->data = [
-            'type' => 'document_attachments',
+            'type' => EntityType::DOCUMENT_ATTACHMENT,
             'attributes' => [
                 'type' => $category,
                 'subtype' => $type,
@@ -25,7 +26,7 @@ class AddDocumentAttachments extends AbstractModel
             'relationships' => [
                 'file' => [
                     'data' => [
-                        'type' => 'files',
+                        'type' => EntityType::FILE,
                         'id' => $fileUid,
                     ]
                 ]

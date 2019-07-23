@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient\Entities\Permissions;
 
 use AirSlate\ApiClient\Entities\BaseEntity;
+use AirSlate\ApiClient\Entities\EntityType;
 
 /**
  * Class Permission
@@ -21,5 +22,5 @@ class Permission extends BaseEntity
     /**
      * @var string
      */
-    protected $type = 'permissions';
+    protected $type = EntityType::PERMISSION;
 }

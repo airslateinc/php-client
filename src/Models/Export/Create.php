@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Models\Export;
 
+use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Models\AbstractModel;
 
 /**
@@ -17,7 +18,7 @@ class Create extends AbstractModel
     public function __construct(array $data = [])
     {
         $data = array_merge_recursive([
-            'type' => 'export',
+            'type' => EntityType::EXPORT,
             'attributes' => [
                 'type' => 'zip',
                 'document_format' => 'pdf',
@@ -36,7 +37,7 @@ class Create extends AbstractModel
     {
         $document = [
             'id' => $id,
-            'type' => 'documents',
+            'type' => EntityType::DOCUMENT,
         ];
         if (!is_null($pages)) {
             $document['meta']['pages'] = $pages;
@@ -48,7 +49,7 @@ class Create extends AbstractModel
     public function setPacket(string $id): self
     {
         $this->data['relationships']['packet']['data'] = [
-            'type' => 'packets',
+            'type' => EntityType::PACKET,
             'id' => $id,
         ];
         return $this;
@@ -57,7 +58,7 @@ class Create extends AbstractModel
     public function setRevision(string $id): self
     {
         $this->data['relationships']['packet_revision']['data'] = [
-            'type' => 'packet_revisions',
+            'type' => EntityType::PACKET_REVISION,
             'id' => $id,
         ];
         return $this;
@@ -66,7 +67,7 @@ class Create extends AbstractModel
     public function setSlate(string $id): self
     {
         $this->data['relationships']['slate']['data'] = [
-            'type' => 'slates',
+            'type' => EntityType::SLATE,
             'id' => $id,
         ];
         return $this;

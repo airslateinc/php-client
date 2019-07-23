@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Models\Document;
 
+use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Models\AbstractModel;
 
 /**
@@ -73,7 +74,7 @@ class Create extends AbstractModel
         }
         $this->data[$this->methodToField[$name]] = [
             'data' => [
-                'type' => 'files',
+                'type' => EntityType::FILE,
                 'id' => (string)$arguments[0],
             ]
         ];
@@ -87,7 +88,7 @@ class Create extends AbstractModel
     {
         return [
             'data' => [
-                'type' => 'documents',
+                'type' => EntityType::DOCUMENT,
                 'attributes' => [
                     'name' => $this->name,
                     'type' => $this->type,

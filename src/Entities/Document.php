@@ -21,7 +21,7 @@ class Document extends BaseEntity
     /**
      * @var string
      */
-    protected $type = 'documents';
+    protected $type = EntityType::DOCUMENT;
 
     /**
      * @return File|null
