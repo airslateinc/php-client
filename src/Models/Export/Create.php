@@ -101,4 +101,10 @@ class Create extends AbstractModel
     {
         return ['data' => $this->data];
     }
+
+    public function appName(string $appName): self
+    {
+        $this->data['meta']['app_name'] = $appName;
+        return $this;
+    }
 }
