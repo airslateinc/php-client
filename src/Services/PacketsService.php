@@ -59,7 +59,7 @@ class PacketsService extends AbstractService
      */
     public function get(string $templateId): Packet
     {
-        $url = $this->resolveEndpoint('/slates/' . $this->slateId . '/packets/' . $templateId);
+        $url = $this->resolveEndpoint('/flows/' . $this->slateId . '/packets/' . $templateId);
 
         $response = $this->httpClient->get($url);
 
