@@ -16,6 +16,7 @@ use AirSlate\ApiClient\Models\Packet\Create;
 use AirSlate\ApiClient\Models\Packet\Lock;
 use AirSlate\ApiClient\Models\Packet\Send\Create as CreatePacketSend;
 use AirSlate\ApiClient\Models\Packet\Send\Bulk as BulkPacketSend;
+use AirSlate\ApiClient\Models\Packet\UnassignRole;
 use AirSlate\ApiClient\Models\Packet\Update;
 use AirSlate\ApiClient\Models\Packet\SigningOrder\Enable;
 use GuzzleHttp\Exception\BadResponseException;
@@ -303,6 +304,23 @@ class PacketsService extends AbstractService
 
         $response = $this->httpClient->put($url, [
             RequestOptions::JSON => $activateOpenAsRole->toArray(),
+        ]);
+
+        return $response && $response->getStatusCode() === 200;
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @param UnassignRole $unassignRole
+     * @return bool
+     */
+    public function unassignRole(string $flowUid, string $packetUid, UnassignRole $unassignRole): bool
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/unassign-role");
+
+        $response = $this->httpClient->delete($url, [
+            RequestOptions::JSON => $unassignRole->toArray(),
         ]);
 
         return $response && $response->getStatusCode() === 200;
