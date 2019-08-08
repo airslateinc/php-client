@@ -274,10 +274,10 @@ class PacketsService extends AbstractService
      * @param string $flowUid
      * @param string $packetUid
      * @param Enable $signingOrder
-     * @return array
+     * @return bool
      * @throws \Exception
      */
-    public function bindRole(string $flowUid, string $packetUid, Enable $signingOrder): array
+    public function bindRole(string $flowUid, string $packetUid, Enable $signingOrder): bool
     {
         $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/bind-user-to-role-on-init");
 
@@ -285,9 +285,7 @@ class PacketsService extends AbstractService
             RequestOptions::JSON => $signingOrder->toArray(),
         ]);
 
-        $content = \GuzzleHttp\json_decode($response->getBody(), true);
-
-        return PacketSigningOrder::createFromCollection($content);
+        return $response && $response->getStatusCode() === 204;
     }
 
     /**
