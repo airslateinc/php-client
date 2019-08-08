@@ -37,9 +37,9 @@ class Create extends AbstractModel
         ];
     }
 
-    public static function fromAttributes(string $slateId, string $organizationAddonId, array $attributes): self
+    public static function fromAttributes(string $slateId, string $organizationAddonId, array $attributes)
     {
-        $model = new self();
+        $model = new static();
         $model->slateId = $slateId;
         $model->organizationAddonId = $organizationAddonId;
         $model->attributes = $attributes;
