@@ -323,7 +323,7 @@ class PacketsService extends AbstractService
             RequestOptions::JSON => $unassignRole->toArray(),
         ]);
 
-        return $response && $response->getStatusCode() === 200;
+        return $response && $response->getStatusCode() === 204;
     }
 
     /**
