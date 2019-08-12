@@ -19,6 +19,8 @@ namespace AirSlate\ApiClient\Entities;
  */
 class User extends BaseEntity
 {
+    protected $type = EntityType::USER;
+
     /**
      * @return array
      * @throws \Exception

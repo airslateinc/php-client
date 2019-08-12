@@ -2,6 +2,7 @@
 
 namespace AirSlate\ApiClient\Models\Packet;
 
+use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Models\AbstractModel;
 
 class Update extends AbstractModel
@@ -30,7 +31,7 @@ class Update extends AbstractModel
     {
         return [
             'data' => [
-                'type' => 'packets',
+                'type' => EntityType::PACKET,
                 'attributes' => [
                     'name' => $this->name
                 ]

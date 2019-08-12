@@ -6,6 +6,7 @@ use AirSlate\ApiClient\Entities\Addon;
 use AirSlate\ApiClient\Entities\BaseEntity;
 use AirSlate\ApiClient\Entities\Organization;
 use AirSlate\ApiClient\Entities\User;
+use AirSlate\ApiClient\Entities\EntityType;
 
 /**
  * Class OrganizationAddon
@@ -26,7 +27,7 @@ class OrganizationAddon extends BaseEntity
     /**
      * @var string
      */
-    protected $type = 'organization_addons';
+    protected $type = EntityType::ORGANIZATION_ADDON;
     
     /**
      * @return Addon|null

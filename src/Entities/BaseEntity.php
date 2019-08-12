@@ -308,7 +308,7 @@ class BaseEntity implements JsonSerializable
         $ids = array_column($data, 'type', 'id');
 
         $relations = array_filter($this->included, function ($item) use ($ids) {
-            return ($item['type'] === $ids[$item['id']]) && array_key_exists($item['id'], $ids);
+            return array_key_exists($item['id'], $ids) && ($item['type'] === $ids[$item['id']]);
         });
 
         if (empty($relations)) {

@@ -16,5 +16,5 @@ namespace AirSlate\ApiClient\Entities;
  */
 class SlateInvite extends BaseEntity
 {
-    protected $type = 'slate_invites';
+    protected $type = EntityType::SLATE_INVITE;
 }

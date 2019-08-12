@@ -2,6 +2,7 @@
 
 namespace AirSlate\ApiClient\Models\OrganizationAddon;
 
+use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Models\AbstractModel;
 
 class Create extends AbstractModel
@@ -12,11 +13,11 @@ class Create extends AbstractModel
     {
         return [
             'data' => [
-                'type' => 'organization_addons',
+                'type' => EntityType::ORGANIZATION_ADDON,
                 'relationships' => [
                     'addon' => [
                         'data' => [
-                            'type' => 'addons',
+                            'type' => EntityType::ADDON,
                             'id' => $this->addonId
                         ]
                     ]

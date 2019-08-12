@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Models\Document;
 
+use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Models\AbstractModel;
 
 /**
@@ -18,6 +19,7 @@ use AirSlate\ApiClient\Models\AbstractModel;
  * @method addOriginal(string $id): Create
  * @method addImage(string $id): Create
  * @method addPdf(string $id): Create
+ * @method addFinalPdf(string $id): Create
  */
 class Create extends AbstractModel
 {
@@ -31,6 +33,7 @@ class Create extends AbstractModel
         'addOriginal' => 'original_file',
         'addImage' => 'image_file',
         'addPdf' => 'pdf_file',
+        'addFinalPdf' => 'final_pdf_file',
     ];
 
     /**
@@ -54,6 +57,11 @@ class Create extends AbstractModel
     private $type = 'PDF';
 
     /**
+     * @var string
+     */
+    private $editorType = 'PDF';
+
+    /**
      * @param string $name
      * @param array $arguments
      * @return $this
@@ -66,7 +74,7 @@ class Create extends AbstractModel
         }
         $this->data[$this->methodToField[$name]] = [
             'data' => [
-                'type' => 'files',
+                'type' => EntityType::FILE,
                 'id' => (string)$arguments[0],
             ]
         ];
@@ -80,10 +88,11 @@ class Create extends AbstractModel
     {
         return [
             'data' => [
-                'type' => 'documents',
+                'type' => EntityType::DOCUMENT,
                 'attributes' => [
                     'name' => $this->name,
                     'type' => $this->type,
+                    'editor_type' => $this->editorType,
                 ],
                 'meta' => [
                     'num_pages' => $this->pagesCount,
@@ -135,6 +144,16 @@ class Create extends AbstractModel
     {
         $this->type = $type;
 
+        return $this;
+    }
+
+    /**
+     * @param string $editorType
+     * @return Create
+     */
+    public function setEditorType (string $editorType): Create
+    {
+        $this->editorType = $editorType;
         return $this;
     }
 }

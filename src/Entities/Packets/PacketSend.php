@@ -3,6 +3,7 @@
 namespace AirSlate\ApiClient\Entities\Packets;
 
 use AirSlate\ApiClient\Entities\BaseEntity;
+use AirSlate\ApiClient\Entities\EntityType;
 
 /**
  * Class PacketSend
@@ -18,7 +19,7 @@ use AirSlate\ApiClient\Entities\BaseEntity;
  */
 class PacketSend extends BaseEntity
 {
-    protected $type = 'packet_send';
+    protected $type = EntityType::PACKET_SEND;
 
     public const ACCESS_LEVEL_READ  = 'READ';
     public const ACCESS_LEVEL_WRITE = 'WRITE';

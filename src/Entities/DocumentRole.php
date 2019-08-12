@@ -17,5 +17,5 @@ class DocumentRole extends BaseEntity
     /**
      * @var string
      */
-    protected $type = 'document_roles';
+    protected $type = EntityType::DOCUMENT_ROLE;
 }

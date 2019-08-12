@@ -6,6 +6,7 @@ namespace AirSlate\ApiClient\Entities;
 use AirSlate\ApiClient\Entities\DocumentPermissions\CustomOptions;
 use AirSlate\ApiClient\Entities\DocumentPermissions\EnableComments;
 use AirSlate\ApiClient\Entities\DocumentPermissions\EnableToolbar;
+use AirSlate\ApiClient\Entities\DocumentPermissions\ShowConstructor;
 
 /**
  * Class DocumentPermissions
@@ -21,7 +22,7 @@ use AirSlate\ApiClient\Entities\DocumentPermissions\EnableToolbar;
 class DocumentPermissions extends BaseEntity
 {
     /** @var string */
-    protected $type = 'document_permissions';
+    protected $type = EntityType::DOCUMENT_PERMISSION;
 
     /**
      * @return bool
@@ -84,6 +85,10 @@ class DocumentPermissions extends BaseEntity
             new EnableToolbar(
                 $this->custom_options['enable_toolbar']['value'] ?? false,
                 $this->custom_options['enable_toolbar']['override'] ?? false
+            ),
+            new ShowConstructor(
+                $this->custom_options['show_constructor']['value'] ?? true,
+                $this->custom_options['show_constructor']['override'] ?? false
             )
         );
     }

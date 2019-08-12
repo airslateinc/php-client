@@ -4,15 +4,19 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\DocumentRole;
+use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Entities\Packet;
 use AirSlate\ApiClient\Entities\Packets\PacketSend;
 use AirSlate\ApiClient\Entities\Packets\PacketSigningOrder;
 use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Exceptions\Packets\NoSuchUserException;
 use AirSlate\ApiClient\Exceptions\Packets\UserHasNoAccessException;
+use AirSlate\ApiClient\Models\Packet\ActivateOpenAsRole;
 use AirSlate\ApiClient\Models\Packet\Create;
+use AirSlate\ApiClient\Models\Packet\Lock;
 use AirSlate\ApiClient\Models\Packet\Send\Create as CreatePacketSend;
 use AirSlate\ApiClient\Models\Packet\Send\Bulk as BulkPacketSend;
+use AirSlate\ApiClient\Models\Packet\UnassignRole;
 use AirSlate\ApiClient\Models\Packet\Update;
 use AirSlate\ApiClient\Models\Packet\SigningOrder\Enable;
 use GuzzleHttp\Exception\BadResponseException;
@@ -25,6 +29,14 @@ use GuzzleHttp\RequestOptions;
 class PacketsService extends AbstractService
 {
     protected $slateId;
+
+    /**
+     * @return PacketRevisionsService
+     */
+    public function packetRevision(): PacketRevisionsService
+    {
+        return new PacketRevisionsService($this->httpClient);
+    }
 
     /**
      * @return Packet[]
@@ -48,7 +60,7 @@ class PacketsService extends AbstractService
      */
     public function get(string $templateId): Packet
     {
-        $url = $this->resolveEndpoint('/slates/' . $this->slateId . '/packets/' . $templateId);
+        $url = $this->resolveEndpoint('/flows/' . $this->slateId . '/packets/' . $templateId);
 
         $response = $this->httpClient->get($url);
 
@@ -109,7 +121,7 @@ class PacketsService extends AbstractService
 
         $payload = [
             'data' => [
-                'type' => 'packet_send',
+                'type' => EntityType::PACKET_SEND,
                 'attributes' => [
                     'email' => $email,
                     'access_level' => $accessLevel,
@@ -125,11 +137,11 @@ class PacketsService extends AbstractService
      * @param string           $packetId
      * @param CreatePacketSend $packetSend
      *
-     * @return PacketSend
+     * @return array
      *
      * @throws \Exception
      */
-    public function sendPacket(string $packetId, CreatePacketSend $packetSend): PacketSend
+    public function sendPacket(string $packetId, CreatePacketSend $packetSend): array
     {
         $url = $this->resolveEndpoint("/flows/{$this->slateId}/packets/{$packetId}/send");
 
@@ -138,7 +150,7 @@ class PacketsService extends AbstractService
         ]);
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
-        return PacketSend::createFromOne($content);
+        return PacketSend::createFromCollection($content);
     }
 
     /**
@@ -187,7 +199,7 @@ class PacketsService extends AbstractService
 
         $payload = [
             'data' => [
-                'type' => 'users',
+                'type' => EntityType::USER,
                 'attributes' => [
                     'email' => $email,
                 ],
@@ -203,8 +215,20 @@ class PacketsService extends AbstractService
      * @param string $packetUid
      * @return DocumentRole[]
      * @throws \Exception
+     * @deprecated 7.14.0 Use getLatestRevisionRoles instead
      */
     public function getRoles(string $flowUid, string $packetUid): array
+    {
+        return $this->getLatestRevisionRoles($flowUid, $packetUid);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @return array
+     * @throws \Exception
+     */
+    public function getLatestRevisionRoles(string $flowUid, string $packetUid): array
     {
         $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/latest-revision/roles");
 
@@ -212,6 +236,92 @@ class PacketsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return DocumentRole::createFromCollection($content);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @return DocumentRole[]
+     * @throws \Exception
+     */
+    public function getPacketRoles(string $flowUid, string $packetUid): array
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/roles");
+
+        $response = $this->httpClient->get($url);
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return DocumentRole::createFromCollection($content);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @return PacketSigningOrder[]
+     * @throws \Exception
+     */
+    public function getSigningOrders(string $flowUid, string $packetUid): array
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/signing-order");
+
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return PacketSigningOrder::createFromCollection($content);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @param Enable $signingOrder
+     * @return bool
+     * @throws \Exception
+     */
+    public function bindRole(string $flowUid, string $packetUid, Enable $signingOrder): bool
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/bind-user-to-role-on-init");
+
+        $response = $this->httpClient->put($url, [
+            RequestOptions::JSON => $signingOrder->toArray(),
+        ]);
+
+        return $response && $response->getStatusCode() === 204;
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @param ActivateOpenAsRole $activateOpenAsRole
+     * @return bool
+     * @throws \Exception
+     */
+    public function activateOpenAsRole(string $flowUid, string $packetUid, ActivateOpenAsRole $activateOpenAsRole): bool
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/activate-open-as-role");
+
+        $response = $this->httpClient->put($url, [
+            RequestOptions::JSON => $activateOpenAsRole->toArray(),
+        ]);
+
+        return $response && $response->getStatusCode() === 200;
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @param UnassignRole $unassignRole
+     * @return bool
+     */
+    public function unassignRole(string $flowUid, string $packetUid, UnassignRole $unassignRole): bool
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/unassign-role");
+
+        $response = $this->httpClient->delete($url, [
+            RequestOptions::JSON => $unassignRole->toArray(),
+        ]);
+
+        return $response && $response->getStatusCode() === 204;
     }
 
     /**
@@ -322,5 +432,23 @@ class PacketsService extends AbstractService
         }
 
         return $response && $response->getStatusCode() === 204;
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @param Lock $lock
+     * @return bool
+     * @throws \Exception
+     */
+    public function lock(string $flowUid, string $packetUid, Lock $lock): bool
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/lock");
+
+        $response = $this->httpClient->patch($url, [
+            RequestOptions::JSON => $lock->toArray(),
+        ]);
+
+        return $response && $response->getStatusCode() === 200;
     }
 }

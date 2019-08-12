@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
+use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Entities\Organization;
 use AirSlate\ApiClient\Entities\OrganizationUser;
 use AirSlate\ApiClient\Entities\User;
@@ -111,7 +112,7 @@ class UsersService extends AbstractService
         $response = $this->httpClient->post($url, [
             RequestOptions::JSON => [
                 'data' => [
-                    'type' => 'users',
+                    'type' => EntityType::USER,
                     'attributes' => [
                         'emails' => $emails
                     ]

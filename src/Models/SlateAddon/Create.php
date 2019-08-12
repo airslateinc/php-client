@@ -2,6 +2,7 @@
 
 namespace AirSlate\ApiClient\Models\SlateAddon;
 
+use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Models\AbstractModel;
 
 class Create extends AbstractModel
@@ -16,19 +17,19 @@ class Create extends AbstractModel
     {
         return [
             'data' => [
-                'type' => 'slate_addons',
+                'type' => EntityType::SLATE_ADDON,
                 'attributes' => $this->attributes,
                 'relationships' => [
                     'slate' => [
                         'data' => [
                             'id' => $this->slateId,
-                            'type' => 'slates'
+                            'type' => EntityType::SLATE
                         ]
                     ],
                     'organization_addon' => [
                         'data' => [
                             'id' => $this->organizationAddonId,
-                            'type' => 'organization_addons'
+                            'type' => EntityType::ORGANIZATION_ADDON
                         ]
                     ]
                 ]
@@ -36,9 +37,9 @@ class Create extends AbstractModel
         ];
     }
 
-    public static function fromAttributes(string $slateId, string $organizationAddonId, array $attributes): self
+    public static function fromAttributes(string $slateId, string $organizationAddonId, array $attributes)
     {
-        $model = new self();
+        $model = new static();
         $model->slateId = $slateId;
         $model->organizationAddonId = $organizationAddonId;
         $model->attributes = $attributes;

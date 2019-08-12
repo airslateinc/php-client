@@ -13,6 +13,8 @@ namespace AirSlate\ApiClient\Entities;
  */
 class Token extends BaseEntity
 {
+    protected $type = EntityType::TOKEN;
+
     /**
      * @return null|string
      */

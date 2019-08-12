@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\PacketRevision;
+use GuzzleHttp\RequestOptions;
 
 /**
  * Class PacketRevisionsService
@@ -20,5 +21,27 @@ class PacketRevisionsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return PacketRevision::createFromCollection($content);
+    }
+
+    /**
+     * @param string $slateId
+     * @param string $packetId
+     * @param string $revisionId
+     * @return PacketRevision
+     * @throws \Exception
+     */
+    public function oneBySlateIdAndRevisionId(string $slateId, string $packetId, string $revisionId): PacketRevision
+    {
+        $url = $this->resolveEndpoint('flows/' . $slateId . '/packets/' . $packetId . '/revisions/' . $revisionId);
+
+        $response = $this->httpClient->get($url, [
+            RequestOptions::QUERY  => [
+                'include' => 'documents'
+            ]
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return PacketRevision::createFromOne($content);
     }
 }
