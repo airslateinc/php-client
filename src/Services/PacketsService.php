@@ -21,6 +21,7 @@ use AirSlate\ApiClient\Models\Packet\Update;
 use AirSlate\ApiClient\Models\Packet\SigningOrder\Enable;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\RequestOptions;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Class PacketsService
@@ -191,11 +192,11 @@ class PacketsService extends AbstractService
     /**
      * @param string $packetId
      * @param string $email
-     * @return void
+     * @return bool
      */
-    public function revokeSendAccess(string $packetId, string $email): void
+    public function revokeSendAccess(string $packetId, string $email): bool
     {
-        $url = $this->resolveEndpoint("/slates/{$this->slateId}/packets/{$packetId}/send");
+        $url = $this->resolveEndpoint("/flows/{$this->slateId}/packets/{$packetId}/send");
 
         $payload = [
             'data' => [
@@ -205,9 +206,12 @@ class PacketsService extends AbstractService
                 ],
             ],
         ];
-        $this->httpClient->delete($url, [
+
+        $response = $this->httpClient->delete($url, [
             RequestOptions::JSON => $payload,
         ]);
+
+        return $response && $response->getStatusCode() === 204;
     }
 
     /**
