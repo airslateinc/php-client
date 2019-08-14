@@ -10,7 +10,7 @@ namespace AirSlate\ApiClient\Entities;
  *
  * @property string $id
  * @property string $name
- * @property string|null $value
+ * @property string|array|null $value
  * @property array $role_label
  * @property array $triggers
  */
