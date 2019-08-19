@@ -4,6 +4,8 @@ namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Packets\RevisionDocument;
 use AirSlate\ApiClient\Entities\Packets\RevisionLinks;
+use AirSlate\ApiClient\Exceptions\MissingDataException;
+use AirSlate\ApiClient\Exceptions\TypeMismatchException;
 use AirSlate\ApiClient\Models\Revision\Create;
 use AirSlate\ApiClient\Models\RevisionDocument\BulkUpdate;
 use GuzzleHttp\RequestOptions;
@@ -98,6 +100,25 @@ class RevisionsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Revision::createFromCollection($content);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @param string $revisionUid
+     * @return Revision
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     */
+    public function get(string $flowUid, string $packetUid, string $revisionUid): Revision
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/revisions/{$revisionUid}");
+
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Revision::createFromOne($content);
     }
 
     /**

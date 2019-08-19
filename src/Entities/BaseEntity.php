@@ -172,7 +172,8 @@ class BaseEntity implements JsonSerializable
     /**
      * @param array $jsonApi
      * @return static
-     * @throws \Exception
+     * @throws MissingDataException
+     * @throws TypeMismatchException
      */
     public static function createFromOne(array $jsonApi)
     {
