@@ -52,7 +52,7 @@ class Bulk extends AbstractModel
     private function setInviteEmailAddition(InviteEmailAddition $emailAddition): void
     {
         if (array_search($emailAddition->getId(), array_column($this->included, 'id')) === false) {
-            $this->included[] = [
+            $currentIncluded = [
                 'id' => $emailAddition->getId(),
                 'type' => EntityType::INVITE_EMAIL_ADDITION,
                 'attributes' => [
@@ -60,6 +60,16 @@ class Bulk extends AbstractModel
                     'text' => $emailAddition->getText(),
                 ]
             ];
+
+            if ($emailAddition->getCustomTitle() !== null) {
+                $currentIncluded['attributes']['custom_title'] = $emailAddition->getCustomTitle();
+            }
+
+            if ($emailAddition->getCustomPreheader() !== null) {
+                $currentIncluded['attributes']['custom_preheader'] = $emailAddition->getCustomPreheader();
+            }
+
+            $this->included[] = $currentIncluded;
         }
     }
 }

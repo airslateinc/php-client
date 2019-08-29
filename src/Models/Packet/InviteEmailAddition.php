@@ -10,6 +10,8 @@ namespace AirSlate\ApiClient\Models\Packet;
  * @property string $id
  * @property string $subject
  * @property string $text
+ * @property string|null $customTitle
+ * @property string|null $customPreheader
  */
 class InviteEmailAddition
 {
@@ -39,16 +41,36 @@ class InviteEmailAddition
     private $text;
 
     /**
-     * InviteEmailAddition constructor.
-     * @param string $id
-     * @param string $subject
-     * @param string $text
+     * @var string|null
      */
-    public function __construct(string $id, string $subject, string $text)
-    {
+    private $customTitle;
+
+    /**
+     * @var string|null
+     */
+    private $customPreheader;
+
+    /**
+     * InviteEmailAddition constructor.
+     *
+     * @param string      $id
+     * @param string      $subject
+     * @param string      $text
+     * @param string|null $customTitle
+     * @param string|null $customPreheader
+     */
+    public function __construct(
+        string $id,
+        string $subject,
+        string $text,
+        ?string $customTitle = null,
+        ?string $customPreheader = null
+    ) {
         $this->id = $id;
         $this->subject = $subject;
         $this->text = $text;
+        $this->customTitle = $customTitle;
+        $this->customPreheader = $customPreheader;
     }
 
     /**
@@ -73,5 +95,21 @@ class InviteEmailAddition
     public function getId(): string
     {
         return $this->id;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCustomTitle(): ?string
+    {
+        return $this->customTitle;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCustomPreheader(): ?string
+    {
+        return $this->customPreheader;
     }
 }
