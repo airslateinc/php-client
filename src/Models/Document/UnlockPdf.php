@@ -13,11 +13,6 @@ class UnlockPdf extends AbstractModel
     private $password = '';
 
     /**
-     * @var string
-     */
-    private $documentId;
-
-    /**
      * @param string $password
      *
      * @return UnlockPdf
@@ -30,25 +25,12 @@ class UnlockPdf extends AbstractModel
     }
 
     /**
-     * @param string $id
-     *
-     * @return UnlockPdf
-     */
-    public function setDocument(string $id): UnlockPdf
-    {
-        $this->documentId = $id;
-
-        return $this;
-    }
-
-    /**
      * @return array
      */
     public function toArray(): array
     {
         return [
             'data' => [
-                'id' => $this->documentId,
                 'type' => EntityType::DOCUMENT,
                 'meta' => [
                     'password' => $this->password,
