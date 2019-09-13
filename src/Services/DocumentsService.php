@@ -13,6 +13,7 @@ use AirSlate\ApiClient\Models\Document\AddDocumentAttachments;
 use AirSlate\ApiClient\Models\Document\Create as CreateModel;
 use AirSlate\ApiClient\Models\Document\DocumentEvent;
 use AirSlate\ApiClient\Models\Document\Event;
+use AirSlate\ApiClient\Models\Document\UnlockPdf;
 use AirSlate\ApiClient\Models\Document\Update as UpdateModel;
 use AirSlate\ApiClient\Models\Document\Duplicate as DuplicateModel;
 use AirSlate\ApiClient\Models\Document\Export as ExportModel;
@@ -255,6 +256,26 @@ class DocumentsService extends AbstractService
 
         $response = $this->httpClient->patch($url, [
             RequestOptions::JSON => $fields->toArray()
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Document::createFromOne($content);
+    }
+
+    /**
+     * Unlock password-protected PDF-file previously uploaded with password
+     * @param string $documentId
+     * @param UnlockPdf $unlockPdf
+     *
+     * @return Document
+     */
+    public function unlockPdf(string $documentId, UnlockPdf $unlockPdf): Document
+    {
+        $url = $this->resolveEndpoint("/documents/$documentId/unlock-pdf");
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $unlockPdf->toArray()
         ]);
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
