@@ -65,13 +65,21 @@ class Enable extends AbstractModel
     private function setInviteEmailAddition(InviteEmailAddition $emailAddition): void
     {
         if (array_search($emailAddition->getId(), array_column($this->included, 'id')) === false) {
+            $attributes = [
+                'subject' => $emailAddition->getSubject(),
+                'text' => $emailAddition->getText(),
+            ];
+            if ($emailAddition->getCustomPreheader() !== null) {
+                $attributes['custom_preheader'] = $emailAddition->getCustomPreheader();
+            }
+
+            if ($emailAddition->getCustomTitle() !== null) {
+                $attributes['custom_title'] = $emailAddition->getCustomTitle();
+            }
             $this->included[] = [
                 'id' => $emailAddition->getId(),
                 'type' => EntityType::INVITE_EMAIL_ADDITION,
-                'attributes' => [
-                    'subject' => $emailAddition->getSubject(),
-                    'text' => $emailAddition->getText(),
-                ]
+                'attributes' => $attributes
             ];
         }
     }
