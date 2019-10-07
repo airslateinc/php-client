@@ -9,75 +9,126 @@ use AirSlate\ApiClient\Models\AbstractModel;
 /**
  * Class Create
  * @package AirSlate\ApiClient\Models\Document
- *
- * @method addPages(string $id): Create
- * @method addAttributes(string $id): Create
- * @method addContent(string $id): Create
- * @method addFields(string $id): Create
- * @method addRoles(string $id): Create
- * @method addComments(string $id): Create
- * @method addOriginal(string $id): Create
- * @method addImage(string $id): Create
- * @method addPdf(string $id): Create
- * @method addFinalPdf(string $id): Create
  */
 class Create extends AbstractModel
 {
-    private $methodToField = [
-        'addPages' => 'pages_file',
-        'addAttributes' => 'attributes_file',
-        'addContent' => 'content_file',
-        'addFields' => 'fields_file',
-        'addRoles' => 'roles_file',
-        'addComments' => 'comments_file',
-        'addOriginal' => 'original_file',
-        'addImage' => 'image_file',
-        'addPdf' => 'pdf_file',
-        'addFinalPdf' => 'final_pdf_file',
-    ];
-
     /**
      * @var string
      */
-    private $name = 'Default Document Name';
+    private $name;
 
     /**
      * @var int
      */
-    private $pagesCount = 0;
+    private $pagesCount;
 
     /**
      * @var int
      */
-    private $visiblePagesCount = 0;
+    private $visiblePagesCount;
 
     /**
      * @var string
      */
-    private $type = 'PDF';
+    private $type;
 
     /**
      * @var string
      */
-    private $editorType = 'PDF';
+    private $editorType;
 
     /**
-     * @param string $name
-     * @param array $arguments
-     * @return $this
-     * @throws \InvalidArgumentException
+     * @param string $layer
+     * @param string $id
      */
-    public function __call(string $name, array $arguments): Create
+    private function addRelationshipLayer(string $layer, string $id): void
     {
-        if (!array_key_exists($name, $this->methodToField)) {
-            throw new \InvalidArgumentException(sprintf('Method %s not allowed', $name));
-        }
-        $this->data[$this->methodToField[$name]] = [
+        $this->data['relationships'][$layer] = [
             'data' => [
                 'type' => EntityType::FILE,
-                'id' => (string)$arguments[0],
+                'id' => $id,
             ]
         ];
+    }
+
+    /**
+     * @param string $id
+     * @return Create
+     */
+    public function addPages(string $id): Create
+    {
+        $this->addRelationshipLayer('pages_file', $id);
+        return $this;
+    }
+
+    /**
+     * @param string $id
+     * @return Create
+     */
+    public function addAttributes(string $id): Create
+    {
+        $this->addRelationshipLayer('attributes_file', $id);
+        return $this;
+    }
+
+    /**
+     * @param string $id
+     * @return Create
+     */
+    public function addContent(string $id): Create
+    {
+        $this->addRelationshipLayer('content_file', $id);
+        return $this;
+    }
+
+    /**
+     * @param string $id
+     * @return Create
+     */
+    public function addFields(string $id): Create
+    {
+        $this->addRelationshipLayer('fields_file', $id);
+
+        return $this;
+    }
+
+    /**
+     * @param string $id
+     * @return Create
+     */
+    public function addOriginal(string $id): Create
+    {
+        $this->addRelationshipLayer('original_file', $id);
+        return $this;
+    }
+
+    /**
+     * @param string $id
+     * @return Create
+     */
+    public function addImage(string $id): Create
+    {
+        $this->addRelationshipLayer('image_file', $id);
+        return $this;
+    }
+
+    /**
+     * @param string $id
+     * @return Create
+     */
+    public function addPdf(string $id): Create
+    {
+        $this->addRelationshipLayer('pdf_file', $id);
+        return $this;
+    }
+
+    /**
+     * @param string $id
+     * @return Create
+     */
+    public function addFinalPdf(string $id): Create
+    {
+        $this->addRelationshipLayer('final_pdf_file', $id);
         return $this;
     }
 
@@ -86,21 +137,36 @@ class Create extends AbstractModel
      */
     public function toArray(): array
     {
-        return [
-            'data' => [
-                'type' => EntityType::DOCUMENT,
-                'attributes' => [
-                    'name' => $this->name,
-                    'type' => $this->type,
-                    'editor_type' => $this->editorType,
-                ],
-                'meta' => [
-                    'num_pages' => $this->pagesCount,
-                    'num_visible_pages' => $this->visiblePagesCount,
-                ],
-                'relationships' => $this->data,
-            ]
+        $payload = [
+            'data' => $this->data,
         ];
+        $payload['data']['type'] = EntityType::DOCUMENT;
+
+        //attributes
+        if (!empty($this->name)) {
+            $payload['data']['attributes']['name'] = $this->name;
+        }
+        if (!empty($this->type)) {
+            $payload['data']['attributes']['type'] = $this->type;
+        }
+        if (!empty($this->editorType)) {
+            $payload['data']['attributes']['editor_type'] = $this->editorType;
+        }
+
+        //meta
+        if ($this->pagesCount != null) {
+            $payload['data']['meta']['num_pages'] = $this->pagesCount;
+        }
+        if ($this->visiblePagesCount != null) {
+            $payload['data']['meta']['num_visible_pages'] = $this->visiblePagesCount;
+        }
+
+        //included
+        if (!empty($this->included)) {
+            $payload['included'] = $this->included;
+        }
+
+        return $payload;
     }
 
     /**
@@ -151,9 +217,10 @@ class Create extends AbstractModel
      * @param string $editorType
      * @return Create
      */
-    public function setEditorType (string $editorType): Create
+    public function setEditorType(string $editorType): Create
     {
         $this->editorType = $editorType;
+
         return $this;
     }
 }
