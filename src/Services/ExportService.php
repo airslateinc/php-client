@@ -26,15 +26,11 @@ class ExportService extends AbstractService
     {
         $url = $this->resolveEndpoint('/export');
 
-        try {
-            $response = $this->httpClient->post($url, [
-                RequestOptions::JSON => $export->toArray(),
-            ]);
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $export->toArray(),
+        ]);
 
-            $content = \GuzzleHttp\json_decode($response->getBody(), true);
-        } catch (DomainException $e) {
-            $content = \GuzzleHttp\json_decode($e->getMessage(), true);
-        }
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return $content;
     }
@@ -50,13 +46,9 @@ class ExportService extends AbstractService
     {
         $url = $this->resolveEndpoint("/export/$exportId");
 
-        try {
-            $response = $this->httpClient->get($url);
+        $response = $this->httpClient->get($url);
 
-            $content = \GuzzleHttp\json_decode($response->getBody(), true);
-        } catch (DomainException $e) {
-            $content = \GuzzleHttp\json_decode($e->getMessage(), true);
-        }
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return $content;
     }
