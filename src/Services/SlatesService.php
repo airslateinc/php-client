@@ -54,9 +54,9 @@ class SlatesService extends AbstractService
      * @param string $slateId
      * @return PacketsService
      */
-    public function packets(string $slateId): PacketsService
+    public function packets(): PacketsService
     {
-        return (new PacketsService($this->httpClient))->setSlateId($slateId);
+        return new PacketsService($this->httpClient);
     }
 
     /**

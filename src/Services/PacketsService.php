@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
@@ -9,8 +10,9 @@ use AirSlate\ApiClient\Entities\Packet;
 use AirSlate\ApiClient\Entities\Packets\PacketSend;
 use AirSlate\ApiClient\Entities\Packets\PacketSigningOrder;
 use AirSlate\ApiClient\Exceptions\DomainException;
-use AirSlate\ApiClient\Exceptions\Packets\NoSuchUserException;
+use AirSlate\ApiClient\Exceptions\MissingDataException;
 use AirSlate\ApiClient\Exceptions\Packets\UserHasNoAccessException;
+use AirSlate\ApiClient\Exceptions\TypeMismatchException;
 use AirSlate\ApiClient\Models\Packet\ActivateOpenAsRole;
 use AirSlate\ApiClient\Models\Packet\Create;
 use AirSlate\ApiClient\Models\Packet\Lock;
@@ -19,8 +21,8 @@ use AirSlate\ApiClient\Models\Packet\Send\Bulk as BulkPacketSend;
 use AirSlate\ApiClient\Models\Packet\UnassignRole;
 use AirSlate\ApiClient\Models\Packet\Update;
 use AirSlate\ApiClient\Models\Packet\SigningOrder\Enable;
-use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\RequestOptions;
+use InvalidArgumentException;
 
 /**
  * Class PacketsService
@@ -28,8 +30,6 @@ use GuzzleHttp\RequestOptions;
  */
 class PacketsService extends AbstractService
 {
-    protected $slateId;
-
     /**
      * @return PacketRevisionsService
      */
@@ -39,12 +39,24 @@ class PacketsService extends AbstractService
     }
 
     /**
-     * @return Packet[]
-     * @throws \Exception
+     * @return RevisionsService
      */
-    public function collection(): array
+    public function revisions(): RevisionsService
     {
-        $url = $this->resolveEndpoint('/slates/' . $this->slateId . '/packets');
+        return new RevisionsService($this->httpClient);
+    }
+
+    /**
+     * @param string $flowUid
+     * @return Packet[]
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
+     */
+    public function collection(string $flowUid): array
+    {
+        $url = $this->resolveEndpoint("/slates/{$flowUid}/packets");
 
         $response = $this->httpClient->get($url);
 
@@ -54,13 +66,17 @@ class PacketsService extends AbstractService
     }
 
     /**
-     * @param string $templateId
+     * @param string $flowUid
+     * @param string $packetUid
      * @return Packet
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
      */
-    public function get(string $templateId): Packet
+    public function get(string $flowUid, string $packetUid): Packet
     {
-        $url = $this->resolveEndpoint('/flows/' . $this->slateId . '/packets/' . $templateId);
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}");
 
         $response = $this->httpClient->get($url);
 
@@ -70,13 +86,17 @@ class PacketsService extends AbstractService
     }
 
     /**
+     * @param string $flowUid
      * @param Create $packet
      * @return Packet
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
      */
-    public function create(Create $packet): Packet
+    public function create(string $flowUid, Create $packet): Packet
     {
-        $url = $this->resolveEndpoint('/flows/' . $this->slateId . '/packets');
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets");
 
         $response = $this->httpClient->post($url, [
             RequestOptions::JSON => $packet->toArray(),
@@ -88,13 +108,17 @@ class PacketsService extends AbstractService
     }
 
     /**
-     * @param Packet $packet
+     * @param string $flowUid
+     * @param string $packetUid
      * @return Packet
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
      */
-    public function finish(Packet $packet): Packet
+    public function finish(string $flowUid, string $packetUid): Packet
     {
-        $url = $this->resolveEndpoint('/flows/' . $this->slateId . '/packets/' . $packet->id . '/finish');
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/finish");
 
         $response = $this->httpClient->patch($url);
 
@@ -104,82 +128,63 @@ class PacketsService extends AbstractService
     }
 
     /**
-     * @deprecated
-     * use \AirSlate\ApiClient\Services\PacketsService::sendPacket instead of this method
-     *
-     * @TODO: default access level is set to WRITE to prevent backward incompatibility
-     *
-     * @param string $packetId
-     * @param string $email
-     * @param string $accessLevel
-     *
-     * @return void
-     */
-    public function send(string $packetId, string $email, string $accessLevel = PacketSend::ACCESS_LEVEL_WRITE): void
-    {
-        $url = $this->resolveEndpoint("/slates/{$this->slateId}/packets/{$packetId}/send");
-
-        $payload = [
-            'data' => [
-                'type' => EntityType::PACKET_SEND,
-                'attributes' => [
-                    'email' => $email,
-                    'access_level' => $accessLevel,
-                ],
-            ],
-        ];
-        $this->httpClient->post($url, [
-            RequestOptions::JSON => $payload,
-        ]);
-    }
-
-    /**
-     * @param string           $packetId
+     * @param string $flowUid
+     * @param string $packetUid
      * @param CreatePacketSend $packetSend
-     *
-     * @return array
-     *
-     * @throws \Exception
+     * @return PacketSend[]
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
      */
-    public function sendPacket(string $packetId, CreatePacketSend $packetSend): array
+    public function sendPacket(string $flowUid, string $packetUid, CreatePacketSend $packetSend): array
     {
-        $url = $this->resolveEndpoint("/flows/{$this->slateId}/packets/{$packetId}/send");
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/send");
 
         $response = $this->httpClient->post($url, [
             RequestOptions::JSON => $packetSend->toArray(),
         ]);
+
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return PacketSend::createFromCollection($content);
     }
 
     /**
-     * @param string $packetId
+     * @param string $flowUid
+     * @param string $packetUid
      * @param BulkPacketSend $bulkPacketSend
-     * @return array|PacketSend[]
-     *
-     * @throws \Exception
+     * @return PacketSend[]
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
      */
-    public function sendPacketBulk(string $packetId, BulkPacketSend $bulkPacketSend): array
+    public function sendPacketBulk(string $flowUid, string $packetUid, BulkPacketSend $bulkPacketSend): array
     {
-        $url = $this->resolveEndpoint("/flows/{$this->slateId}/packets/{$packetId}/send/bulk");
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/send/bulk");
 
         $response = $this->httpClient->post($url, [
             RequestOptions::JSON => $bulkPacketSend->toArray(),
         ]);
+
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return PacketSend::createFromCollection($content);
     }
 
     /**
-     * @param string $packetId
+     * @param string $flowUid
+     * @param string $packetUid
      * @return PacketSend[]
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
      */
-    public function getPacketSend(string $packetId): array
+    public function getPacketSend(string $flowUid, string $packetUid): array
     {
-        $url = $this->resolveEndpoint("/flows/{$this->slateId}/packets/{$packetId}/send");
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/send");
 
         $response = $this->httpClient->get($url);
 
@@ -189,13 +194,16 @@ class PacketsService extends AbstractService
     }
 
     /**
-     * @param string $packetId
+     * @param string $flowUid
+     * @param string $packetUid
      * @param string $email
      * @return bool
+     * @throws InvalidArgumentException
+     * @throws DomainException
      */
-    public function revokeSendAccess(string $packetId, string $email): bool
+    public function revokeSendAccess(string $flowUid, string $packetUid, string $email): bool
     {
-        $url = $this->resolveEndpoint("/flows/{$this->slateId}/packets/{$packetId}/send");
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/send");
 
         $payload = [
             'data' => [
@@ -217,25 +225,17 @@ class PacketsService extends AbstractService
      * @param string $flowUid
      * @param string $packetUid
      * @return DocumentRole[]
-     * @throws \Exception
-     * @deprecated 7.14.0 Use getLatestRevisionRoles instead
-     */
-    public function getRoles(string $flowUid, string $packetUid): array
-    {
-        return $this->getLatestRevisionRoles($flowUid, $packetUid);
-    }
-
-    /**
-     * @param string $flowUid
-     * @param string $packetUid
-     * @return array
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
      */
     public function getLatestRevisionRoles(string $flowUid, string $packetUid): array
     {
         $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/latest-revision/roles");
 
         $response = $this->httpClient->get($url);
+
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return DocumentRole::createFromCollection($content);
@@ -245,7 +245,10 @@ class PacketsService extends AbstractService
      * @param string $flowUid
      * @param string $packetUid
      * @return DocumentRole[]
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
      */
     public function getPacketRoles(string $flowUid, string $packetUid): array
     {
@@ -261,7 +264,10 @@ class PacketsService extends AbstractService
      * @param string $flowUid
      * @param string $packetUid
      * @return PacketSigningOrder[]
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
      */
     public function getSigningOrders(string $flowUid, string $packetUid): array
     {
@@ -279,7 +285,8 @@ class PacketsService extends AbstractService
      * @param string $packetUid
      * @param Enable $signingOrder
      * @return bool
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws DomainException
      */
     public function bindRole(string $flowUid, string $packetUid, Enable $signingOrder): bool
     {
@@ -297,7 +304,8 @@ class PacketsService extends AbstractService
      * @param string $packetUid
      * @param ActivateOpenAsRole $activateOpenAsRole
      * @return bool
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws DomainException
      */
     public function activateOpenAsRole(string $flowUid, string $packetUid, ActivateOpenAsRole $activateOpenAsRole): bool
     {
@@ -315,6 +323,8 @@ class PacketsService extends AbstractService
      * @param string $packetUid
      * @param UnassignRole $unassignRole
      * @return bool
+     * @throws InvalidArgumentException
+     * @throws DomainException
      */
     public function unassignRole(string $flowUid, string $packetUid, UnassignRole $unassignRole): bool
     {
@@ -331,8 +341,11 @@ class PacketsService extends AbstractService
      * @param string $flowUid
      * @param string $packetUid
      * @param Enable $signingOrder
-     * @return array
-     * @throws \Exception
+     * @return PacketSigningOrder[]
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
      */
     public function updateSigningOrder(string $flowUid, string $packetUid, Enable $signingOrder): array
     {
@@ -348,40 +361,15 @@ class PacketsService extends AbstractService
     }
 
     /**
-     * @param string $packetId
-     * @return RevisionsService
-     */
-    public function revisions(string $packetId): RevisionsService
-    {
-        return new RevisionsService($this->httpClient);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSlateId()
-    {
-        return $this->slateId;
-    }
-
-    /**
-     * @param string $slateId
-     * @return PacketsService
-     */
-    public function setSlateId($slateId): PacketsService
-    {
-        $this->slateId = $slateId;
-
-        return $this;
-    }
-
-    /**
-     * @param string $packetId
+     * @param string $flowUid
+     * @param string $packetUid
      * @return bool
+     * @throws InvalidArgumentException
+     * @throws DomainException
      */
-    public function delete(string $packetId): bool
+    public function delete(string $flowUid, string $packetUid): bool
     {
-        $url = $this->resolveEndpoint("/slates/{$this->slateId}/packets/{$packetId}");
+        $url = $this->resolveEndpoint("/slates/{$flowUid}/packets/{$packetUid}");
 
         $response = $this->httpClient->delete($url);
 
@@ -389,14 +377,16 @@ class PacketsService extends AbstractService
     }
 
     /**
-     * @param string $packetId
+     * @param string $flowUid
+     * @param string $packetUid
      * @param Update $packet
      * @return bool
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws DomainException
      */
-    public function update(string $packetId, Update $packet): bool
+    public function update(string $flowUid, string $packetUid, Update $packet): bool
     {
-        $url = $this->resolveEndpoint("/flows/{$this->slateId}/packets/{$packetId}");
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}");
 
         $response = $this->httpClient->patch($url, [
             RequestOptions::JSON => $packet->toArray(),
@@ -405,16 +395,15 @@ class PacketsService extends AbstractService
         return $response && $response->getStatusCode() === 204;
     }
 
-
     /**
      * @param string $flowUid
      * @param string $packetUid
      * @param string $revisionUid
      * @param string $email
      * @return bool
-     * @throws NoSuchUserException
      * @throws UserHasNoAccessException
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws DomainException
      */
     public function checkAccess(string $flowUid, string $packetUid, string $revisionUid, string $email): bool
     {
@@ -428,8 +417,6 @@ class PacketsService extends AbstractService
                     ],
                 ],
             ]);
-        } catch (BadResponseException $e) {
-            throw new NoSuchUserException($e->getMessage(), $e->getCode(), $e);
         } catch (DomainException $e) {
             throw new UserHasNoAccessException($e->getMessage(), $e->getCode(), $e);
         }
@@ -442,7 +429,8 @@ class PacketsService extends AbstractService
      * @param string $packetUid
      * @param Lock $lock
      * @return bool
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws DomainException
      */
     public function lock(string $flowUid, string $packetUid, Lock $lock): bool
     {
