@@ -54,18 +54,17 @@ class SlatesService extends AbstractService
      * @param string $slateId
      * @return PacketsService
      */
-    public function packets(string $slateId): PacketsService
+    public function packets(): PacketsService
     {
-        return (new PacketsService($this->httpClient))->setSlateId($slateId);
+        return new PacketsService($this->httpClient);
     }
 
     /**
-     * @param string $slateId
      * @return TemplatesService
      */
-    public function templates(string $slateId): TemplatesService
+    public function templates(): TemplatesService
     {
-        return (new TemplatesService($this->httpClient))->setSlateId($slateId);
+        return new TemplatesService($this->httpClient);
     }
 
     /**
@@ -194,21 +193,19 @@ class SlatesService extends AbstractService
     }
 
     /**
-     * @param string $slateId
      * @return RolesService
      */
-    public function roles(string $slateId): RolesService
+    public function roles(): RolesService
     {
-        return (new RolesService($this->httpClient))->setSlateId($slateId);
+        return new RolesService($this->httpClient);
     }
 
     /**
-     * @param string $slateId
      * @return RoleDocumentsService
      */
-    public function roleDocuments(string $slateId): RoleDocumentsService
+    public function roleDocuments(): RoleDocumentsService
     {
-        return (new RoleDocumentsService($this->httpClient))->setSlateId($slateId);
+        return new RoleDocumentsService($this->httpClient);
     }
 
     /**

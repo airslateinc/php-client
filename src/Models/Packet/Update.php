@@ -25,7 +25,6 @@ class Update extends AbstractModel
     
     /**
      * @return array
-     * @throws \Exception
      */
     public function toArray(): array
     {

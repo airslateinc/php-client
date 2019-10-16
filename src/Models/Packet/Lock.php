@@ -55,7 +55,6 @@ class Lock
 
     /**
      * @return array
-     * @throws \Exception
      */
     public function toArray(): array
     {

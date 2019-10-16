@@ -207,7 +207,8 @@ class BaseEntity implements JsonSerializable
     /**
      * @param array $jsonApi
      * @return array
-     * @throws \Exception
+     * @throws MissingDataException
+     * @throws TypeMismatchException
      */
     public static function createFromCollection(array $jsonApi): array
     {

@@ -6,31 +6,32 @@ namespace AirSlate\ApiClient\Services;
 use AirSlate\ApiClient\Entities\Document;
 use AirSlate\ApiClient\Entities\DocumentRole;
 use AirSlate\ApiClient\Entities\Template;
+use AirSlate\ApiClient\Exceptions\DomainException;
+use AirSlate\ApiClient\Exceptions\MissingDataException;
+use AirSlate\ApiClient\Exceptions\TypeMismatchException;
 use AirSlate\ApiClient\Models\Template\Create;
 use AirSlate\ApiClient\Models\Template\TemplateDocument;
 use AirSlate\ApiClient\Models\Template\Update;
 use GuzzleHttp\RequestOptions;
+use InvalidArgumentException;
 
 /**
- * TODO slateId should become required parameter in method calls. It is bad practice to make state dependant services
- *
  * Class TemplatesService
  * @package AirSlate\ApiClient\Services
  */
 class TemplatesService extends AbstractService
 {
-    protected $slateId;
-
     /**
-     * @param string $slateId
-     *
+     * @param string $flowUid
      * @return Template[]
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
      */
-    public function collection(string $slateId = null): array
+    public function collection(string $flowUid): array
     {
-        $slateId = $slateId ?? $this->slateId;
-        $url = $this->resolveEndpoint('/slates/' . $slateId . '/templates');
+        $url = $this->resolveEndpoint("/slates/{$flowUid}/templates");
 
         $response = $this->httpClient->get($url);
 
@@ -40,13 +41,16 @@ class TemplatesService extends AbstractService
     }
 
     /**
-     * @param string $templateId
+     * @param string $templateUid
      * @return Template
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
      */
-    public function get(string $templateId): Template
+    public function get(string $flowUid, string $templateUid): Template
     {
-        $url = $this->resolveEndpoint('/slates/' . $this->slateId . '/templates/' . $templateId);
+        $url = $this->resolveEndpoint("/slates/{$flowUid}/templates/{$templateUid}");
 
         $response = $this->httpClient->get($url);
 
@@ -56,38 +60,17 @@ class TemplatesService extends AbstractService
     }
 
     /**
-     * @deprecated
-     *
-     * @return mixed
-     */
-    public function getSlateId()
-    {
-        return $this->slateId;
-    }
-
-    /**
-     * @deprecated
-     *
-     * @param string $slateId
-     * @return TemplatesService
-     */
-    public function setSlateId($slateId): TemplatesService
-    {
-        $this->slateId = $slateId;
-
-        return $this;
-    }
-
-    /**
      * @param Create $template
-     * @param string $slateId
+     * @param string $flowUid
      * @return Template
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
      */
-    public function create(Create $template, string $slateId = null): Template
+    public function create(Create $template, string $flowUid): Template
     {
-        $slateId = $slateId ?? $this->slateId;
-        $url = $this->resolveEndpoint('/slates/' . $slateId . '/templates');
+        $url = $this->resolveEndpoint("/slates/{$flowUid}/templates");
 
         $response = $this->httpClient->post($url, [
             RequestOptions::JSON => $template->toArray(),
@@ -100,14 +83,17 @@ class TemplatesService extends AbstractService
 
     /**
      * @param Update $template
-     * @param string $slateId
-     * @param string $templateId
+     * @param string $flowUid
+     * @param string $templateUid
      * @return Template
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
      */
-    public function update(Update $template, string $slateId, string $templateId): Template
+    public function update(string $flowUid, string $templateUid, Update $template): Template
     {
-        $url = $this->resolveEndpoint('/slates/' . $slateId . '/templates/' . $templateId);
+        $url = $this->resolveEndpoint("/slates/{$flowUid}/templates/{$templateUid}");
 
         $response = $this->httpClient->patch($url, [
             RequestOptions::JSON => $template->toArray(),
@@ -119,14 +105,17 @@ class TemplatesService extends AbstractService
     }
 
     /**
-     * @param string $slateId
-     * @param string $templateId
-     * @return array
-     * @throws \Exception
+     * @param string $flowUid
+     * @param string $templateUid
+     * @return Document[]
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
      */
-    public function documents(string $slateId, string $templateId): array
+    public function documents(string $flowUid, string $templateUid): array
     {
-        $url = $this->resolveEndpoint('/slates/' . $slateId . '/templates/' . $templateId . '/documents');
+        $url = $this->resolveEndpoint("/slates/{$flowUid}/templates/{$templateUid}/documents");
 
         $response = $this->httpClient->get($url);
 
@@ -136,14 +125,17 @@ class TemplatesService extends AbstractService
     }
 
     /**
-     * @param string $slateId
-     * @param string $templateId
-     * @return array
-     * @throws \Exception
+     * @param string $flowUid
+     * @param string $templateUid
+     * @return DocumentRole[]
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
      */
-    public function roles(string $slateId, string $templateId): array
+    public function roles(string $flowUid, string $templateUid): array
     {
-        $url = $this->resolveEndpoint('/flows/' . $slateId . '/templates/' . $templateId . '/roles');
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/templates/{$templateUid}/roles");
 
         $response = $this->httpClient->get($url);
 
@@ -153,15 +145,18 @@ class TemplatesService extends AbstractService
     }
 
     /**
-     * @param string $slateId
-     * @param string $templateId
+     * @param string $flowUid
+     * @param string $templateUid
      * @param TemplateDocument $document
      * @return Template
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
      */
-    public function addDocument(string $slateId, string $templateId, TemplateDocument $document): Template
+    public function addDocument(string $flowUid, string $templateUid, TemplateDocument $document): Template
     {
-        $url = $this->resolveEndpoint('/slates/' . $slateId . '/templates/' . $templateId . '/documents');
+        $url = $this->resolveEndpoint("/slates/{$flowUid}/templates/{$templateUid}/documents");
 
         $response = $this->httpClient->post($url, [
             RequestOptions::JSON => $document->toArray(),
@@ -173,15 +168,17 @@ class TemplatesService extends AbstractService
     }
 
     /**
-     * @param string $slateId
-     * @param string $templateId
-     * @param string $documentId
+     * @param string $flowUid
+     * @param string $templateUid
+     * @param string $documentUid
      * @return bool
+     * @throws InvalidArgumentException
+     * @throws DomainException
      */
-    public function deleteDocument(string $slateId, string $templateId, string $documentId)
+    public function deleteDocument(string $flowUid, string $templateUid, string $documentUid): bool
     {
-        $url = $this->resolveEndpoint('/slates/' . $slateId . '/templates/' .
-            $templateId . '/documents/' . $documentId);
+        $url = $this->resolveEndpoint("/slates/{$flowUid}/templates/{$templateUid}/documents/{$documentUid}");
+
         $response = $this->httpClient->delete($url);
 
         return $response && $response->getStatusCode() === 204;
