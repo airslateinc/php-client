@@ -35,12 +35,10 @@ class Bulk extends AbstractModel
     public function addUrl(string $name, string $url): void
     {
         $this->data[] = [
-            'data' => [
-                'type' => EntityType::FILE,
-                'attributes' => [
-                    'name' => $name,
-                    'url' => $url,
-                ]
+            'type' => EntityType::FILE,
+            'attributes' => [
+                'name' => $name,
+                'url' => $url,
             ]
         ];
     }
