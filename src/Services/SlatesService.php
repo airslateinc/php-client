@@ -208,7 +208,7 @@ class SlatesService extends AbstractService
      */
     public function roleDocuments(string $slateId): RoleDocumentsService
     {
-        return (new RoleDocumentsService($this->httpClient))->setSlateId($slateId);
+        return new RoleDocumentsService($this->httpClient);
     }
 
     /**
