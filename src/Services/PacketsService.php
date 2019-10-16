@@ -353,7 +353,7 @@ class PacketsService extends AbstractService
      */
     public function revisions(string $packetId): RevisionsService
     {
-        return (new RevisionsService($this->httpClient))->setSlateId($this->slateId)->setPacketId($packetId);
+        return new RevisionsService($this->httpClient);
     }
 
     /**
