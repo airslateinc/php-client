@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
@@ -12,26 +13,20 @@ use AirSlate\ApiClient\Models\Template\Update;
 use GuzzleHttp\RequestOptions;
 
 /**
- * @deprecated
- * @see \AirSlate\ApiClient\Services\FlowTemplatesService
- *
- * Class TemplatesService
+ * Class FlowTemplatesService
  * @package AirSlate\ApiClient\Services
  */
-class TemplatesService extends AbstractService
+class FlowTemplatesService extends AbstractService
 {
-    protected $slateId;
-
     /**
-     * @param string $slateId
+     * @param string $flowId
      *
      * @return Template[]
      * @throws \Exception
      */
-    public function collection(string $slateId = null): array
+    public function collection(string $flowId): array
     {
-        $slateId = $slateId ?? $this->slateId;
-        $url = $this->resolveEndpoint('/slates/' . $slateId . '/templates');
+        $url = $this->resolveEndpoint('/flows/' . $flowId . '/templates');
 
         $response = $this->httpClient->get($url);
 
@@ -41,13 +36,14 @@ class TemplatesService extends AbstractService
     }
 
     /**
+     * @param string $flowId
      * @param string $templateId
      * @return Template
      * @throws \Exception
      */
-    public function get(string $templateId): Template
+    public function get(string $flowId, string $templateId): Template
     {
-        $url = $this->resolveEndpoint('/slates/' . $this->slateId . '/templates/' . $templateId);
+        $url = $this->resolveEndpoint('/flows/' . $flowId . '/templates/' . $templateId);
 
         $response = $this->httpClient->get($url);
 
@@ -57,38 +53,14 @@ class TemplatesService extends AbstractService
     }
 
     /**
-     * @deprecated
-     *
-     * @return mixed
-     */
-    public function getSlateId()
-    {
-        return $this->slateId;
-    }
-
-    /**
-     * @deprecated
-     *
-     * @param string $slateId
-     * @return TemplatesService
-     */
-    public function setSlateId($slateId): TemplatesService
-    {
-        $this->slateId = $slateId;
-
-        return $this;
-    }
-
-    /**
      * @param Create $template
-     * @param string $slateId
+     * @param string $flowId
      * @return Template
      * @throws \Exception
      */
-    public function create(Create $template, string $slateId = null): Template
+    public function create(Create $template, string $flowId): Template
     {
-        $slateId = $slateId ?? $this->slateId;
-        $url = $this->resolveEndpoint('/slates/' . $slateId . '/templates');
+        $url = $this->resolveEndpoint('/flows/' . $flowId . '/templates');
 
         $response = $this->httpClient->post($url, [
             RequestOptions::JSON => $template->toArray(),
@@ -101,14 +73,14 @@ class TemplatesService extends AbstractService
 
     /**
      * @param Update $template
-     * @param string $slateId
+     * @param string $flowId
      * @param string $templateId
      * @return Template
      * @throws \Exception
      */
-    public function update(Update $template, string $slateId, string $templateId): Template
+    public function update(Update $template, string $flowId, string $templateId): Template
     {
-        $url = $this->resolveEndpoint('/slates/' . $slateId . '/templates/' . $templateId);
+        $url = $this->resolveEndpoint('/flows/' . $flowId . '/templates/' . $templateId);
 
         $response = $this->httpClient->patch($url, [
             RequestOptions::JSON => $template->toArray(),
@@ -120,14 +92,14 @@ class TemplatesService extends AbstractService
     }
 
     /**
-     * @param string $slateId
+     * @param string $flowId
      * @param string $templateId
      * @return array
      * @throws \Exception
      */
-    public function documents(string $slateId, string $templateId): array
+    public function documents(string $flowId, string $templateId): array
     {
-        $url = $this->resolveEndpoint('/slates/' . $slateId . '/templates/' . $templateId . '/documents');
+        $url = $this->resolveEndpoint('/flows/' . $flowId . '/templates/' . $templateId . '/documents');
 
         $response = $this->httpClient->get($url);
 
@@ -137,14 +109,14 @@ class TemplatesService extends AbstractService
     }
 
     /**
-     * @param string $slateId
+     * @param string $flowId
      * @param string $templateId
      * @return array
      * @throws \Exception
      */
-    public function roles(string $slateId, string $templateId): array
+    public function roles(string $flowId, string $templateId): array
     {
-        $url = $this->resolveEndpoint('/flows/' . $slateId . '/templates/' . $templateId . '/roles');
+        $url = $this->resolveEndpoint('/flows/' . $flowId . '/templates/' . $templateId . '/roles');
 
         $response = $this->httpClient->get($url);
 
@@ -154,15 +126,15 @@ class TemplatesService extends AbstractService
     }
 
     /**
-     * @param string $slateId
+     * @param string $flowId
      * @param string $templateId
      * @param TemplateDocument $document
      * @return Template
      * @throws \Exception
      */
-    public function addDocument(string $slateId, string $templateId, TemplateDocument $document): Template
+    public function addDocument(string $flowId, string $templateId, TemplateDocument $document): Template
     {
-        $url = $this->resolveEndpoint('/slates/' . $slateId . '/templates/' . $templateId . '/documents');
+        $url = $this->resolveEndpoint('/flows/' . $flowId . '/templates/' . $templateId . '/documents');
 
         $response = $this->httpClient->post($url, [
             RequestOptions::JSON => $document->toArray(),
@@ -174,15 +146,16 @@ class TemplatesService extends AbstractService
     }
 
     /**
-     * @param string $slateId
+     * @param string $flowId
      * @param string $templateId
      * @param string $documentId
      * @return bool
      */
-    public function deleteDocument(string $slateId, string $templateId, string $documentId)
+    public function deleteDocument(string $flowId, string $templateId, string $documentId): bool
     {
-        $url = $this->resolveEndpoint('/slates/' . $slateId . '/templates/' .
+        $url = $this->resolveEndpoint('/flows/' . $flowId . '/templates/' .
             $templateId . '/documents/' . $documentId);
+
         $response = $this->httpClient->delete($url);
 
         return $response && $response->getStatusCode() === 204;
