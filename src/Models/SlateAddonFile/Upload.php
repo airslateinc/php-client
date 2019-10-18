@@ -92,7 +92,7 @@ class Upload extends AbstractModel
      * @param string $slateAddonUid
      * @return static
      */
-    public static function make(string $filename, string $contents, string $slateAddonUid): self
+    public static function fromAttributes(string $filename, string $contents, string $slateAddonUid): self
     {
         return new static($filename, $contents, $slateAddonUid);
     }

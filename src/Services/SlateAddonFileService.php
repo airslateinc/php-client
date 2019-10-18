@@ -17,7 +17,7 @@ class SlateAddonFileService extends AbstractService
      * @param string $slateAddonFileId
      * @return SlateAddonFile
      */
-    public function one(string $slateAddonFileId): SlateAddonFile
+    public function get(string $slateAddonFileId): SlateAddonFile
     {
         $url = $this->resolveEndpoint(sprintf('/slate-addon-files/%s', $slateAddonFileId));
 
