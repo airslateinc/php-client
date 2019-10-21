@@ -36,6 +36,7 @@ interface EntityType
     public const PACKET = 'packets';
     public const SLATE = 'slates';
     public const SLATE_ADDON = 'slate_addons';
+    public const SLATE_ADDON_FILE = 'slate_addon_files';
     public const SLATE_LINKS = 'slate_links';
     public const SLATE_INVITE = 'slate_invites';
     public const SLATE_DOCUMENT = 'slate_documents';
