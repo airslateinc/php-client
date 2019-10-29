@@ -9,6 +9,7 @@ use AirSlate\ApiClient\Services\DocumentsService;
 use AirSlate\ApiClient\Services\EventBusService;
 use AirSlate\ApiClient\Services\ExportService;
 use AirSlate\ApiClient\Services\FilesService;
+use AirSlate\ApiClient\Services\FlowsService;
 use AirSlate\ApiClient\Services\PermissionsService;
 use AirSlate\ApiClient\Services\RevisionsService;
 use AirSlate\ApiClient\Services\SlatesService;
@@ -44,9 +45,14 @@ class Client
      */
     private $exportService;
     /**
+     * @deprecated
      * @var SlatesService
      */
     private $slatesService;
+    /**
+     * @var FlowsService
+     */
+    private $flowsService;
     /**
      * @var AddonsService
      */
@@ -210,6 +216,9 @@ class Client
     }
 
     /**
+     * @deprecated
+     * @see \AirSlate\ApiClient\Client::flows
+     *
      * @return SlatesService
      */
     public function slates(): SlatesService
@@ -219,6 +228,18 @@ class Client
         }
 
         return $this->slatesService;
+    }
+
+    /**
+     * @return FlowsService
+     */
+    public function flows(): FlowsService
+    {
+        if (!$this->flowsService) {
+            $this->flowsService = new FlowsService($this->httpClient);
+        }
+
+        return $this->flowsService;
     }
 
     /**
