@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Models\BotsLog;
 
+use AirSlate\ApiClient\Entities\EntityType;
 
 class Update extends AbstractBotsLog
 {
@@ -26,15 +27,13 @@ class Update extends AbstractBotsLog
     public function toArray(): array
     {
         return [
-            'type' => 'slate_addon_logs',
+            'type' => EntityType::SLATE_ADDON_LOGS,
             'id' => $this->uid,
             'attributes' => [
                 'status' => $this->status,
-                'run_once' => 'PASSED',
-                'condition' => 'PASSED',
-                'response_body' => [
-
-                ]
+                'run_once' => $this->run_once,
+                'condition' => $this->condition,
+                'response_body' => $this->responseBody
             ]
         ];
     }

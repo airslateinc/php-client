@@ -9,12 +9,6 @@ use AirSlate\ApiClient\Entities\EntityType;
 class Create extends AbstractBotsLog
 {
     /** @var string  */
-    private const STATUS_PENDING = 'PENDING';
-
-    /** @var string  */
-    private const PASSED = 'PASSED';
-
-    /** @var string  */
     private $slateAdonUID = '';
 
     /** @var string  */
@@ -53,11 +47,11 @@ class Create extends AbstractBotsLog
     public function toArray(): array
     {
         $payload = [
-            'type' => 'slate_addon_logs',
+            'type' => EntityType::SLATE_ADDON_LOGS,
             'attributes' => [
-                'status' => self::STATUS_PENDING,
-                'run_once' => self::PASSED,
-                'condition' => self::PASSED,
+                'status' => $this->status,
+                'run_once' => $this->run_once,
+                'condition' => $this->condition,
                 'response_body' => $this->responseBody,
             ],
             'relationship' => [
@@ -70,6 +64,8 @@ class Create extends AbstractBotsLog
             ]
         ];
 
+        // Relationship revision not required.
+        // Can pass slate.
         if($this->packetRevisionUID !== '') {
             $payload['relationship']['revision'] = $this->makeRevisionStructure();
         }
