@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Models\AddonLogs;
@@ -31,9 +32,9 @@ class Update extends AbstractAddonLogs
                     'status' => $this->status,
                     'run_once' => $this->runOnce,
                     'conditions' => $this->condition,
-                    'response_body' => $this->responseBody
-                ]
-            ]
+                    'response_body' => $this->responseBody,
+                ],
+            ],
         ];
     }
 }

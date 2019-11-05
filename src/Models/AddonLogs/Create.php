@@ -59,28 +59,28 @@ class Create extends AbstractAddonLogs
                     'slate_addon' => [
                         'data' => [
                             'id' => $this->slateAddonUid,
-                            'type' => EntityType::SLATE_ADDON
-                        ]
+                            'type' => EntityType::SLATE_ADDON,
+                        ],
                     ],
-                ]
-            ]
+                ],
+            ],
         ];
 
         if($this->packetRevisionUid !== null) {
-            $payload['relationships']['revision'] = [
+            $payload['data']['relationships']['revision'] = [
                 'data' => [
                     'id' => $this->packetRevisionUid,
-                    'type' => EntityType::PACKET_REVISION
-                ]
+                    'type' => EntityType::PACKET_REVISION,
+                ],
             ];
         }
 
         if($this->packetUid !== null) {
-            $payload['relationships']['packet'] = [
+            $payload['data']['relationships']['packet'] = [
                 'data' => [
                     'id' => $this->packetUid,
-                    'type' => EntityType::PACKET
-                ]
+                    'type' => EntityType::PACKET,
+                ],
             ];
         }
 
