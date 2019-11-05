@@ -6,7 +6,7 @@ namespace AirSlate\ApiClient\Models\AddonLogs;
 
 use AirSlate\ApiClient\Entities\EntityType;
 
-class Create extends AbstractAddonLogs
+class Create extends AbstractAddonLog
 {
     /** @var string  */
     private $slateAddonUid;
@@ -20,7 +20,7 @@ class Create extends AbstractAddonLogs
     /**
      * @param string $slateAddonUid
      */
-    public function setSlateAdonUid(string $slateAddonUid): void
+    public function setSlateAddonUid(string $slateAddonUid): void
     {
         $this->slateAddonUid = $slateAddonUid;
     }

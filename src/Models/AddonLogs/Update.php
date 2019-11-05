@@ -6,7 +6,7 @@ namespace AirSlate\ApiClient\Models\AddonLogs;
 
 use AirSlate\ApiClient\Entities\EntityType;
 
-class Update extends AbstractAddonLogs
+class Update extends AbstractAddonLog
 {
     /** @var string  */
     private $addonLogUid = '';

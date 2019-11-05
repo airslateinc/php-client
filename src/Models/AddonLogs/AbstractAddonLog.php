@@ -6,7 +6,7 @@ namespace AirSlate\ApiClient\Models\AddonLogs;
 
 use AirSlate\ApiClient\Models\AbstractModel;
 
-abstract class AbstractAddonLogs extends AbstractModel
+abstract class AbstractAddonLog extends AbstractModel
 {
     /** @var string  */
     public const STATUS_PENDING = 'PENDING';
