@@ -12,15 +12,15 @@ class AddonLogsService extends AbstractService
 {
     /**
      * @param string $flowUid
-     * @param Create $addonLogs
+     * @param Create $addonLogsModel
      * @return AddonLog
      */
-    public function create(string $flowUid, Create $addonLogs): AddonLog
+    public function create(string $flowUid, Create $addonLogsModel): AddonLog
     {
         $url = $this->resolveEndpoint("addons/slates/{$flowUid}/addon-logs");
 
         $response = $this->httpClient->post($url, [
-            RequestOptions::JSON => $addonLogs->toArray(),
+            RequestOptions::JSON => $addonLogsModel->toArray(),
         ]);
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
@@ -31,15 +31,15 @@ class AddonLogsService extends AbstractService
     /**
      * @param string $flowUid
      * @param string $addonLogUid
-     * @param Update $addonLogs
+     * @param Update $addonLogsModel
      * @return AddonLog
      */
-    public function update(string $flowUid, string $addonLogUid, Update $addonLogs): AddonLog
+    public function update(string $flowUid, string $addonLogUid, Update $addonLogsModel): AddonLog
     {
         $url = $this->resolveEndpoint("/addons/slates/{$flowUid}/addon-logs/{$addonLogUid}");
 
         $response = $this->httpClient->patch($url, [
-            RequestOptions::JSON => $addonLogs->toArray(),
+            RequestOptions::JSON => $addonLogsModel->toArray(),
         ]);
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);

@@ -23,17 +23,17 @@ class Update extends AbstractAddonLogs
      */
     public function toArray(): array
     {
-        $payload = [
-            'type' => EntityType::SLATE_ADDON_LOG,
-            'id' => $this->addonLogUid,
-            'attributes' => [
-                'status' => $this->status,
-                'run_once' => $this->run_once,
-                'conditions' => $this->condition,
-                'response_body' => $this->responseBody
+         return [
+            'data' => [
+                'type' => EntityType::SLATE_ADDON_LOG,
+                'id' => $this->addonLogUid,
+                'attributes' => [
+                    'status' => $this->status,
+                    'run_once' => $this->runOnce,
+                    'conditions' => $this->condition,
+                    'response_body' => $this->responseBody
+                ]
             ]
         ];
-
-        return ['data' => $payload];
     }
 }

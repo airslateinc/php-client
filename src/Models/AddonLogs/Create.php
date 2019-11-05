@@ -9,13 +9,13 @@ use AirSlate\ApiClient\Entities\EntityType;
 class Create extends AbstractAddonLogs
 {
     /** @var string  */
-    private $slateAddonUid = '';
+    private $slateAddonUid;
 
     /** @var string  */
-    private $packetRevisionUid = '';
+    private $packetRevisionUid;
 
     /** @var string  */
-    private $packetUid = '';
+    private $packetUid;
 
     /**
      * @param string $slateAddonUid
@@ -34,11 +34,11 @@ class Create extends AbstractAddonLogs
     }
 
     /**
-     * @param string $packerUid
+     * @param string $packetUid
      */
-    public function setPacketUid(string $packerUid): void
+    public function setPacketUid(string $packetUid): void
     {
-        $this->packetUid = $packerUid;
+        $this->packetUid = $packetUid;
     }
 
     /**
@@ -47,59 +47,43 @@ class Create extends AbstractAddonLogs
     public function toArray(): array
     {
         $payload = [
-            'type' => EntityType::SLATE_ADDON_LOG,
-            'attributes' => [
-                'status' => $this->status,
-                'run_once' => $this->run_once,
-                'conditions' => $this->condition,
-                'response_body' => $this->responseBody,
-            ],
-            'relationships' => [
-                'slate_addon' => [
-                    'data' => [
-                        'id' => $this->slateAddonUid,
-                        'type' => EntityType::SLATE_ADDON
-                    ]
+            'data' => [
+                'type' => EntityType::SLATE_ADDON_LOG,
+                'attributes' => [
+                    'status' => $this->status,
+                    'run_once' => $this->runOnce,
+                    'conditions' => $this->condition,
+                    'response_body' => $this->responseBody,
                 ],
+                'relationships' => [
+                    'slate_addon' => [
+                        'data' => [
+                            'id' => $this->slateAddonUid,
+                            'type' => EntityType::SLATE_ADDON
+                        ]
+                    ],
+                ]
             ]
         ];
 
-        // Relationship revision not required.
-        // Can pass slate.
-        if($this->packetRevisionUid !== '') {
-            $payload['relationships']['revision'] = $this->makeRevisionStructure();
+        if($this->packetRevisionUid !== null) {
+            $payload['relationships']['revision'] = [
+                'data' => [
+                    'id' => $this->packetRevisionUid,
+                    'type' => EntityType::PACKET_REVISION
+                ]
+            ];
         }
 
-        if($this->packetUid !== '') {
-            $payload['relationships']['packet'] = $this->makePacketStructure();
+        if($this->packetUid !== null) {
+            $payload['relationships']['packet'] = [
+                'data' => [
+                    'id' => $this->packetUid,
+                    'type' => EntityType::PACKET
+                ]
+            ];
         }
 
-        return ['data' => $payload];
-    }
-
-    /**
-     * @return array
-     */
-    private function makeRevisionStructure(): array
-    {
-        return [
-            'data' => [
-                'id' => $this->packetRevisionUid,
-                'type' => EntityType::PACKET_REVISION
-            ]
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    private function makePacketStructure(): array
-    {
-        return [
-            'data' => [
-                'id' => $this->packetUid,
-                'type' => EntityType::PACKET
-            ]
-        ];
+        return $payload;
     }
 }

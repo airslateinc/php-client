@@ -29,7 +29,7 @@ abstract class AbstractAddonLogs extends AbstractModel
     protected $status = self::STATUS_PENDING;
 
     /** @var string  */
-    protected $run_once = self::PASSED;
+    protected $runOnce = self::PASSED;
 
     /** @var string  */
     protected $condition = self::PASSED;
@@ -51,11 +51,11 @@ abstract class AbstractAddonLogs extends AbstractModel
     }
 
     /**
-     * @param string $run_once
+     * @param string $runOnce
      */
-    public function setRunOnce(string $run_once): void
+    public function setRunOnce(string $runOnce): void
     {
-        $this->run_once = $run_once;
+        $this->runOnce = $runOnce;
     }
 
     /**
