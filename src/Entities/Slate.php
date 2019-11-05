@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Entities;
 
+use AirSlate\ApiClient\Exceptions\MissingDataException;
+use AirSlate\ApiClient\Exceptions\RelationNotExistException;
+use AirSlate\ApiClient\Exceptions\TypeMismatchException;
+
 /**
  * Class Slate
  * @package AirSlate\ApiClient\Entities
@@ -26,8 +30,16 @@ class Slate extends BaseEntity
      * @return BaseEntity|User|null
      * @throws \Exception
      */
-    public function getTemplate()
+    public function getTemplate(): Template
     {
         return $this->hasOne(Template::class, 'template');
+    }
+
+    /**
+     * @return BaseEntity|null
+     */
+    public function getAdmin(): User
+    {
+        return $this->hasOne(User::class, 'admin');
     }
 }
