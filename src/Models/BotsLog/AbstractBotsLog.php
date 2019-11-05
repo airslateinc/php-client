@@ -14,7 +14,7 @@ abstract class AbstractBotsLog extends AbstractModel
     public const STATUS_IN_PROGRESS = 'IN_PROGRESS';
 
     /** @var string  */
-    public const STATUS_FAIL = 'FAIL';
+    public const STATUS_FAIL = 'FAILED';
 
     /** @var string  */
     public const STATUS_DONE = 'DONE';
