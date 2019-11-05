@@ -12,7 +12,7 @@ class AddonLog extends BaseEntity
     protected $type = EntityType::SLATE_ADDON_LOG;
 
     /**
-     * @return BaseEntity|null
+     * @return BaseEntity|SlateAddon|null
      * @throws \Exception
      */
     public function getSlateAddon()
@@ -21,7 +21,7 @@ class AddonLog extends BaseEntity
     }
 
     /**
-     * @return BaseEntity|null
+     * @return BaseEntity|Revision|null
      * @throws \Exception
      */
     public function getRevision()

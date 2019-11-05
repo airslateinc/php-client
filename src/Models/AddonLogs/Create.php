@@ -9,36 +9,36 @@ use AirSlate\ApiClient\Entities\EntityType;
 class Create extends AbstractAddonLogs
 {
     /** @var string  */
-    private $slateAdonUID = '';
+    private $slateAddonUid = '';
 
     /** @var string  */
-    private $packetRevisionUID = '';
+    private $packetRevisionUid = '';
 
     /** @var string  */
-    private $packetUID = '';
+    private $packetUid = '';
 
     /**
-     * @param string $slateAdonUID
+     * @param string $slateAddonUid
      */
-    public function setSlateAdonUID(string $slateAdonUID): void
+    public function setSlateAdonUid(string $slateAddonUid): void
     {
-        $this->slateAdonUID = $slateAdonUID;
+        $this->slateAddonUid = $slateAddonUid;
     }
 
     /**
-     * @param string $packetRevisionUID
+     * @param string $packetRevisionUid
      */
-    public function setPacketRevisionUID(string $packetRevisionUID): void
+    public function setPacketRevisionUid(string $packetRevisionUid): void
     {
-        $this->packetRevisionUID = $packetRevisionUID;
+        $this->packetRevisionUid = $packetRevisionUid;
     }
 
     /**
-     * @param string $packerUID
+     * @param string $packerUid
      */
-    public function setPacketUID(string $packerUID): void
+    public function setPacketUid(string $packerUid): void
     {
-        $this->packetUID = $packerUID;
+        $this->packetUid = $packerUid;
     }
 
     /**
@@ -57,7 +57,7 @@ class Create extends AbstractAddonLogs
             'relationships' => [
                 'slate_addon' => [
                     'data' => [
-                        'id' => $this->slateAdonUID,
+                        'id' => $this->slateAddonUid,
                         'type' => EntityType::SLATE_ADDON
                     ]
                 ],
@@ -66,11 +66,11 @@ class Create extends AbstractAddonLogs
 
         // Relationship revision not required.
         // Can pass slate.
-        if($this->packetRevisionUID !== '') {
+        if($this->packetRevisionUid !== '') {
             $payload['relationships']['revision'] = $this->makeRevisionStructure();
         }
 
-        if($this->packetUID !== '') {
+        if($this->packetUid !== '') {
             $payload['relationships']['packet'] = $this->makePacketStructure();
         }
 
@@ -84,7 +84,7 @@ class Create extends AbstractAddonLogs
     {
         return [
             'data' => [
-                'id' => $this->packetRevisionUID,
+                'id' => $this->packetRevisionUid,
                 'type' => EntityType::PACKET_REVISION
             ]
         ];
@@ -97,7 +97,7 @@ class Create extends AbstractAddonLogs
     {
         return [
             'data' => [
-                'id' => $this->packetUID,
+                'id' => $this->packetUid,
                 'type' => EntityType::PACKET
             ]
         ];

@@ -12,37 +12,37 @@ class AddonLogsService extends AbstractService
 {
     /**
      * @param string $flowUid
-     * @param Create $botsLog
+     * @param Create $addonLogs
      * @return AddonLog
      */
-    public function create(string $flowUid, Create $botsLog): AddonLog
+    public function create(string $flowUid, Create $addonLogs): AddonLog
     {
         $url = $this->resolveEndpoint("addons/slates/{$flowUid}/addon-logs");
 
         $response = $this->httpClient->post($url, [
-            RequestOptions::JSON => $botsLog->toArray(),
+            RequestOptions::JSON => $addonLogs->toArray(),
         ]);
 
-        $content = $content = \GuzzleHttp\json_decode($response->getBody(), true);
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return AddonLog::createFromOne($content);
     }
 
     /**
      * @param string $flowUid
-     * @param string $uid
-     * @param Update $botsLog
+     * @param string $addonLogUid
+     * @param Update $addonLogs
      * @return AddonLog
      */
-    public function update(string $flowUid, string $uid, Update $botsLog): AddonLog
+    public function update(string $flowUid, string $addonLogUid, Update $addonLogs): AddonLog
     {
-        $url = $this->resolveEndpoint("/addons/slates/{$flowUid}/addon-logs/{$uid}");
+        $url = $this->resolveEndpoint("/addons/slates/{$flowUid}/addon-logs/{$addonLogUid}");
 
         $response = $this->httpClient->patch($url, [
-            RequestOptions::JSON => $botsLog->toArray(),
+            RequestOptions::JSON => $addonLogs->toArray(),
         ]);
 
-        $content = $content = \GuzzleHttp\json_decode($response->getBody(), true);
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return AddonLog::createFromOne($content);
     }
