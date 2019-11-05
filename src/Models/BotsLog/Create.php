@@ -51,10 +51,10 @@ class Create extends AbstractBotsLog
             'attributes' => [
                 'status' => $this->status,
                 'run_once' => $this->run_once,
-                'condition' => $this->condition,
+                'conditions' => $this->condition,
                 'response_body' => $this->responseBody,
             ],
-            'relationship' => [
+            'relationships' => [
                 'slate_addon' => [
                     'data' => [
                         'id' => $this->slateAdonUID,
@@ -67,14 +67,14 @@ class Create extends AbstractBotsLog
         // Relationship revision not required.
         // Can pass slate.
         if($this->packetRevisionUID !== '') {
-            $payload['relationship']['revision'] = $this->makeRevisionStructure();
+            $payload['relationships']['revision'] = $this->makeRevisionStructure();
         }
 
         if($this->packetUID !== '') {
-            $payload['relationship']['packet'] = $this->makePacketStructure();
+            $payload['relationships']['packet'] = $this->makePacketStructure();
         }
 
-        return $payload;
+        return ['data' => $payload];
     }
 
     /**

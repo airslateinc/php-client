@@ -36,7 +36,7 @@ class BotsLogService extends AbstractService
      */
     public function update(string $flowUid, string $uid, Update $botsLog): BotsLog
     {
-        $url = $this->resolveEndpoint("addons/slates/{$flowUid}/addon-logs/{$uid}");
+        $url = $this->resolveEndpoint("/addons/slates/{$flowUid}/addon-logs/{$uid}");
 
         $response = $this->httpClient->patch($url, [
             RequestOptions::JSON => $botsLog->toArray(),

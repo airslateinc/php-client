@@ -10,9 +10,6 @@ class Update extends AbstractBotsLog
     /** @var string  */
     private $uid = '';
 
-    /** @var string  */
-    private $status = '';
-
     /**
      * @param string $uid
      */
@@ -26,15 +23,17 @@ class Update extends AbstractBotsLog
      */
     public function toArray(): array
     {
-        return [
+        $payload = [
             'type' => EntityType::SLATE_ADDON_LOGS,
             'id' => $this->uid,
             'attributes' => [
                 'status' => $this->status,
                 'run_once' => $this->run_once,
-                'condition' => $this->condition,
+                'conditions' => $this->condition,
                 'response_body' => $this->responseBody
             ]
         ];
+
+        return ['data' => $payload];
     }
 }
