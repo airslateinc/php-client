@@ -6,10 +6,10 @@ namespace AirSlate\ApiClient\Entities;
 use AirSlate\ApiClient\Entities\Packets\Revision;
 use AirSlate\ApiClient\Entities\Addons\SlateAddon;
 
-class BotsLog extends BaseEntity
+class AddonLog extends BaseEntity
 {
     /** @var string  */
-    protected $type = EntityType::SLATE_ADDON_LOGS;
+    protected $type = EntityType::SLATE_ADDON_LOG;
 
     /**
      * @return BaseEntity|null

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace AirSlate\ApiClient\Models\BotsLog;
+namespace AirSlate\ApiClient\Models\AddonLogs;
 
 use AirSlate\ApiClient\Entities\EntityType;
 
-class Create extends AbstractBotsLog
+class Create extends AbstractAddonLogs
 {
     /** @var string  */
     private $slateAdonUID = '';
@@ -47,7 +47,7 @@ class Create extends AbstractBotsLog
     public function toArray(): array
     {
         $payload = [
-            'type' => EntityType::SLATE_ADDON_LOGS,
+            'type' => EntityType::SLATE_ADDON_LOG,
             'attributes' => [
                 'status' => $this->status,
                 'run_once' => $this->run_once,

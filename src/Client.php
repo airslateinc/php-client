@@ -5,7 +5,7 @@ namespace AirSlate\ApiClient;
 
 use AirSlate\ApiClient\Http\Client as HttpClient;
 use AirSlate\ApiClient\Services\AddonsService;
-use AirSlate\ApiClient\Services\BotsLogService;
+use AirSlate\ApiClient\Services\AddonLogsService;
 use AirSlate\ApiClient\Services\DocumentsService;
 use AirSlate\ApiClient\Services\EventBusService;
 use AirSlate\ApiClient\Services\ExportService;
@@ -79,10 +79,8 @@ class Client
      */
     private $packetRevisionsService;
 
-    /**
-     * @var BotsLogService
-     */
-    private $botsLogService;
+    /** @var AddonLogsService */
+    private $addonLogsService;
 
     /**
      * Client instances.
@@ -319,14 +317,14 @@ class Client
     }
 
     /**
-     * @return BotsLogService
+     * @return AddonLogsService
      */
-    public function botsLog(): BotsLogService
+    public function addonLogs(): AddonLogsService
     {
-        if (!$this->botsLogService) {
-            $this->botsLogService = new BotsLogService($this->httpClient);
+        if (!$this->addonLogsService) {
+            $this->addonLogsService = new AddonLogsService($this->httpClient);
         }
 
-        return $this->botsLogService;
+        return $this->addonLogsService;
     }
 }

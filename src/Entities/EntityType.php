@@ -47,5 +47,5 @@ interface EntityType
     public const EXPORT = 'export';
     public const EVENT = 'events';
     public const INVITE_EMAIL_ADDITION = 'invite_email_additions';
-    public const SLATE_ADDON_LOGS = 'slate_addon_logs';
+    public const SLATE_ADDON_LOG = 'slate_addon_logs';
 }

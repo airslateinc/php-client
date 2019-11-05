@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace AirSlate\ApiClient\Models\BotsLog;
+namespace AirSlate\ApiClient\Models\AddonLogs;
 
 use AirSlate\ApiClient\Models\AbstractModel;
 
-abstract class AbstractBotsLog extends AbstractModel
+abstract class AbstractAddonLogs extends AbstractModel
 {
     /** @var string  */
     public const STATUS_PENDING = 'PENDING';

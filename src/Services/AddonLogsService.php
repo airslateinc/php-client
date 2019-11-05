@@ -4,18 +4,18 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient\Services;
 
 use GuzzleHttp\RequestOptions;
-use AirSlate\ApiClient\Entities\BotsLog;
-use AirSlate\ApiClient\Models\BotsLog\Create;
-use AirSlate\ApiClient\Models\BotsLog\Update;
+use AirSlate\ApiClient\Entities\AddonLog;
+use AirSlate\ApiClient\Models\AddonLogs\Create;
+use AirSlate\ApiClient\Models\AddonLogs\Update;
 
-class BotsLogService extends AbstractService
+class AddonLogsService extends AbstractService
 {
     /**
      * @param string $flowUid
      * @param Create $botsLog
-     * @return BotsLog
+     * @return AddonLog
      */
-    public function create(string $flowUid, Create $botsLog): BotsLog
+    public function create(string $flowUid, Create $botsLog): AddonLog
     {
         $url = $this->resolveEndpoint("addons/slates/{$flowUid}/addon-logs");
 
@@ -25,16 +25,16 @@ class BotsLogService extends AbstractService
 
         $content = $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
-        return BotsLog::createFromOne($content);
+        return AddonLog::createFromOne($content);
     }
 
     /**
      * @param string $flowUid
      * @param string $uid
      * @param Update $botsLog
-     * @return BotsLog
+     * @return AddonLog
      */
-    public function update(string $flowUid, string $uid, Update $botsLog): BotsLog
+    public function update(string $flowUid, string $uid, Update $botsLog): AddonLog
     {
         $url = $this->resolveEndpoint("/addons/slates/{$flowUid}/addon-logs/{$uid}");
 
@@ -44,6 +44,6 @@ class BotsLogService extends AbstractService
 
         $content = $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
-        return BotsLog::createFromOne($content);
+        return AddonLog::createFromOne($content);
     }
 }
