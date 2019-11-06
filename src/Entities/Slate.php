@@ -18,6 +18,7 @@ use AirSlate\ApiClient\Exceptions\TypeMismatchException;
  * @property string $updated_at
  *
  * @property-read Template $template
+ * @property-read User $admin
  */
 class Slate extends BaseEntity
 {
