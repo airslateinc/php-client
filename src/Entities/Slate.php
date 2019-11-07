@@ -29,7 +29,9 @@ class Slate extends BaseEntity
 
     /**
      * @return BaseEntity|User|null
-     * @throws \Exception
+     * @throws RelationNotExistException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
      */
     public function getTemplate(): Template
     {
@@ -37,7 +39,10 @@ class Slate extends BaseEntity
     }
 
     /**
-     * @return BaseEntity|null
+     * @return BaseEntity|User|null
+     * @throws RelationNotExistException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
      */
     public function getAdmin(): User
     {
