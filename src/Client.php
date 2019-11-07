@@ -13,7 +13,6 @@ use AirSlate\ApiClient\Services\FilesService;
 use AirSlate\ApiClient\Services\FlowsService;
 use AirSlate\ApiClient\Services\PermissionsService;
 use AirSlate\ApiClient\Services\RevisionsService;
-use AirSlate\ApiClient\Services\SlatesService;
 use AirSlate\ApiClient\Services\UsersService;
 use AirSlate\ApiClient\Services\AddonsSmsService;
 use AirSlate\ApiClient\Services\PacketRevisionsService;
@@ -46,11 +45,6 @@ class Client
      */
     private $exportService;
     /**
-     * @deprecated
-     * @var SlatesService
-     */
-    private $slatesService;
-    /**
      * @var FlowsService
      */
     private $flowsService;
@@ -58,10 +52,6 @@ class Client
      * @var AddonsService
      */
     private $addonsService;
-    /**
-     * @var EventBusService
-     */
-    private $eventBusService;
     /**
      * @var PermissionsService
      */
@@ -220,21 +210,6 @@ class Client
     }
 
     /**
-     * @deprecated
-     * @see \AirSlate\ApiClient\Client::flows
-     *
-     * @return SlatesService
-     */
-    public function slates(): SlatesService
-    {
-        if (!$this->slatesService) {
-            $this->slatesService = new SlatesService($this->httpClient);
-        }
-
-        return $this->slatesService;
-    }
-
-    /**
      * @return FlowsService
      */
     public function flows(): FlowsService
@@ -256,19 +231,6 @@ class Client
         }
 
         return $this->addonsService;
-    }
-
-    /**
-     * @deprecated This service is going to be moved to separate client
-     * @return EventBusService
-     */
-    public function eventBus(): EventBusService
-    {
-        if (!$this->eventBusService) {
-            $this->eventBusService = new EventBusService($this->httpClient);
-        }
-
-        return $this->eventBusService;
     }
 
     /**
