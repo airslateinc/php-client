@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
@@ -14,6 +15,9 @@ use AirSlate\ApiClient\Models\Slate\Update;
 use GuzzleHttp\RequestOptions;
 
 /**
+ * @deprecated
+ * @see \AirSlate\ApiClient\Services\FlowsService
+ *
  * Class SlatesService
  * @package AirSlate\ApiClient\Services
  */
@@ -84,6 +88,9 @@ class SlatesService extends AbstractService
     }
 
     /**
+     * @deprecated
+     * @see \AirSlate\ApiClient\Services\FlowsService::invites with filters: ->addFilter('type', 'edit')
+     *
      * @param string $slateId
      * @return array
      * @throws \Exception
