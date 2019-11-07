@@ -29,7 +29,7 @@ class RevisionsService extends AbstractService
      */
     public function links(string $flowUid, string $packetUid, string $revisionUid): RevisionLinks
     {
-        $url = $this->resolveEndpoint("/slates/{$flowUid}/packets/{$packetUid}/revisions/{$revisionUid}/links");
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/revisions/{$revisionUid}/links");
 
         $response = $this->httpClient->get($url);
 
