@@ -16,7 +16,6 @@ use AirSlate\ApiClient\Models\Document\Event;
 use AirSlate\ApiClient\Models\Document\UnlockPdf;
 use AirSlate\ApiClient\Models\Document\Update as UpdateModel;
 use AirSlate\ApiClient\Models\Document\Duplicate as DuplicateModel;
-use AirSlate\ApiClient\Models\Document\Export as ExportModel;
 use AirSlate\ApiClient\Models\Document\UpdateFields;
 use AirSlate\ApiClient\Models\Document\Upload as UploadModel;
 use GuzzleHttp\RequestOptions;
