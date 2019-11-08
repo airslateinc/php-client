@@ -128,60 +128,6 @@ class DocumentsService extends AbstractService
     }
 
     /**
-     * Export documents
-     *
-     * @param ExportModel $document
-     *
-     * @return mixed
-     *
-     * @throws \Exception
-     *
-     * @deprecated
-     * @see ExportService::create()
-     */
-    public function export(ExportModel $document): array
-    {
-        $url = $this->resolveEndpoint('/export/bulk');
-
-        try {
-            $response = $this->httpClient->post($url, [
-                RequestOptions::JSON => $document->toArray(),
-            ]);
-
-            $content = \GuzzleHttp\json_decode($response->getBody(), true);
-        } catch (DomainException $e) {
-            $content = \GuzzleHttp\json_decode($e->getMessage(), true);
-        }
-
-        return $content;
-    }
-
-    /**
-     * Check the export status
-     *
-     * @param string $exportId
-     *
-     * @return array
-     *
-     * @deprecated
-     * @see ExportService::get()
-     */
-    public function exportStatus(string $exportId): array
-    {
-        $url = $this->resolveEndpoint("/export/$exportId/status");
-
-        try {
-            $response = $this->httpClient->get($url);
-
-            $content = \GuzzleHttp\json_decode($response->getBody(), true);
-        } catch (DomainException $e) {
-            $content = \GuzzleHttp\json_decode($e->getMessage(), true);
-        }
-
-        return $content;
-    }
-
-    /**
      * Upload document
      *
      * @param UploadModel $upload
