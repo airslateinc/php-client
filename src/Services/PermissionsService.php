@@ -17,7 +17,7 @@ class PermissionsService extends AbstractService
      *
      * @param array $permissionCodes filter permissions
      *
-     * @return \AirSlate\ApiClient\Entities\Permissions\Permission[]
+     * @return Permission[]
      *
      * @throws \Exception
      */
