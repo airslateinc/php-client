@@ -20,12 +20,11 @@ use GuzzleHttp\RequestOptions;
 class FlowsService extends AbstractService
 {
     /**
-     * @param string $flowId
      * @return PacketsService
      */
-    public function packets(string $flowId): PacketsService
+    public function packets(): PacketsService
     {
-        return (new PacketsService($this->httpClient))->setSlateId($flowId);
+        return new PacketsService($this->httpClient);
     }
 
     /**
@@ -45,21 +44,19 @@ class FlowsService extends AbstractService
     }
 
     /**
-     * @param string $flowId
      * @return RolesService
      */
-    public function roles(string $flowId): RolesService
+    public function roles(): RolesService
     {
-        return (new RolesService($this->httpClient))->setSlateId($flowId);
+        return new RolesService($this->httpClient);
     }
 
     /**
-     * @param string $flowId
      * @return RoleDocumentsService
      */
-    public function roleDocuments(string $flowId): RoleDocumentsService
+    public function roleDocuments(): RoleDocumentsService
     {
-        return (new RoleDocumentsService($this->httpClient))->setSlateId($flowId);
+        return new RoleDocumentsService($this->httpClient);
     }
 
     /**
