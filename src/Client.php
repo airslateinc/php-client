@@ -7,7 +7,6 @@ use AirSlate\ApiClient\Http\Client as HttpClient;
 use AirSlate\ApiClient\Services\AddonsService;
 use AirSlate\ApiClient\Services\AddonLogsService;
 use AirSlate\ApiClient\Services\DocumentsService;
-use AirSlate\ApiClient\Services\EventBusService;
 use AirSlate\ApiClient\Services\ExportService;
 use AirSlate\ApiClient\Services\FilesService;
 use AirSlate\ApiClient\Services\FlowsService;
