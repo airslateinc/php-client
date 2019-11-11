@@ -4,9 +4,15 @@ namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Addons\AddonFile as AddonFileEntity;
 
+/**
+ * @deprecated
+ * @see SlateAddonFileService
+ */
 class AddonFileService extends AbstractService
 {
     /**
+     * @deprecated
+     * @see SlateAddonFileService
      * @param string $addonFileId
      * @return AddonFileEntity
      * @throws \Exception
@@ -23,6 +29,8 @@ class AddonFileService extends AbstractService
     }
 
     /**
+     * @deprecated
+     * @see SlateAddonFileService
      * @param string $addonFileId
      * @return \Psr\Http\Message\StreamInterface
      */

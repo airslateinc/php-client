@@ -261,7 +261,9 @@ class BaseEntity implements JsonSerializable
      * @param string $className
      * @param string $relName
      * @return null|BaseEntity
-     * @throws \Exception
+     * @throws RelationNotExistException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
      */
     protected function hasOne(string $className, string $relName): ?BaseEntity
     {

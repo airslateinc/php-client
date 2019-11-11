@@ -16,6 +16,9 @@ use GuzzleHttp\RequestOptions;
 use InvalidArgumentException;
 
 /**
+ * @deprecated
+ * @see \AirSlate\ApiClient\Services\FlowTemplatesService
+ *
  * Class TemplatesService
  * @package AirSlate\ApiClient\Services
  */

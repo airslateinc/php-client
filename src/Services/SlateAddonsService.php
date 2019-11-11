@@ -11,6 +11,14 @@ use GuzzleHttp\RequestOptions;
 class SlateAddonsService extends AbstractService
 {
     /**
+     * @return SlateAddonFileService
+     */
+    public function slateAddonFiles(): SlateAddonFileService
+    {
+        return new SlateAddonFileService($this->httpClient);
+    }
+
+    /**
      * @param CreateSlateAddon $model
      * @return SlateAddon
      * @throws \Exception

@@ -36,6 +36,7 @@ interface EntityType
     public const PACKET = 'packets';
     public const SLATE = 'slates';
     public const SLATE_ADDON = 'slate_addons';
+    public const SLATE_ADDON_FILE = 'slate_addon_files';
     public const SLATE_LINKS = 'slate_links';
     public const SLATE_INVITE = 'slate_invites';
     public const SLATE_DOCUMENT = 'slate_documents';
@@ -46,4 +47,5 @@ interface EntityType
     public const EXPORT = 'export';
     public const EVENT = 'events';
     public const INVITE_EMAIL_ADDITION = 'invite_email_additions';
+    public const SLATE_ADDON_LOG = 'slate_addon_logs';
 }
