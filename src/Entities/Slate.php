@@ -46,6 +46,6 @@ class Slate extends BaseEntity
      */
     public function getAdmin(): User
     {
-        return $this->hasOne(User::class, 'admin');
+        return $this->hasOne(User::class, 'admins');
     }
 }
