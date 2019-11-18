@@ -7,10 +7,14 @@ namespace AirSlate\ApiClient\Services;
 use AirSlate\ApiClient\Entities\Document;
 use AirSlate\ApiClient\Entities\DocumentRole;
 use AirSlate\ApiClient\Entities\Template;
+use AirSlate\ApiClient\Exceptions\DomainException;
+use AirSlate\ApiClient\Exceptions\MissingDataException;
+use AirSlate\ApiClient\Exceptions\TypeMismatchException;
 use AirSlate\ApiClient\Models\Template\Create;
 use AirSlate\ApiClient\Models\Template\TemplateDocument;
 use AirSlate\ApiClient\Models\Template\Update;
 use GuzzleHttp\RequestOptions;
+use InvalidArgumentException;
 
 /**
  * Class FlowTemplatesService
@@ -22,7 +26,10 @@ class FlowTemplatesService extends AbstractService
      * @param string $flowId
      *
      * @return Template[]
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
      */
     public function collection(string $flowId): array
     {
@@ -39,11 +46,14 @@ class FlowTemplatesService extends AbstractService
      * @param string $flowId
      * @param string $templateId
      * @return Template
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
      */
     public function get(string $flowId, string $templateId): Template
     {
-        $url = $this->resolveEndpoint('/flows/' . $flowId . '/templates/' . $templateId);
+        $url = $this->resolveEndpoint("/flows/{$flowId}/templates/{$templateId}");
 
         $response = $this->httpClient->get($url);
 
@@ -56,11 +66,14 @@ class FlowTemplatesService extends AbstractService
      * @param Create $template
      * @param string $flowId
      * @return Template
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
      */
     public function create(Create $template, string $flowId): Template
     {
-        $url = $this->resolveEndpoint('/flows/' . $flowId . '/templates');
+        $url = $this->resolveEndpoint("/flows/{$flowId}/templates");
 
         $response = $this->httpClient->post($url, [
             RequestOptions::JSON => $template->toArray(),
@@ -76,11 +89,14 @@ class FlowTemplatesService extends AbstractService
      * @param string $flowId
      * @param string $templateId
      * @return Template
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
      */
     public function update(Update $template, string $flowId, string $templateId): Template
     {
-        $url = $this->resolveEndpoint('/flows/' . $flowId . '/templates/' . $templateId);
+        $url = $this->resolveEndpoint("/flows/{$flowId}/templates/{$templateId}");
 
         $response = $this->httpClient->patch($url, [
             RequestOptions::JSON => $template->toArray(),
@@ -94,12 +110,15 @@ class FlowTemplatesService extends AbstractService
     /**
      * @param string $flowId
      * @param string $templateId
-     * @return array
-     * @throws \Exception
+     * @return Document[]
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
      */
     public function documents(string $flowId, string $templateId): array
     {
-        $url = $this->resolveEndpoint('/flows/' . $flowId . '/templates/' . $templateId . '/documents');
+        $url = $this->resolveEndpoint("/flows/{$flowId}/templates/{$templateId}/documents");
 
         $response = $this->httpClient->get($url);
 
@@ -111,12 +130,15 @@ class FlowTemplatesService extends AbstractService
     /**
      * @param string $flowId
      * @param string $templateId
-     * @return array
-     * @throws \Exception
+     * @return DocumentRole[]
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
      */
     public function roles(string $flowId, string $templateId): array
     {
-        $url = $this->resolveEndpoint('/flows/' . $flowId . '/templates/' . $templateId . '/roles');
+        $url = $this->resolveEndpoint("/flows/{$flowId}/templates/{$templateId}/roles");
 
         $response = $this->httpClient->get($url);
 
@@ -130,11 +152,14 @@ class FlowTemplatesService extends AbstractService
      * @param string $templateId
      * @param TemplateDocument $document
      * @return Template
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
      */
     public function addDocument(string $flowId, string $templateId, TemplateDocument $document): Template
     {
-        $url = $this->resolveEndpoint('/flows/' . $flowId . '/templates/' . $templateId . '/documents');
+        $url = $this->resolveEndpoint("/flows/{$flowId}/templates/{$templateId}/documents");
 
         $response = $this->httpClient->post($url, [
             RequestOptions::JSON => $document->toArray(),
@@ -150,11 +175,12 @@ class FlowTemplatesService extends AbstractService
      * @param string $templateId
      * @param string $documentId
      * @return bool
+     * @throws InvalidArgumentException
+     * @throws DomainException
      */
     public function deleteDocument(string $flowId, string $templateId, string $documentId): bool
     {
-        $url = $this->resolveEndpoint('/flows/' . $flowId . '/templates/' .
-            $templateId . '/documents/' . $documentId);
+        $url = $this->resolveEndpoint("/flows/{$flowId}/templates/{$templateId}/documents/{$documentId}");
 
         $response = $this->httpClient->delete($url);
 

@@ -12,13 +12,13 @@ use GuzzleHttp\RequestOptions;
 class RoleFieldsService extends AbstractService
 {
     /**
-     * @param string $slateId
+     * @param string $flowUid
      * @return FlowRoleField[]
      * @throws \Exception
      */
-    public function collection(string $slateId): array
+    public function collection(string $flowUid): array
     {
-        $url = $this->resolveEndpoint("/flows/{$slateId}/role-fields");
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/role-fields");
 
         $response = $this->httpClient->get($url);
 
@@ -28,14 +28,14 @@ class RoleFieldsService extends AbstractService
     }
 
     /**
-     * @param string $slateId
+     * @param string $flowUid
      * @param Create $roleFields
      * @return FlowRoleField[]
      * @throws \Exception
      */
-    public function create(string $slateId, Create $roleFields): array
+    public function create(string $flowUid, Create $roleFields): array
     {
-        $url = $this->resolveEndpoint("/flows/{$slateId}/role-fields");
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/role-fields");
 
         $response = $this->httpClient->post($url, [
             RequestOptions::JSON => $roleFields->toArray(),
@@ -47,14 +47,14 @@ class RoleFieldsService extends AbstractService
     }
 
     /**
-     * @param string $slateId
+     * @param string $flowUid
      * @param Update $roleFields
      * @return FlowRoleField[]
      * @throws \Exception
      */
-    public function update(string $slateId, Update $roleFields): array
+    public function update(string $flowUid, Update $roleFields): array
     {
-        $url = $this->resolveEndpoint("/flows/{$slateId}/role-fields");
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/role-fields");
 
         $response = $this->httpClient->patch($url, [
             RequestOptions::JSON => $roleFields->toArray(),
@@ -66,13 +66,13 @@ class RoleFieldsService extends AbstractService
     }
 
     /**
-     * @param string $slateId
+     * @param string $flowUid
      * @param Delete $roleFields
      * @return bool
      */
-    public function delete(string $slateId, Delete $roleFields): bool
+    public function delete(string $flowUid, Delete $roleFields): bool
     {
-        $url = $this->resolveEndpoint("/flows/{$slateId}/role-fields");
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/role-fields");
 
         $response = $this->httpClient->delete($url, [
             RequestOptions::JSON => $roleFields->toArray(),

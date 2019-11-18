@@ -56,7 +56,7 @@ class PacketsService extends AbstractService
      */
     public function collection(string $flowUid): array
     {
-        $url = $this->resolveEndpoint("/slates/{$flowUid}/packets");
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets");
 
         $response = $this->httpClient->get($url);
 
@@ -369,7 +369,7 @@ class PacketsService extends AbstractService
      */
     public function delete(string $flowUid, string $packetUid): bool
     {
-        $url = $this->resolveEndpoint("/slates/{$flowUid}/packets/{$packetUid}");
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}");
 
         $response = $this->httpClient->delete($url);
 
