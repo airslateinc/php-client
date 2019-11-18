@@ -16,7 +16,6 @@ use AirSlate\ApiClient\Models\Document\Event;
 use AirSlate\ApiClient\Models\Document\UnlockPdf;
 use AirSlate\ApiClient\Models\Document\Update as UpdateModel;
 use AirSlate\ApiClient\Models\Document\Duplicate as DuplicateModel;
-use AirSlate\ApiClient\Models\Document\Export as ExportModel;
 use AirSlate\ApiClient\Models\Document\UpdateFields;
 use AirSlate\ApiClient\Models\Document\Upload as UploadModel;
 use GuzzleHttp\RequestOptions;
@@ -125,60 +124,6 @@ class DocumentsService extends AbstractService
     {
         $url = $this->resolveEndpoint('/documents/content');
         return $this->getDocuments($url, $filter, $options);
-    }
-
-    /**
-     * Export documents
-     *
-     * @param ExportModel $document
-     *
-     * @return mixed
-     *
-     * @throws \Exception
-     *
-     * @deprecated
-     * @see ExportService::create()
-     */
-    public function export(ExportModel $document): array
-    {
-        $url = $this->resolveEndpoint('/export/bulk');
-
-        try {
-            $response = $this->httpClient->post($url, [
-                RequestOptions::JSON => $document->toArray(),
-            ]);
-
-            $content = \GuzzleHttp\json_decode($response->getBody(), true);
-        } catch (DomainException $e) {
-            $content = \GuzzleHttp\json_decode($e->getMessage(), true);
-        }
-
-        return $content;
-    }
-
-    /**
-     * Check the export status
-     *
-     * @param string $exportId
-     *
-     * @return array
-     *
-     * @deprecated
-     * @see ExportService::get()
-     */
-    public function exportStatus(string $exportId): array
-    {
-        $url = $this->resolveEndpoint("/export/$exportId/status");
-
-        try {
-            $response = $this->httpClient->get($url);
-
-            $content = \GuzzleHttp\json_decode($response->getBody(), true);
-        } catch (DomainException $e) {
-            $content = \GuzzleHttp\json_decode($e->getMessage(), true);
-        }
-
-        return $content;
     }
 
     /**
