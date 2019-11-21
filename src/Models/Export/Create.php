@@ -21,7 +21,6 @@ class Create extends AbstractModel
             'type' => EntityType::EXPORT,
             'attributes' => [
                 'type' => 'zip',
-                'document_format' => 'pdf',
                 'render_text_only' => false,
             ],
         ], $data);
