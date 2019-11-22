@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Entities;
 
+use AirSlate\ApiClient\Entities\Permissions\MetaPermission;
 use AirSlate\ApiClient\Exceptions\MissingDataException;
 use AirSlate\ApiClient\Exceptions\RelationNotExistException;
 use AirSlate\ApiClient\Exceptions\TypeMismatchException;
@@ -19,6 +20,7 @@ use AirSlate\ApiClient\Exceptions\TypeMismatchException;
  *
  * @property-read Template $template
  * @property-read User $admin
+ * @property-read MetaPermission $metaPermissions
  */
 class Slate extends BaseEntity
 {
@@ -47,5 +49,16 @@ class Slate extends BaseEntity
     public function getAdmin(): User
     {
         return $this->hasOne(User::class, 'admins');
+    }
+
+    /**
+     * @return BaseEntity|MetaPermission|null
+     * @throws RelationNotExistException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     */
+    public function getMetaPermissions()
+    {
+        return $this->hasOne(MetaPermission::class, 'meta_permissions');
     }
 }
