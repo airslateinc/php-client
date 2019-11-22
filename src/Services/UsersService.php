@@ -16,6 +16,10 @@ use GuzzleHttp\RequestOptions;
  */
 class UsersService extends AbstractService
 {
+    public function organizations(): OrganizationsService
+    {
+        return new OrganizationsService($this->httpClient);
+    }
     /**
      * @param string $organizationId
      * @return Organization

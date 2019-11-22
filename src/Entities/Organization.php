@@ -2,6 +2,8 @@
 
 namespace AirSlate\ApiClient\Entities;
 
+use Exception;
+
 /**
  * Class Organization
  * @package AirSlate\ApiClient\Entities
@@ -11,8 +13,9 @@ namespace AirSlate\ApiClient\Entities;
  * @property string $name
  * @property string $category
  * @property string $size
- * @property string $invite_public_link
- * @property string $invite_domain
+ * @property int $auto_generated
+ * @property string $logo_profile
+ * @property string $logo_rectangle
  * @property string $created_at
  * @property string $updated_at
  *
@@ -26,7 +29,7 @@ class Organization extends BaseEntity
 
     /**
      * @return BaseEntity|User|null
-     * @throws \Exception
+     * @throws Exception
      */
     public function getOwner()
     {
@@ -35,7 +38,7 @@ class Organization extends BaseEntity
 
     /**
      * @return User[]
-     * @throws \Exception
+     * @throws Exception
      */
     public function getUsers(): array
     {
