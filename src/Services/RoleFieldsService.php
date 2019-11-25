@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
@@ -7,6 +8,7 @@ use AirSlate\ApiClient\Entities\Slates\FlowRoleField;
 use AirSlate\ApiClient\Models\RoleField\Create;
 use AirSlate\ApiClient\Models\RoleField\Delete;
 use AirSlate\ApiClient\Models\RoleField\Update;
+use Generator;
 use GuzzleHttp\RequestOptions;
 
 class RoleFieldsService extends AbstractService
@@ -25,6 +27,26 @@ class RoleFieldsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return FlowRoleField::createFromCollection($content);
+    }
+
+    /**
+     * @param string $flowUid
+     * @return Generator
+     */
+    public function collectionIterator(string $flowUid): Generator
+    {
+        $page = 0;
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/role-fields");
+
+        do {
+            $page++;
+
+            $response = $this->httpClient->addQueryParam('page', $page)->get($url);
+
+            $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+            yield FlowRoleField::createFromCollection($content);
+        } while ($content['meta']['current_page'] < $content['meta']['last_page']);
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
@@ -6,6 +7,7 @@ namespace AirSlate\ApiClient\Services;
 use AirSlate\ApiClient\Entities\Tag;
 use AirSlate\ApiClient\Models\Tag\Assign;
 use AirSlate\ApiClient\Models\Tag\Delete;
+use Generator;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -32,6 +34,26 @@ class TagsService extends AbstractService
 
     /**
      * @param string $flowUid
+     * @return Generator
+     */
+    public function collectionIterator(string $flowUid): Generator
+    {
+        $page = 0;
+        $url = $this->resolveEndpoint('/flows/' . $flowUid . '/packets/tags');
+
+        do {
+            $page++;
+
+            $response = $this->httpClient->addQueryParam('page', $page)->get($url);
+
+            $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+            yield Tag::createFromCollection($content);
+        } while ($content['meta']['current_page'] < $content['meta']['last_page']);
+    }
+
+    /**
+     * @param string $flowUid
      * @param string $packetId
      * @return Tag[]
      * @throws \Exception
@@ -45,6 +67,27 @@ class TagsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Tag::createFromCollection($content);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetId
+     * @return Generator
+     */
+    public function collectionInPacketIterator(string $flowUid, string $packetId): Generator
+    {
+        $page = 0;
+        $url = $this->resolveEndpoint('/flows/' . $flowUid . '/packets/' . $packetId . '/tags');
+
+        do {
+            $page++;
+
+            $response = $this->httpClient->addQueryParam('page', $page)->get($url);
+
+            $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+            yield Tag::createFromCollection($content);
+        } while ($content['meta']['current_page'] < $content['meta']['last_page']);
     }
 
     /**

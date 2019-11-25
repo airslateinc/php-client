@@ -21,6 +21,7 @@ use AirSlate\ApiClient\Models\Packet\Send\Bulk as BulkPacketSend;
 use AirSlate\ApiClient\Models\Packet\UnassignRole;
 use AirSlate\ApiClient\Models\Packet\Update;
 use AirSlate\ApiClient\Models\Packet\SigningOrder\Enable;
+use Generator;
 use GuzzleHttp\RequestOptions;
 use InvalidArgumentException;
 
@@ -63,6 +64,26 @@ class PacketsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Packet::createFromCollection($content);
+    }
+
+    /**
+     * @param string $flowUid
+     * @return Generator
+     */
+    public function collectionIterator(string $flowUid): Generator
+    {
+        $page = 0;
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets");
+
+        do {
+            $page++;
+
+            $response = $this->httpClient->addQueryParam('page', $page)->get($url);
+
+            $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+            yield Packet::createFromCollection($content);
+        } while ($content['meta']['current_page'] < $content['meta']['last_page']);
     }
 
     /**

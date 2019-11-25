@@ -11,6 +11,7 @@ use AirSlate\ApiClient\Entities\Slates\Document;
 use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Models\Slate\Create;
 use AirSlate\ApiClient\Models\Slate\Update;
+use Generator;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -80,6 +81,25 @@ class FlowsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Slate::createFromCollection($content);
+    }
+
+    /**
+     * @return Generator
+     */
+    public function collectionIterator(): Generator
+    {
+        $page = 0;
+        $url = $this->resolveEndpoint('/flows');
+
+        do {
+            $page++;
+
+            $response = $this->httpClient->addQueryParam('page', $page)->get($url);
+
+            $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+            yield Slate::createFromCollection($content);
+        } while ($content['meta']['current_page'] < $content['meta']['last_page']);
     }
 
     /**

@@ -1,8 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
+use Generator;
 use AirSlate\ApiClient\Entities\PacketRevision;
 use GuzzleHttp\RequestOptions;
 
@@ -21,6 +23,26 @@ class PacketRevisionsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return PacketRevision::createFromCollection($content);
+    }
+
+    /**
+     * @param string $flowId
+     * @return Generator
+     */
+    public function collectionIterator(string $flowId): Generator
+    {
+        $page = 0;
+        $url = $this->resolveEndpoint('/packet-revisions');
+
+        do {
+            $page++;
+
+            $response = $this->httpClient->addQueryParam('page', $page)->get($url);
+
+            $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+            yield PacketRevision::createFromCollection($content);
+        } while ($content['meta']['current_page'] < $content['meta']['last_page']);
     }
 
     /**

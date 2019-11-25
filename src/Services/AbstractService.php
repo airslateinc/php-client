@@ -1,16 +1,14 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
-use Generator;
 use AirSlate\ApiClient\Http\Client;
-use AirSlate\ApiClient\Entities\BaseEntity;
 
 /**
  * Class UsersService
  * @package AirSlate\ApiClient\Services
- * @method collectionIterator(): Generator
  */
 abstract class AbstractService
 {
@@ -91,38 +89,5 @@ abstract class AbstractService
         $this->httpClient->addQueryParam($key, $values);
 
         return $this;
-    }
-
-    /**
-     * @param $name
-     * @param $params
-     * @return Generator
-     */
-    public function __call($name, $params): Generator
-    {
-        $methodName = str_replace('Iterator', '', $name);
-        $page = 1;
-
-        do {
-            $objectList = $this->addQueryParam('page', $page)->$methodName();
-            $page++;
-
-            /** @var BaseEntity $entity */
-            $entity = $objectList[0] ?? null;
-            yield $objectList;
-        } while ($this->checkPagination($entity));
-    }
-
-    /**
-     * @param BaseEntity $entity
-     * @return bool
-     */
-    private function checkPagination(?BaseEntity $entity): bool
-    {
-        if ($entity === null || $entity->getObjectMeta() === []) {
-            return false;
-        }
-
-        return ($entity->getObjectMeta()['to'] < $entity->getObjectMeta()['total']);
     }
 }

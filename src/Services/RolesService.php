@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
@@ -9,6 +10,7 @@ use AirSlate\ApiClient\Exceptions\MissingDataException;
 use AirSlate\ApiClient\Exceptions\TypeMismatchException;
 use AirSlate\ApiClient\Models\Role\Create;
 use AirSlate\ApiClient\Models\Role\Delete;
+use Generator;
 use GuzzleHttp\RequestOptions;
 use InvalidArgumentException;
 
@@ -31,6 +33,26 @@ class RolesService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return FlowRole::createFromCollection($content);
+    }
+
+    /**
+     * @param string $flowUid
+     * @return Generator
+     */
+    public function collectionIterator(string $flowUid): Generator
+    {
+        $page = 0;
+        do {
+            $page++;
+
+            $url = $this->resolveEndpoint("/flows/{$flowUid}/roles");
+
+            $response = $this->httpClient->addQueryParam('page', $page)->get($url);
+
+            $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+            yield FlowRole::createFromCollection($content);
+        } while ($content['meta']['current_page'] < $content['meta']['last_page']);
     }
 
     /**

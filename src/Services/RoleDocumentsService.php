@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
@@ -10,6 +11,7 @@ use AirSlate\ApiClient\Exceptions\TypeMismatchException;
 use AirSlate\ApiClient\Models\RoleDocument\Create;
 use AirSlate\ApiClient\Models\RoleDocument\Delete;
 use AirSlate\ApiClient\Models\RoleDocument\Update;
+use Generator;
 use GuzzleHttp\RequestOptions;
 use InvalidArgumentException;
 
@@ -32,6 +34,26 @@ class RoleDocumentsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return FlowRoleDocument::createFromCollection($content);
+    }
+
+    /**
+     * @param string $flowUid
+     * @return Generator
+     */
+    public function collectionIterator(string $flowUid): Generator
+    {
+        $page = 0;
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/role-documents");
+
+        do {
+            $page++;
+
+            $response = $this->httpClient->addQueryParam('page', $page)->get($url);
+
+            $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+            yield FlowRoleDocument::createFromCollection($content);
+        } while ($content['meta']['current_page'] < $content['meta']['last_page']);
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
@@ -18,6 +19,7 @@ use AirSlate\ApiClient\Models\Document\Update as UpdateModel;
 use AirSlate\ApiClient\Models\Document\Duplicate as DuplicateModel;
 use AirSlate\ApiClient\Models\Document\UpdateFields;
 use AirSlate\ApiClient\Models\Document\Upload as UploadModel;
+use Generator;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -111,6 +113,36 @@ class DocumentsService extends AbstractService
     {
         $url = $this->resolveEndpoint('/documents');
         return $this->getDocuments($url, $filter, $options);
+    }
+
+    /**
+     * @param $url
+     * @param array $filter
+     * @param array $options
+     * @return Generator
+     */
+    public function collectionIterator($url, $filter = [], array $options = []): Generator
+    {
+        $page = 0;
+        $url = $this->resolveEndpoint('/addons');
+
+        if (!empty($options)) {
+            $url .= '?' . http_build_query(['filter' => $filter]);
+        }
+
+        if (!empty($options)) {
+            $url .= '&' . http_build_query($options);
+        }
+
+        do {
+            $page++;
+
+            $response = $this->httpClient->addQueryParam('page', $page)->get($url);
+
+            $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+            yield Document::createFromCollection($content);
+        } while ($content['meta']['current_page'] < $content['meta']['last_page']);
     }
 
     /**
