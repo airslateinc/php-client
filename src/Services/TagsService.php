@@ -39,18 +39,8 @@ class TagsService extends AbstractService
      */
     public function collectionIterator(string $flowUid): Generator
     {
-        $page = 0;
         $url = $this->resolveEndpoint('/flows/' . $flowUid . '/packets/tags');
-
-        do {
-            $page++;
-
-            $response = $this->httpClient->addQueryParam('page', $page)->get($url);
-
-            $content = \GuzzleHttp\json_decode($response->getBody(), true);
-
-            yield from Tag::createFromCollection($content);
-        } while ($content['meta']['current_page'] < $content['meta']['last_page']);
+        yield from $this->pagination()->resolve($url, new Tag());
     }
 
     /**
@@ -78,18 +68,8 @@ class TagsService extends AbstractService
      */
     public function collectionInPacketIterator(string $flowUid, string $packetUId): Generator
     {
-        $page = 0;
         $url = $this->resolveEndpoint('/flows/' . $flowUid . '/packets/' . $packetUId . '/tags');
-
-        do {
-            $page++;
-
-            $response = $this->httpClient->addQueryParam('page', $page)->get($url);
-
-            $content = \GuzzleHttp\json_decode($response->getBody(), true);
-
-            yield from Tag::createFromCollection($content);
-        } while ($content['meta']['current_page'] < $content['meta']['last_page']);
+        yield from $this->pagination()->resolve($url, new Tag());
     }
 
     /**

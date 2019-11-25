@@ -50,18 +50,8 @@ class FlowTemplatesService extends AbstractService
      */
     public function collectionIterator(string $flowUid): Generator
     {
-        $page = 0;
         $url = $this->resolveEndpoint('/flows/' . $flowUid . '/templates');
-
-        do {
-            $page++;
-
-            $response = $this->httpClient->addQueryParam('page', $page)->get($url);
-
-            $content = \GuzzleHttp\json_decode($response->getBody(), true);
-
-            yield from Template::createFromCollection($content);
-        } while ($content['meta']['current_page'] < $content['meta']['last_page']);
+        yield from $this->pagination()->resolve($url, new Template());
     }
 
     /**

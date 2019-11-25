@@ -116,25 +116,13 @@ class DocumentsService extends AbstractService
     }
 
     /**
-     * @param array $filter
-     * @param array $options
      * @yield Document
      * @return Generator
      */
-    public function collectionIterator($filter = [], array $options = []): Generator
+    public function collectionIterator(): Generator
     {
-        $page = 0;
         $url = $this->resolveEndpoint('/documents');
-
-        do {
-            $page++;
-
-            $response = $this->httpClient->addQueryParam('page', $page)->get($url);
-
-            $content = \GuzzleHttp\json_decode($response->getBody(), true);
-
-            yield from Document::createFromCollection($content);
-        } while ($content['meta']['current_page'] < $content['meta']['last_page']);
+        yield from $this->pagination()->resolve($url, new Document());
     }
 
     /**

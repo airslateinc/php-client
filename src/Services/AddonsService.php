@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
-use AirSlate\ApiClient\Entities\Addon;
 use Generator;
 use GuzzleHttp\RequestOptions;
+use AirSlate\ApiClient\Entities\Addon;
 
 class AddonsService extends AbstractService
 {
@@ -75,18 +75,8 @@ class AddonsService extends AbstractService
      */
     public function collectionIterator(): Generator
     {
-        $page = 0;
         $url = $this->resolveEndpoint('/addons');
-
-        do {
-            $page++;
-
-            $response = $this->httpClient->addQueryParam('page', $page)->get($url);
-
-            $content = \GuzzleHttp\json_decode($response->getBody(), true);
-
-            yield from Addon::createFromCollection($content);
-        } while ($content['meta']['current_page'] < $content['meta']['last_page']);
+        yield from $this->pagination()->resolve($url, new Addon());
     }
 
     /**

@@ -42,18 +42,8 @@ class RolesService extends AbstractService
      */
     public function collectionIterator(string $flowUid): Generator
     {
-        $page = 0;
-        do {
-            $page++;
-
-            $url = $this->resolveEndpoint("/flows/{$flowUid}/roles");
-
-            $response = $this->httpClient->addQueryParam('page', $page)->get($url);
-
-            $content = \GuzzleHttp\json_decode($response->getBody(), true);
-
-            yield from FlowRole::createFromCollection($content);
-        } while ($content['meta']['current_page'] < $content['meta']['last_page']);
+         $url = $this->resolveEndpoint("/flows/{$flowUid}/roles");
+         yield from $this->pagination()->resolve($url, new FlowRole());
     }
 
     /**

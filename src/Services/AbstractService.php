@@ -90,4 +90,12 @@ abstract class AbstractService
 
         return $this;
     }
+
+    /**
+     * @return PaginationResolver
+     */
+    public function pagination(): PaginationResolver
+    {
+        return new PaginationResolver($this->httpClient);
+    }
 }
