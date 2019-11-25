@@ -7,6 +7,14 @@ namespace AirSlate\ApiClient\Entities;
 use AirSlate\ApiClient\Entities\Packets\Revision;
 use AirSlate\ApiClient\Entities\Addons\SlateAddon;
 
+/**
+ * Class AddonLog
+ * @package AirSlate\ApiClient\Entities
+ *
+ * @property string $id
+ * @property-read SlateAddon|null $slateAddon
+ * @property-read Revision|null $revision
+ */
 class AddonLog extends BaseEntity
 {
     /** @var string  */
@@ -16,7 +24,7 @@ class AddonLog extends BaseEntity
      * @return BaseEntity|SlateAddon|null
      * @throws \Exception
      */
-    public function getSlateAddon()
+    public function getSlateAddon(): ?SlateAddon
     {
         return $this->hasOne(SlateAddon::class, 'slate_addon');
     }
@@ -25,7 +33,7 @@ class AddonLog extends BaseEntity
      * @return BaseEntity|Revision|null
      * @throws \Exception
      */
-    public function getRevision()
+    public function getRevision(): ?Revision
     {
         return $this->hasOne(Revision::class, 'revision');
     }
