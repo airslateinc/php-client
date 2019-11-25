@@ -74,10 +74,9 @@ class OrganizationAddonsService extends AbstractService
     }
 
     /**
-     * @param string $flowId
      * @return Generator
      */
-    public function collectionIterator(string $flowId): Generator
+    public function collectionIterator(): Generator
     {
         $page = 0;
         $url = $this->resolveEndpoint('/organization-addons');

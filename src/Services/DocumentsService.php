@@ -123,7 +123,7 @@ class DocumentsService extends AbstractService
     public function collectionIterator($filter = [], array $options = []): Generator
     {
         $page = 0;
-        $url = $this->resolveEndpoint('/addons');
+        $url = $this->resolveEndpoint('/documents');
 
         do {
             $page++;

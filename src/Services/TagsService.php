@@ -54,13 +54,13 @@ class TagsService extends AbstractService
 
     /**
      * @param string $flowUid
-     * @param string $packetId
+     * @param string $packetUId
      * @return Tag[]
      * @throws \Exception
      */
-    public function collectionInPacket(string $flowUid, string $packetId): array
+    public function collectionInPacket(string $flowUid, string $packetUId): array
     {
-        $url = $this->resolveEndpoint('/flows/' . $flowUid . '/packets/' . $packetId . '/tags');
+        $url = $this->resolveEndpoint('/flows/' . $flowUid . '/packets/' . $packetUId . '/tags');
 
         $response = $this->httpClient->get($url);
 
@@ -71,13 +71,13 @@ class TagsService extends AbstractService
 
     /**
      * @param string $flowUid
-     * @param string $packetId
+     * @param string $packetUId
      * @return Generator
      */
-    public function collectionInPacketIterator(string $flowUid, string $packetId): Generator
+    public function collectionInPacketIterator(string $flowUid, string $packetUId): Generator
     {
         $page = 0;
-        $url = $this->resolveEndpoint('/flows/' . $flowUid . '/packets/' . $packetId . '/tags');
+        $url = $this->resolveEndpoint('/flows/' . $flowUid . '/packets/' . $packetUId . '/tags');
 
         do {
             $page++;

@@ -24,7 +24,7 @@ use InvalidArgumentException;
 class FlowTemplatesService extends AbstractService
 {
     /**
-     * @param string $flowId
+     * @param string $flowUid
      *
      * @return Template[]
      * @throws InvalidArgumentException
@@ -32,9 +32,9 @@ class FlowTemplatesService extends AbstractService
      * @throws TypeMismatchException
      * @throws DomainException
      */
-    public function collection(string $flowId): array
+    public function collection(string $flowUid): array
     {
-        $url = $this->resolveEndpoint('/flows/' . $flowId . '/templates');
+        $url = $this->resolveEndpoint('/flows/' . $flowUid . '/templates');
 
         $response = $this->httpClient->get($url);
 
@@ -44,12 +44,13 @@ class FlowTemplatesService extends AbstractService
     }
 
     /**
+     * @param string $flowUid
      * @return Generator
      */
-    public function collectionIterator(string $flowId): Generator
+    public function collectionIterator(string $flowUid): Generator
     {
         $page = 0;
-        $url = $this->resolveEndpoint('/flows/' . $flowId . '/templates');
+        $url = $this->resolveEndpoint('/flows/' . $flowUid . '/templates');
 
         do {
             $page++;
