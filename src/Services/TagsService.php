@@ -48,7 +48,7 @@ class TagsService extends AbstractService
 
             $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
-            yield Tag::createFromCollection($content);
+            yield from Tag::createFromCollection($content);
         } while ($content['meta']['current_page'] < $content['meta']['last_page']);
     }
 
@@ -86,7 +86,7 @@ class TagsService extends AbstractService
 
             $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
-            yield Tag::createFromCollection($content);
+            yield from Tag::createFromCollection($content);
         } while ($content['meta']['current_page'] < $content['meta']['last_page']);
     }
 

@@ -51,7 +51,7 @@ class RolesService extends AbstractService
 
             $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
-            yield FlowRole::createFromCollection($content);
+            yield from FlowRole::createFromCollection($content);
         } while ($content['meta']['current_page'] < $content['meta']['last_page']);
     }
 

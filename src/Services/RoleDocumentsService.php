@@ -52,7 +52,7 @@ class RoleDocumentsService extends AbstractService
 
             $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
-            yield FlowRoleDocument::createFromCollection($content);
+            yield from FlowRoleDocument::createFromCollection($content);
         } while ($content['meta']['current_page'] < $content['meta']['last_page']);
     }
 

@@ -133,7 +133,7 @@ class SlateAddonsService extends AbstractService
 
             $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
-            yield SlateAddon::createFromCollection($content);
+            yield from SlateAddon::createFromCollection($content);
         } while ($content['meta']['current_page'] < $content['meta']['last_page']);
     }
 }

@@ -89,7 +89,7 @@ class OrganizationAddonsService extends AbstractService
 
             $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
-            yield OrganizationAddon::createFromCollection($content);
+            yield from OrganizationAddon::createFromCollection($content);
         } while ($content['meta']['current_page'] < $content['meta']['last_page']);
     }
 }

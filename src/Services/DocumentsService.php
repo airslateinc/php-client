@@ -116,23 +116,14 @@ class DocumentsService extends AbstractService
     }
 
     /**
-     * @param $url
      * @param array $filter
      * @param array $options
      * @return Generator
      */
-    public function collectionIterator($url, $filter = [], array $options = []): Generator
+    public function collectionIterator($filter = [], array $options = []): Generator
     {
         $page = 0;
         $url = $this->resolveEndpoint('/addons');
-
-        if (!empty($options)) {
-            $url .= '?' . http_build_query(['filter' => $filter]);
-        }
-
-        if (!empty($options)) {
-            $url .= '&' . http_build_query($options);
-        }
 
         do {
             $page++;
@@ -141,7 +132,7 @@ class DocumentsService extends AbstractService
 
             $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
-            yield Document::createFromCollection($content);
+            yield from Document::createFromCollection($content);
         } while ($content['meta']['current_page'] < $content['meta']['last_page']);
     }
 

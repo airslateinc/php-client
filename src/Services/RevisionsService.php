@@ -125,7 +125,7 @@ class RevisionsService extends AbstractService
 
             $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
-            yield Revision::createFromCollection($content);
+            yield from Revision::createFromCollection($content);
         } while ($content['meta']['current_page'] < $content['meta']['last_page']);
     }
 

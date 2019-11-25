@@ -82,7 +82,7 @@ class PacketsService extends AbstractService
 
             $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
-            yield Packet::createFromCollection($content);
+            yield from Packet::createFromCollection($content);
         } while ($content['meta']['current_page'] < $content['meta']['last_page']);
     }
 
