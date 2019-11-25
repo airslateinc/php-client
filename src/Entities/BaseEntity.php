@@ -236,7 +236,7 @@ class BaseEntity implements JsonSerializable
 
             $model->relationships = $relationships;
             $model->included = $included;
-            $model->objectMeta = $jsonApi['meta'] ?? [];
+            $model->objectMeta = $datum['meta'] ?? [];
             $model->originalIncluded = $jsonApi['included'] ?? [];
 
             $models[] = $model;
