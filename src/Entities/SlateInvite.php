@@ -17,6 +17,8 @@ use AirSlate\ApiClient\Exceptions\TypeMismatchException;
  * @property bool   $ignored
  * @property string $created_at
  * @property string $updated_at
+ *
+ * @property-read User|null $user
  */
 class SlateInvite extends BaseEntity
 {
@@ -31,7 +33,7 @@ class SlateInvite extends BaseEntity
      * @throws MissingDataException
      * @throws TypeMismatchException
      */
-    public function getUser(): User
+    public function getUser(): ?User
     {
         return $this->hasOne(User::class, 'users');
     }
