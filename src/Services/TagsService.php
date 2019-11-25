@@ -34,6 +34,7 @@ class TagsService extends AbstractService
 
     /**
      * @param string $flowUid
+     * @yield Tag
      * @return Generator
      */
     public function collectionIterator(string $flowUid): Generator
@@ -72,6 +73,7 @@ class TagsService extends AbstractService
     /**
      * @param string $flowUid
      * @param string $packetUId
+     * @yield Tag
      * @return Generator
      */
     public function collectionInPacketIterator(string $flowUid, string $packetUId): Generator

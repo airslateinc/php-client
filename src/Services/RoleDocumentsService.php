@@ -38,6 +38,7 @@ class RoleDocumentsService extends AbstractService
 
     /**
      * @param string $flowUid
+     * @yield FlowRoleDocument
      * @return Generator
      */
     public function collectionIterator(string $flowUid): Generator

@@ -111,6 +111,7 @@ class RevisionsService extends AbstractService
     /**
      * @param string $flowUid
      * @param string $packetUid
+     * @yield Revision
      * @return Generator
      */
     public function collectionIterator(string $flowUid, string $packetUid): Generator

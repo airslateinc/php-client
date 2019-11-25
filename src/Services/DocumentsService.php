@@ -118,6 +118,7 @@ class DocumentsService extends AbstractService
     /**
      * @param array $filter
      * @param array $options
+     * @yield Documents
      * @return Generator
      */
     public function collectionIterator($filter = [], array $options = []): Generator

@@ -84,6 +84,7 @@ class FlowsService extends AbstractService
     }
 
     /**
+     * @yield Slate
      * @return Generator
      */
     public function collectionIterator(): Generator

@@ -68,6 +68,7 @@ class PacketsService extends AbstractService
 
     /**
      * @param string $flowUid
+     * @yield Packet
      * @return Generator
      */
     public function collectionIterator(string $flowUid): Generator

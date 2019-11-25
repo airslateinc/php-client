@@ -45,6 +45,7 @@ class FlowTemplatesService extends AbstractService
 
     /**
      * @param string $flowUid
+     * @yield Template
      * @return Generator
      */
     public function collectionIterator(string $flowUid): Generator

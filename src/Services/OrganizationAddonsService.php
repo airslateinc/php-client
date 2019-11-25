@@ -74,6 +74,7 @@ class OrganizationAddonsService extends AbstractService
     }
 
     /**
+     * @yield OrganizationAddon
      * @return Generator
      */
     public function collectionIterator(): Generator
