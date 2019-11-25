@@ -128,6 +128,8 @@ class FlowTemplatesService extends AbstractService
     }
 
     /**
+     * @deprecated not used, will be deleted after 14.1
+     *
      * @param string $flowId
      * @param string $templateId
      * @return DocumentRole[]
