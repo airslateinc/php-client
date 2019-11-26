@@ -39,4 +39,15 @@ class Upload extends AbstractModel
             ]
         ];
     }
+
+    /**
+     * @param string $type
+     * @return $this
+     */
+    public function setType(string $type): self
+    {
+        $this->data['attributes']['type'] = $type;
+
+        return $this;
+    }
 }
