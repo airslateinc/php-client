@@ -12,6 +12,7 @@ use AirSlate\ApiClient\Exceptions\TypeMismatchException;
 use AirSlate\ApiClient\Models\Revision\Create;
 use AirSlate\ApiClient\Models\RevisionDocument\BulkUpdate;
 use AirSlate\ApiClient\Entities\Packets\Revision;
+use Generator;
 use GuzzleHttp\RequestOptions;
 use InvalidArgumentException;
 
@@ -111,6 +112,17 @@ class RevisionsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Revision::createFromCollection($content);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @return Generator|Revision[]
+     */
+    public function collectionIterator(string $flowUid, string $packetUid): Generator
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/revisions");
+        yield from $this->pagination()->resolve($url, Revision::class);
     }
 
     /**

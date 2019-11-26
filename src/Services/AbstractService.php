@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
@@ -97,5 +98,13 @@ abstract class AbstractService
         $this->httpClient->authToken($token);
 
         return $this;
+    }
+
+    /**
+     * @return PaginationResolver
+     */
+    public function pagination(): PaginationResolver
+    {
+        return new PaginationResolver($this->httpClient);
     }
 }

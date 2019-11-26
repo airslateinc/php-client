@@ -13,6 +13,7 @@ use AirSlate\ApiClient\Exceptions\TypeMismatchException;
 use AirSlate\ApiClient\Models\Template\Create;
 use AirSlate\ApiClient\Models\Template\TemplateDocument;
 use AirSlate\ApiClient\Models\Template\Update;
+use Generator;
 use GuzzleHttp\RequestOptions;
 use InvalidArgumentException;
 
@@ -23,7 +24,7 @@ use InvalidArgumentException;
 class FlowTemplatesService extends AbstractService
 {
     /**
-     * @param string $flowId
+     * @param string $flowUid
      *
      * @return Template[]
      * @throws InvalidArgumentException
@@ -31,15 +32,25 @@ class FlowTemplatesService extends AbstractService
      * @throws TypeMismatchException
      * @throws DomainException
      */
-    public function collection(string $flowId): array
+    public function collection(string $flowUid): array
     {
-        $url = $this->resolveEndpoint('/flows/' . $flowId . '/templates');
+        $url = $this->resolveEndpoint('/flows/' . $flowUid . '/templates');
 
         $response = $this->httpClient->get($url);
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Template::createFromCollection($content);
+    }
+
+    /**
+     * @param string $flowUid
+     * @return Generator|Template[]
+     */
+    public function collectionIterator(string $flowUid): Generator
+    {
+        $url = $this->resolveEndpoint('/flows/' . $flowUid . '/templates');
+        yield from $this->pagination()->resolve($url, Template::class);
     }
 
     /**

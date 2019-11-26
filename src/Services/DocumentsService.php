@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
@@ -18,6 +19,7 @@ use AirSlate\ApiClient\Models\Document\Update as UpdateModel;
 use AirSlate\ApiClient\Models\Document\Duplicate as DuplicateModel;
 use AirSlate\ApiClient\Models\Document\UpdateFields;
 use AirSlate\ApiClient\Models\Document\Upload as UploadModel;
+use Generator;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -111,6 +113,15 @@ class DocumentsService extends AbstractService
     {
         $url = $this->resolveEndpoint('/documents');
         return $this->getDocuments($url, $filter, $options);
+    }
+
+    /**
+     * @return Generator|Document[]
+     */
+    public function collectionIterator(): Generator
+    {
+        $url = $this->resolveEndpoint('/documents');
+        yield from $this->pagination()->resolve($url, Document::class);
     }
 
     /**
