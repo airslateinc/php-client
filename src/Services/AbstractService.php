@@ -12,12 +12,10 @@ use AirSlate\ApiClient\Http\Client;
 abstract class AbstractService
 {
     public const API_VERSION = 'v1';
-
     /**
      * @var Client
      */
     protected $httpClient;
-
     /**
      * @var string
      */
@@ -77,7 +75,7 @@ abstract class AbstractService
 
         return $this;
     }
-    
+
     /**
      * @param string $key
      * @param $values
@@ -86,7 +84,18 @@ abstract class AbstractService
     public function addQueryParam(string $key, $values)
     {
         $this->httpClient->addQueryParam($key, $values);
-        
+
+        return $this;
+    }
+
+    /**
+     * @param string $token
+     * @return $this
+     */
+    public function authToken(string $token): self
+    {
+        $this->httpClient->authToken($token);
+
         return $this;
     }
 }

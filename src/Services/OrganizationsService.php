@@ -34,23 +34,14 @@ class OrganizationsService extends AbstractService
 
     /**
      * @param Create $organization
-     * @param string|null $userToken
      * @return Organization
      */
-    public function create(Create $organization, ?string $userToken = null): Organization
+    public function create(Create $organization): Organization
     {
         $url = $this->resolveEndpoint('/organizations');
-        $opts = [
+        $response = $this->httpClient->post($url, [
             RequestOptions::JSON => $organization->toArray(),
-        ];
-
-        if ($userToken) {
-            $opts[RequestOptions::HEADERS] = [
-                'Authorization' => "Bearer {$userToken}",
-            ];
-        }
-
-        $response = $this->httpClient->post($url, $opts);
+        ]);
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Organization::createFromOne($content);
@@ -58,23 +49,14 @@ class OrganizationsService extends AbstractService
 
     /**
      * @param Update $organization
-     * @param string|null $userToken
      * @return Organization
      */
-    public function update(Update $organization, ?string $userToken = null): Organization
+    public function update(Update $organization): Organization
     {
         $url = $this->resolveEndpoint("/organizations/{$organization->getOrganizationUid()}");
-        $opts = [
+        $response = $this->httpClient->patch($url, [
             RequestOptions::JSON => $organization->toArray(),
-        ];
-
-        if ($userToken) {
-            $opts[RequestOptions::HEADERS] = [
-                'Authorization' => "Bearer {$userToken}",
-            ];
-        }
-
-        $response = $this->httpClient->patch($url, $opts);
+        ]);
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Organization::createFromOne($content);
@@ -82,21 +64,12 @@ class OrganizationsService extends AbstractService
 
     /**
      * @param string $organizationUid
-     * @param string|null $userToken
      * @return Organization
      */
-    public function one(string $organizationUid, ?string $userToken = null): Organization
+    public function one(string $organizationUid): Organization
     {
         $url = $this->resolveEndpoint("/organizations/{$organizationUid}");
-        $this->addQueryParam('include', 'owner');
-        $opts = [];
-        if ($userToken) {
-            $opts[RequestOptions::HEADERS] = [
-                'Authorization' => "Bearer {$userToken}",
-            ];
-        }
-
-        $response = $this->httpClient->get($url, $opts);
+        $response = $this->httpClient->get($url);
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Organization::createFromOne($content);
