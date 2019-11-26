@@ -40,6 +40,9 @@ class RevisionsService extends AbstractService
     }
 
     /**
+     * @deprecated
+     * @see PacketsService::revisions()->with('documents')->get()
+     *
      * @param string $flowUid
      * @param string $packetUid
      * @param string $revisionUid
@@ -61,6 +64,9 @@ class RevisionsService extends AbstractService
     }
 
     /**
+     * @deprecated
+     * Endpoint updates attribute 'hidden' of document. This logic will be removed.
+     *
      * @param string $flowUid
      * @param string $packetUid
      * @param string $revisionUid
