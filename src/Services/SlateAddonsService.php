@@ -119,7 +119,6 @@ class SlateAddonsService extends AbstractService
     }
 
     /**
-     * @yield SlateAddon
      * @return Generator
      */
     public function collectionIterator(): Generator

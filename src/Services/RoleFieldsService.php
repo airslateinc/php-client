@@ -31,7 +31,6 @@ class RoleFieldsService extends AbstractService
 
     /**
      * @param string $flowUid
-     * @yield FlowRoleField
      * @return Generator
      */
     public function collectionIterator(string $flowUid): Generator

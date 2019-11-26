@@ -116,7 +116,6 @@ class DocumentsService extends AbstractService
     }
 
     /**
-     * @yield Document
      * @return Generator
      */
     public function collectionIterator(): Generator

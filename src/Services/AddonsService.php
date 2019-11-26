@@ -70,7 +70,6 @@ class AddonsService extends AbstractService
     }
 
     /**
-     * @yield Addon
      * @return Generator
      */
     public function collectionIterator(): Generator

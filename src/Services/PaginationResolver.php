@@ -37,12 +37,12 @@ class PaginationResolver
 
             $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
-            $currentPage = $content['meta']['current_page'] ?? null;
+            $currentPage = $content['meta']['current_page'] ?? 1;
 
-            $lastPage = $content['meta']['last_page'] ?? null;
+            $lastPage = $content['meta']['last_page'] ?? 1;
 
             yield from $entity::createFromCollection($content);
-        } while ($this->checkCondition($currentPage, $lastPage));
+        } while ($this->hasMorePages($currentPage, $lastPage));
     }
 
     /**
@@ -50,12 +50,8 @@ class PaginationResolver
      * @param int|null $lastPage
      * @return bool
      */
-    private function checkCondition(?int $currentPage, ?int $lastPage): bool
+    private function hasMorePages(int $currentPage, int $lastPage): bool
     {
-        if ($currentPage === null || $lastPage === null) {
-            return false;
-        }
-
         return $currentPage < $lastPage;
     }
 }
