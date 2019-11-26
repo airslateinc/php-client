@@ -122,7 +122,7 @@ class RevisionsService extends AbstractService
     public function collectionIterator(string $flowUid, string $packetUid): Generator
     {
         $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/revisions");
-        yield from $this->pagination()->resolve($url, new Revision());
+        yield from $this->pagination()->resolve($url, Revision::class);
     }
 
     /**

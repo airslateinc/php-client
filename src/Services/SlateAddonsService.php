@@ -124,6 +124,6 @@ class SlateAddonsService extends AbstractService
     public function collectionIterator(): Generator
     {
         $url = $this->resolveEndpoint('/slate-addons');
-        yield from $this->pagination()->resolve($url, new SlateAddon());
+        yield from $this->pagination()->resolve($url, SlateAddon::class);
     }
 }

@@ -39,7 +39,7 @@ class TagsService extends AbstractService
     public function collectionIterator(string $flowUid): Generator
     {
         $url = $this->resolveEndpoint('/flows/' . $flowUid . '/packets/tags');
-        yield from $this->pagination()->resolve($url, new Tag());
+        yield from $this->pagination()->resolve($url, Tag::class);
     }
 
     /**
@@ -67,7 +67,7 @@ class TagsService extends AbstractService
     public function collectionInPacketIterator(string $flowUid, string $packetUId): Generator
     {
         $url = $this->resolveEndpoint('/flows/' . $flowUid . '/packets/' . $packetUId . '/tags');
-        yield from $this->pagination()->resolve($url, new Tag());
+        yield from $this->pagination()->resolve($url, Tag::class);
     }
 
     /**

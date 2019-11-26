@@ -31,7 +31,7 @@ class PacketRevisionsService extends AbstractService
     public function collectionIterator(): Generator
     {
         $url = $this->resolveEndpoint('/packet-revisions');
-        yield from $this->pagination()->resolve($url, new PacketRevision());
+        yield from $this->pagination()->resolve($url, PacketRevision::class);
     }
 
     /**

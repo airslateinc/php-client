@@ -89,7 +89,7 @@ class FlowsService extends AbstractService
     public function collectionIterator(): Generator
     {
         $url = $this->resolveEndpoint('/flows');
-        yield from $this->pagination()->resolve($url, new Slate());
+        yield from $this->pagination()->resolve($url, Slate::class);
     }
 
     /**

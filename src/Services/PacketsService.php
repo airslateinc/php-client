@@ -73,7 +73,7 @@ class PacketsService extends AbstractService
     public function collectionIterator(string $flowUid): Generator
     {
         $url = $this->resolveEndpoint("/flows/{$flowUid}/packets");
-        yield from $this->pagination()->resolve($url, new Packet());
+        yield from $this->pagination()->resolve($url, Packet::class);
     }
 
     /**

@@ -23,10 +23,10 @@ class PaginationResolver
 
     /**
      * @param string $url
-     * @param BaseEntity $entity
+     * @param string $entityClass
      * @return Generator
      */
-    public function resolve(string $url, BaseEntity $entity): Generator
+    public function resolve(string $url, string $entityClass): Generator
     {
         $page = 0;
 
@@ -37,11 +37,12 @@ class PaginationResolver
 
             $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
-            $currentPage = $content['meta']['current_page'] ?? 1;
+            $currentPage = $content['meta']['current_page'] ?? null;
 
-            $lastPage = $content['meta']['last_page'] ?? 1;
+            $lastPage = $content['meta']['last_page'] ?? null;
 
-            yield from $entity::createFromCollection($content);
+            /** @var $entityClass BaseEntity */
+            yield from $entityClass::createFromCollection($content);
         } while ($this->hasMorePages($currentPage, $lastPage));
     }
 
@@ -50,8 +51,12 @@ class PaginationResolver
      * @param int|null $lastPage
      * @return bool
      */
-    private function hasMorePages(int $currentPage, int $lastPage): bool
+    private function hasMorePages(?int $currentPage, ?int $lastPage): bool
     {
+        if ($currentPage === null || $lastPage === null) {
+            return false;
+        }
+
         return $currentPage < $lastPage;
     }
 }

@@ -121,7 +121,7 @@ class DocumentsService extends AbstractService
     public function collectionIterator(): Generator
     {
         $url = $this->resolveEndpoint('/documents');
-        yield from $this->pagination()->resolve($url, new Document());
+        yield from $this->pagination()->resolve($url, Document::class);
     }
 
     /**

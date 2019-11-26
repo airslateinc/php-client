@@ -75,7 +75,7 @@ class AddonsService extends AbstractService
     public function collectionIterator(): Generator
     {
         $url = $this->resolveEndpoint('/addons');
-        yield from $this->pagination()->resolve($url, new Addon());
+        yield from $this->pagination()->resolve($url, Addon::class);
     }
 
     /**

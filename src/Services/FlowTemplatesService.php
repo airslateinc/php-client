@@ -50,7 +50,7 @@ class FlowTemplatesService extends AbstractService
     public function collectionIterator(string $flowUid): Generator
     {
         $url = $this->resolveEndpoint('/flows/' . $flowUid . '/templates');
-        yield from $this->pagination()->resolve($url, new Template());
+        yield from $this->pagination()->resolve($url, Template::class);
     }
 
     /**

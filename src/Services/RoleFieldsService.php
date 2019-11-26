@@ -36,7 +36,7 @@ class RoleFieldsService extends AbstractService
     public function collectionIterator(string $flowUid): Generator
     {
         $url = $this->resolveEndpoint("/flows/{$flowUid}/role-fields");
-        yield from $this->pagination()->resolve($url, new FlowRoleField());
+        yield from $this->pagination()->resolve($url, FlowRoleField::class);
     }
 
     /**
