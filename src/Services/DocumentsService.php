@@ -116,7 +116,7 @@ class DocumentsService extends AbstractService
     }
 
     /**
-     * @return Generator
+     * @return Generator|Document[]
      */
     public function collectionIterator(): Generator
     {

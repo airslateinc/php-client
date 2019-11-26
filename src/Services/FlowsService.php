@@ -84,7 +84,7 @@ class FlowsService extends AbstractService
     }
 
     /**
-     * @return Generator
+     * @return Generator|Slate[]
      */
     public function collectionIterator(): Generator
     {

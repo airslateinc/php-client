@@ -26,7 +26,7 @@ class PacketRevisionsService extends AbstractService
     }
 
     /**
-     * @return Generator
+     * @return Generator|PacketRevision[]
      */
     public function collectionIterator(): Generator
     {
