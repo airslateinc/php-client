@@ -274,6 +274,17 @@ class PacketsService extends AbstractService
     /**
      * @param string $flowUid
      * @param string $packetUid
+     * @return Generator|[]Generator
+     */
+    public function getPacketRolesIterator(string $flowUid, string $packetUid): Generator
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/roles");
+        yield from $this->pagination()->resolve($url, DocumentRole::class);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
      * @return PacketSigningOrder[]
      * @throws InvalidArgumentException
      * @throws MissingDataException
