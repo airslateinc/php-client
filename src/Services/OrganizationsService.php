@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
+use AirSlate\ApiClient\Entities\LookupOrganization;
 use AirSlate\ApiClient\Entities\Organization;
 use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Models\Organization\Create;
@@ -73,5 +74,17 @@ class OrganizationsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Organization::createFromOne($content);
+    }
+
+    /**
+     * @return LookupOrganization[]
+     */
+    public function lookup(): array
+    {
+        $url = $this->resolveEndpoint('/lookup/organizations');
+        $response = $this->httpClient->get($url);
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return LookupOrganization::createFromCollection($content);
     }
 }

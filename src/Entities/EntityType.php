@@ -49,4 +49,5 @@ interface EntityType
     public const EVENT = 'events';
     public const INVITE_EMAIL_ADDITION = 'invite_email_additions';
     public const SLATE_ADDON_LOG = 'slate_addon_logs';
+    public const LOOKUP_ORGANIZATION = 'lookup-organizations';
 }
