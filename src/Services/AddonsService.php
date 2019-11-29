@@ -79,6 +79,16 @@ class AddonsService extends AbstractService
     }
 
     /**
+     * @deprecated
+     * @see SlateAddonFileService
+     * @return AddonFileService
+     */
+    public function addonFiles(): AddonFileService
+    {
+        return new AddonFileService($this->httpClient);
+    }
+
+    /**
      * @return OrganizationAddonsService
      */
     public function organizationAddons(): OrganizationAddonsService
