@@ -74,6 +74,8 @@ class FlowTemplatesService extends AbstractService
     }
 
     /**
+     * @deprecated not used, will be deleted after 14.1
+     *
      * @param Create $template
      * @param string $flowId
      * @return Template
