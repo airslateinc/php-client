@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient;
 
 use AirSlate\ApiClient\Http\Client as HttpClient;
+use AirSlate\ApiClient\Services\AddonFlowDocumentsService;
 use AirSlate\ApiClient\Services\AddonsService;
 use AirSlate\ApiClient\Services\AddonLogsService;
 use AirSlate\ApiClient\Services\DocumentsService;
@@ -68,8 +69,15 @@ class Client
      */
     private $packetRevisionsService;
 
-    /** @var AddonLogsService */
+    /**
+     * @var AddonLogsService
+     */
     private $addonLogsService;
+
+    /**
+     * @var AddonFlowDocumentsService
+     */
+    private $addonFlowDocumentsService;
 
     /**
      * Client instances.
@@ -287,5 +295,17 @@ class Client
         }
 
         return $this->addonLogsService;
+    }
+
+    /**
+     * @return AddonFlowDocumentsService
+     */
+    public function addonFlowDocuments(): AddonFlowDocumentsService
+    {
+        if (!$this->addonFlowDocumentsService) {
+            $this->addonFlowDocumentsService = new AddonFlowDocumentsService($this->httpClient);
+        }
+
+        return $this->addonFlowDocumentsService;
     }
 }
