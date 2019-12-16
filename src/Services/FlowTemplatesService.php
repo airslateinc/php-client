@@ -6,6 +6,7 @@ namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Document;
 use AirSlate\ApiClient\Entities\DocumentRole;
+use AirSlate\ApiClient\Entities\Field;
 use AirSlate\ApiClient\Entities\Template;
 use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Exceptions\MissingDataException;
@@ -139,6 +140,42 @@ class FlowTemplatesService extends AbstractService
 
         return Document::createFromCollection($content);
     }
+
+    /**
+     * @param string $flowId
+     * @return Document[]
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
+     */
+    public function addonDocuments(string $flowId): array
+    {
+        $url = $this->resolveEndpoint("/addons/slates/{$flowId}//documents");
+
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Document::createFromCollection($content);
+    }
+
+    /**
+     * @param string $flowId
+     * @param string $documentUid
+     * @return Field[]
+     */
+    public function addonDocumentsFields(string $flowId, string $documentUid): array
+    {
+        $url = $this->resolveEndpoint("/addons/slates/{$flowId}/documents/{$documentUid}/fields");
+
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Field::createFromCollection($content);
+    }
+
 
     /**
      * @deprecated not used, will be deleted after 14.1
