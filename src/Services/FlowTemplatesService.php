@@ -176,7 +176,6 @@ class FlowTemplatesService extends AbstractService
         return Field::createFromCollection($content);
     }
 
-
     /**
      * @deprecated not used, will be deleted after 14.1
      *
