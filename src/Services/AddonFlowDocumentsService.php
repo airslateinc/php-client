@@ -20,7 +20,7 @@ class AddonFlowDocumentsService extends AbstractService
      */
     public function collection(string $flowUid): array
     {
-        $url = $this->resolveEndpoint("/addons/slates/{$flowUid}//documents");
+        $url = $this->resolveEndpoint("/addons/slates/{$flowUid}/documents");
 
         $response = $this->httpClient->get($url);
 
