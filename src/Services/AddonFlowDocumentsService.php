@@ -6,10 +6,6 @@ namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Document;
 use AirSlate\ApiClient\Entities\Field;
-use AirSlate\ApiClient\Exceptions\DomainException;
-use AirSlate\ApiClient\Exceptions\MissingDataException;
-use AirSlate\ApiClient\Exceptions\TypeMismatchException;
-use InvalidArgumentException;
 
 /**
  * Class AddonFlowDocumentsService
@@ -20,10 +16,7 @@ class AddonFlowDocumentsService extends AbstractService
     /**
      * @param string $flowUid
      * @return Document[]
-     * @throws InvalidArgumentException
-     * @throws MissingDataException
-     * @throws TypeMismatchException
-     * @throws DomainException
+     * @throws \Exception
      */
     public function collection(string $flowUid): array
     {
@@ -40,6 +33,7 @@ class AddonFlowDocumentsService extends AbstractService
      * @param string $flowUid
      * @param string $documentUid
      * @return Field[]
+     * @throws \Exception
      */
     public function fields(string $flowUid, string $documentUid): array
     {
