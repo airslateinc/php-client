@@ -49,6 +49,21 @@ class OrganizationsService extends AbstractService
     }
 
     /**
+     * @param Create $organization
+     * @return Organization
+     */
+    public function createMSP(Create $organization): Organization
+    {
+        $url = $this->resolveEndpoint('/msp/organizations');
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $organization->toArray(),
+        ]);
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Organization::createFromOne($content);
+    }
+
+    /**
      * @param Update $organization
      * @return Organization
      */

@@ -29,26 +29,4 @@ class Update extends Create
     {
         return $this->data['id'];
     }
-
-    /**
-     * @param string $value
-     * @return $this
-     */
-    public function setLogoProfile(string $value): self
-    {
-        $this->data['attributes']['logo_profile'] = $value;
-
-        return $this;
-    }
-
-    /**
-     * @param string $value
-     * @return $this
-     */
-    public function setLogoRectangle(string $value): self
-    {
-        $this->data['attributes']['logo_rectangle'] = $value;
-
-        return $this;
-    }
 }
