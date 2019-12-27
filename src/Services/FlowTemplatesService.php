@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Document;
-use AirSlate\ApiClient\Entities\DocumentRole;
 use AirSlate\ApiClient\Entities\Template;
 use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Exceptions\MissingDataException;
 use AirSlate\ApiClient\Exceptions\TypeMismatchException;
-use AirSlate\ApiClient\Models\Template\Create;
 use AirSlate\ApiClient\Models\Template\TemplateDocument;
 use AirSlate\ApiClient\Models\Template\Update;
 use Generator;
@@ -74,30 +72,6 @@ class FlowTemplatesService extends AbstractService
     }
 
     /**
-     * @deprecated not used, will be deleted after 14.1
-     *
-     * @param Create $template
-     * @param string $flowId
-     * @return Template
-     * @throws InvalidArgumentException
-     * @throws MissingDataException
-     * @throws TypeMismatchException
-     * @throws DomainException
-     */
-    public function create(Create $template, string $flowId): Template
-    {
-        $url = $this->resolveEndpoint("/flows/{$flowId}/templates");
-
-        $response = $this->httpClient->post($url, [
-            RequestOptions::JSON => $template->toArray(),
-        ]);
-
-        $content = \GuzzleHttp\json_decode($response->getBody(), true);
-
-        return Template::createFromOne($content);
-    }
-
-    /**
      * @param Update $template
      * @param string $flowId
      * @param string $templateId
@@ -138,28 +112,6 @@ class FlowTemplatesService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Document::createFromCollection($content);
-    }
-
-    /**
-     * @deprecated not used, will be deleted after 14.1
-     *
-     * @param string $flowId
-     * @param string $templateId
-     * @return DocumentRole[]
-     * @throws InvalidArgumentException
-     * @throws MissingDataException
-     * @throws TypeMismatchException
-     * @throws DomainException
-     */
-    public function roles(string $flowId, string $templateId): array
-    {
-        $url = $this->resolveEndpoint("/flows/{$flowId}/templates/{$templateId}/roles");
-
-        $response = $this->httpClient->get($url);
-
-        $content = \GuzzleHttp\json_decode($response->getBody(), true);
-
-        return DocumentRole::createFromCollection($content);
     }
 
     /**
