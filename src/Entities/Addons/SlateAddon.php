@@ -2,6 +2,7 @@
 
 namespace AirSlate\ApiClient\Entities\Addons;
 
+use AirSlate\ApiClient\Entities\Addon;
 use AirSlate\ApiClient\Entities\BaseEntity;
 use AirSlate\ApiClient\Entities\Slate;
 use AirSlate\ApiClient\Entities\EntityType;
@@ -20,6 +21,7 @@ use AirSlate\ApiClient\Entities\EntityType;
  *
  * @property-read OrganizationAddon $organization_addon
  * @property-read Slate $slate
+ * @property-read Addon $addon
  *
  * @package AirSlate\ApiClient\Entities\Addons
  */
@@ -46,5 +48,14 @@ class SlateAddon extends BaseEntity
     public function getSlate(): ?Slate
     {
         return $this->hasOne(Slate::class, 'slate');
+    }
+
+    /**
+     * @return Addon|null
+     * @throws \Exception
+     */
+    public function getAddon(): ?Addon
+    {
+        return $this->hasOne(Addon::class, 'addon');
     }
 }
