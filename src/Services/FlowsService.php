@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
+use AirSlate\ApiClient\Entities\Addons\SlateAddon;
 use AirSlate\ApiClient\Entities\Slate;
 use AirSlate\ApiClient\Entities\SlateInvite;
 use AirSlate\ApiClient\Entities\SlateLinks;
@@ -215,5 +216,15 @@ class FlowsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Document::createFromMeta($content);
+    }
+
+    /**
+     * @param string $flowUid
+     * @return Generator|SlateAddon[]
+     */
+    public function addons(string $flowUid): Generator
+    {
+        $url = $this->resolveEndpoint("flows/{$flowUid}/addons");
+        yield from $this->pagination()->resolve($url, SlateAddon::class);
     }
 }
