@@ -220,9 +220,24 @@ class FlowsService extends AbstractService
 
     /**
      * @param string $flowUid
+     * @return SlateAddon[]
+     */
+    public function addons(string $flowUid): array
+    {
+        $url = $this->resolveEndpoint("flows/{$flowUid}/addons");
+
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return SlateAddon::createFromCollection($content);
+    }
+
+    /**
+     * @param string $flowUid
      * @return Generator|SlateAddon[]
      */
-    public function addons(string $flowUid): Generator
+    public function addonsIterator(string $flowUid): Generator
     {
         $url = $this->resolveEndpoint("flows/{$flowUid}/addons");
         yield from $this->pagination()->resolve($url, SlateAddon::class);
