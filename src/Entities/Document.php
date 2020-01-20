@@ -14,6 +14,7 @@ namespace AirSlate\ApiClient\Entities;
  *
  * @property-read File $pages
  * @property-read File $attributeFiles
+ * @property-read Document $templateDocument
  */
 
 class Document extends BaseEntity
@@ -102,5 +103,14 @@ class Document extends BaseEntity
     public function getPdf()
     {
         return $this->hasOne(File::class, 'pdf_file');
+    }
+
+    /**
+     * @return Document|null
+     * @throws \Exception
+     */
+    public function getTemplateDocument()
+    {
+        return $this->hasOne(Document::class, 'template_document');
     }
 }
