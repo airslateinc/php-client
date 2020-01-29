@@ -57,11 +57,11 @@ class AddonFlowDocumentsService extends AbstractService
      */
     public function fieldsAsync(string $flowUid, array $documentsIds): array
     {
-        $promises = array_map(function (string $documentUid) use ($flowUid) {
+        $promises = [];
+        foreach ($documentsIds as $documentUid) {
             $url = $this->resolveEndpoint("/addons/slates/{$flowUid}/documents/{$documentUid}/fields");
-
-            return $this->httpClient->getAsync($url);
-        }, $documentsIds);
+            $promises[$documentUid] = $this->httpClient->getAsync($url);
+        }
 
         $results = Promise\unwrap($promises);
         return array_map(function (ResponseInterface $response) {
