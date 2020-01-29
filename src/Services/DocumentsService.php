@@ -181,16 +181,16 @@ class DocumentsService extends AbstractService
     }
 
     /**
-     * @param UpdateDocumentFieldsDTO[] $documentFields
-     * @return Field[]
+     * @param string[] $documentsIds
+     * @return array<Field[]>
      */
-    public function fieldsAsync(array $documentFields): array
+    public function fieldsAsync(array $documentsIds): array
     {
-        $promises = array_map(function (UpdateDocumentFieldsDTO $documentFieldsDTO) {
-            $url = $this->resolveEndpoint("/documents/{$documentFieldsDTO->getDocumentUid()}/fields");
+        $promises = array_map(function (string $documentId) {
+            $url = $this->resolveEndpoint("/documents/{$documentId}/fields");
 
             return $this->httpClient->getAsync($url);
-        }, $documentFields);
+        }, $documentsIds);
 
         $results = Promise\unwrap($promises);
         return array_map(function (ResponseInterface $response) {
