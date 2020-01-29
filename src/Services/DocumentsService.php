@@ -186,11 +186,11 @@ class DocumentsService extends AbstractService
      */
     public function fieldsAsync(array $documentsIds): array
     {
-        $promises = array_map(function (string $documentId) {
-            $url = $this->resolveEndpoint("/documents/{$documentId}/fields");
-
-            return $this->httpClient->getAsync($url);
-        }, $documentsIds);
+        $promises = [];
+        foreach ($documentsIds as $documentUid) {
+            $url = $this->resolveEndpoint("/documents/{$documentUid}/fields");
+            $promises[] = $this->httpClient->getAsync($url);
+        }
 
         $results = Promise\unwrap($promises);
         return array_map(function (ResponseInterface $response) {
