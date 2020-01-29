@@ -6,6 +6,9 @@ namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Document;
 use AirSlate\ApiClient\Entities\Field;
+use Psr\Http\Message\ResponseInterface;
+use GuzzleHttp\Promise;
+use Throwable;
 
 /**
  * Class AddonFlowDocumentsService
@@ -44,5 +47,26 @@ class AddonFlowDocumentsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Field::createFromCollection($content);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string[] $documentsIds
+     * @return array
+     * @throws Throwable
+     */
+    public function fieldsAsync(string $flowUid, array $documentsIds): array
+    {
+        $promises = array_map(function (string $documentUid) use ($flowUid) {
+            $url = $this->resolveEndpoint("/addons/slates/{$flowUid}/documents/{$documentUid}/fields");
+
+            return $this->httpClient->getAsync($url);
+        }, $documentsIds);
+
+        $results = Promise\unwrap($promises);
+        return array_map(function (ResponseInterface $response) {
+            $content = \GuzzleHttp\json_decode($response->getBody(), true);
+            return Field::createFromCollection($content);
+        }, $results);
     }
 }
