@@ -181,6 +181,25 @@ class DocumentsService extends AbstractService
     }
 
     /**
+     * @param UpdateDocumentFieldsDTO[] $documentFields
+     * @return Field[]
+     */
+    public function fieldsAsync(array $documentFields): array
+    {
+        $promises = array_map(function (UpdateDocumentFieldsDTO $documentFieldsDTO) {
+            $url = $this->resolveEndpoint("/documents/{$documentFieldsDTO->getDocumentUid()}/fields");
+
+            return $this->httpClient->getAsync($url);
+        }, $documentFields);
+
+        $results = Promise\unwrap($promises);
+        return array_map(function (ResponseInterface $response) {
+            $content = \GuzzleHttp\json_decode($response->getBody(), true);
+            return Field::createFromCollection($content);
+        }, $results);
+    }
+
+    /**
      * @param $url string
      * @param array $filter
      * @param array $options
