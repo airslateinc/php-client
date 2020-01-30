@@ -66,9 +66,12 @@ class UpdateDocumentFieldsDTO
 
     /**
      * @param Field[] $originalFields
+     * @return UpdateDocumentFieldsDTO
      */
-    public function setOriginalFields(array $originalFields): void
+    public function setOriginalFields(array $originalFields): UpdateDocumentFieldsDTO
     {
         $this->originalFields = $originalFields;
+
+        return $this;
     }
 }
