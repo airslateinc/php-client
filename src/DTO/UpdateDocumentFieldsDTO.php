@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\DTO;
 
+use AirSlate\ApiClient\Entities\Field;
 use AirSlate\ApiClient\Models\Document\UpdateFields;
 
 class UpdateDocumentFieldsDTO
@@ -13,6 +14,9 @@ class UpdateDocumentFieldsDTO
 
     /** @var UpdateFields */
     private $fields;
+
+    /** @var Field[] */
+    private $originalFields;
 
     /**
      * @return string
@@ -50,5 +54,21 @@ class UpdateDocumentFieldsDTO
         $this->fields = $fields;
 
         return $this;
+    }
+
+    /**
+     * @return Field[]
+     */
+    public function getOriginalFields(): array
+    {
+        return $this->originalFields;
+    }
+
+    /**
+     * @param Field[] $originalFields
+     */
+    public function setOriginalFields(array $originalFields): void
+    {
+        $this->originalFields = $originalFields;
     }
 }
