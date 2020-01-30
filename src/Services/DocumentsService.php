@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
+use AirSlate\ApiClient\DTO\UpdateDocumentFieldsDTO;
 use AirSlate\ApiClient\Entities\Document;
 use AirSlate\ApiClient\Entities\DocumentAttachment;
 use AirSlate\ApiClient\Entities\DocumentPermissions;
@@ -20,7 +21,9 @@ use AirSlate\ApiClient\Models\Document\Duplicate as DuplicateModel;
 use AirSlate\ApiClient\Models\Document\UpdateFields;
 use AirSlate\ApiClient\Models\Document\Upload as UploadModel;
 use Generator;
+use GuzzleHttp\Promise;
 use GuzzleHttp\RequestOptions;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Class DocumentsService
@@ -178,6 +181,25 @@ class DocumentsService extends AbstractService
     }
 
     /**
+     * @param string[] $documentsIds
+     * @return array<Field[]>
+     */
+    public function fieldsAsync(array $documentsIds): array
+    {
+        $promises = [];
+        foreach ($documentsIds as $documentUid) {
+            $url = $this->resolveEndpoint("/documents/{$documentUid}/fields");
+            $promises[] = $this->httpClient->getAsync($url);
+        }
+
+        $results = Promise\unwrap($promises);
+        return array_map(function (ResponseInterface $response) {
+            $content = \GuzzleHttp\json_decode($response->getBody(), true);
+            return Field::createFromCollection($content);
+        }, $results);
+    }
+
+    /**
      * @param $url string
      * @param array $filter
      * @param array $options
@@ -217,6 +239,27 @@ class DocumentsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Document::createFromOne($content);
+    }
+
+    /**
+     * @param UpdateDocumentFieldsDTO[] $documentFields
+     * @return Document[]
+     */
+    public function updateFieldsAsync(array $documentFields): array
+    {
+        $promises = array_map(function (UpdateDocumentFieldsDTO $documentFieldsDTO) {
+            $url = $this->resolveEndpoint("/documents/{$documentFieldsDTO->getDocumentUid()}/fields");
+
+            return $this->httpClient->patchAsync($url, [
+                RequestOptions::JSON => $documentFieldsDTO->getFields()->toArray(),
+            ]);
+        }, $documentFields);
+
+        $results = Promise\unwrap($promises);
+        return array_map(function (ResponseInterface $response) {
+            $content = \GuzzleHttp\json_decode($response->getBody(), true);
+            return Document::createFromOne($content);
+        }, $results);
     }
 
     /**
