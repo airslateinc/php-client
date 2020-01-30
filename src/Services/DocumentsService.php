@@ -182,7 +182,7 @@ class DocumentsService extends AbstractService
 
     /**
      * @param string[] $documentsIds
-     * @return array<Field[]>
+     * @return array<string, Field[]>
      */
     public function fieldsAsync(array $documentsIds): array
     {
