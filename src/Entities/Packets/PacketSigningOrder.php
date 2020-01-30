@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Entities\Packets;
 
+use Exception;
+use AirSlate\ApiClient\Entities\User;
 use AirSlate\ApiClient\Entities\BaseEntity;
 
 /**
@@ -15,6 +17,8 @@ use AirSlate\ApiClient\Entities\BaseEntity;
  * @property string $order
  * @property string $role
  * @property string $status
+ *
+ * @property-read User[] $users
  */
 class PacketSigningOrder extends BaseEntity
 {
@@ -22,4 +26,13 @@ class PacketSigningOrder extends BaseEntity
      * @var string
      */
     protected $type = 'packet_signing_order';
+
+    /**
+     * @return User[]
+     * @throws Exception
+     */
+    public function getUsers(): array
+    {
+        return $this->hasMany(User::class, 'users');
+    }
 }
