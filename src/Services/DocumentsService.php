@@ -189,7 +189,7 @@ class DocumentsService extends AbstractService
         $promises = [];
         foreach ($documentsIds as $documentUid) {
             $url = $this->resolveEndpoint("/documents/{$documentUid}/fields");
-            $promises[] = $this->httpClient->getAsync($url);
+            $promises[$documentUid] = $this->httpClient->getAsync($url);
         }
 
         $results = Promise\unwrap($promises);
