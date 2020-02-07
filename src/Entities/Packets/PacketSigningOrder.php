@@ -1,8 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Entities\Packets;
 
+use AirSlate\ApiClient\Entities\DocumentRole;
 use Exception;
 use AirSlate\ApiClient\Entities\User;
 use AirSlate\ApiClient\Entities\BaseEntity;
@@ -18,7 +20,8 @@ use AirSlate\ApiClient\Entities\BaseEntity;
  * @property string $role
  * @property string $status
  *
- * @property-read User[] $users
+ * @property-read User $user
+ * @property-read DocumentRole $documentRole
  */
 class PacketSigningOrder extends BaseEntity
 {
@@ -28,11 +31,19 @@ class PacketSigningOrder extends BaseEntity
     protected $type = 'packet_signing_order';
 
     /**
-     * @return User[]
+     * @return User|BaseEntity
      * @throws Exception
      */
-    public function getUsers(): array
+    public function getUser(): User
     {
-        return $this->hasMany(User::class, 'users');
+        return $this->hasOne(User::class, 'users');
+    }
+
+    /**
+     * @return DocumentRole|BaseEntity
+     */
+    public function getDocumentRole(): DocumentRole
+    {
+        return $this->hasOne(DocumentRole::class, 'roles');
     }
 }
