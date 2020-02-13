@@ -8,7 +8,6 @@ use AirSlate\ApiClient\Entities\Document;
 use AirSlate\ApiClient\Entities\Field;
 use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Promise;
-use Throwable;
 
 /**
  * Class AddonFlowDocumentsService
@@ -16,6 +15,9 @@ use Throwable;
  */
 class AddonFlowDocumentsService extends AbstractService
 {
+    /** @const int */
+    private const DEFAULT_CONCURRENCY = 10;
+
     /**
      * @param string $flowUid
      * @return Document[]
@@ -52,21 +54,35 @@ class AddonFlowDocumentsService extends AbstractService
     /**
      * @param string $flowUid
      * @param string[] $documentsIds
+     * @param int $concurrency
      * @return array
-     * @throws Throwable
      */
-    public function fieldsAsync(string $flowUid, array $documentsIds): array
-    {
-        $promises = [];
-        foreach ($documentsIds as $documentUid) {
-            $url = $this->resolveEndpoint("/addons/slates/{$flowUid}/documents/{$documentUid}/fields");
-            $promises[$documentUid] = $this->httpClient->getAsync($url);
-        }
+    public function fieldsAsync(
+        string $flowUid,
+        array $documentsIds,
+        int $concurrency = self::DEFAULT_CONCURRENCY
+    ): array {
+        $results = [];
 
-        $results = Promise\unwrap($promises);
-        return array_map(function (ResponseInterface $response) {
-            $content = \GuzzleHttp\json_decode($response->getBody(), true);
-            return Field::createFromCollection($content);
-        }, $results);
+        $requestPool = function () use ($flowUid, $documentsIds) {
+            foreach ($documentsIds as $documentUid) {
+                $url = $this->resolveEndpoint("/addons/slates/{$flowUid}/documents/{$documentUid}/fields");
+
+                yield $documentUid => $this->httpClient->getAsync($url)->then(function (ResponseInterface $response) {
+                    $content = \GuzzleHttp\json_decode($response->getBody(), true);
+                    return Field::createFromCollection($content);
+                });
+            }
+        };
+
+        Promise\each_limit_all(
+            $requestPool(),
+            $concurrency,
+            function (array $result, string $documentId) use (&$results) {
+                $results[$documentId] = $result;
+            }
+        )->wait();
+
+        return $results;
     }
 }
