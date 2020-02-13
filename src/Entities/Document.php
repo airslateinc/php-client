@@ -14,6 +14,7 @@ namespace AirSlate\ApiClient\Entities;
  *
  * @property-read File $pages
  * @property-read File $attributeFiles
+ * @property-read Field[] $documentFields
  */
 
 class Document extends BaseEntity
@@ -48,6 +49,15 @@ class Document extends BaseEntity
     public function getContent()
     {
         return $this->hasOne(File::class, 'content_file');
+    }
+
+    /**
+     * @return Field[]
+     * @throws \Exception
+     */
+    public function getDocumentFields()
+    {
+        return $this->hasMany(Field::class, 'fields');
     }
 
     /**
