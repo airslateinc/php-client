@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
+use AirSlate\ApiClient\Contracts\Services\AsyncService;
 use AirSlate\ApiClient\Entities\Document;
 use AirSlate\ApiClient\Entities\Field;
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Promise;
 
@@ -13,15 +15,12 @@ use GuzzleHttp\Promise;
  * Class AddonFlowDocumentsService
  * @package AirSlate\ApiClient\Services
  */
-class AddonFlowDocumentsService extends AbstractService
+class AddonFlowDocumentsService extends AbstractService implements AsyncService
 {
-    /** @const int */
-    private const DEFAULT_CONCURRENCY = 10;
-
     /**
      * @param string $flowUid
      * @return Document[]
-     * @throws \Exception
+     * @throws Exception
      */
     public function collection(string $flowUid): array
     {
@@ -38,7 +37,7 @@ class AddonFlowDocumentsService extends AbstractService
      * @param string $flowUid
      * @param string $documentUid
      * @return Field[]
-     * @throws \Exception
+     * @throws Exception
      */
     public function fields(string $flowUid, string $documentUid): array
     {

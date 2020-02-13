@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
+use AirSlate\ApiClient\Contracts\Services\AsyncService;
 use AirSlate\ApiClient\DTO\UpdateDocumentFieldsDTO;
 use AirSlate\ApiClient\Entities\Document;
 use AirSlate\ApiClient\Entities\DocumentAttachment;
@@ -31,11 +32,8 @@ use Throwable;
  * Class DocumentsService
  * @package AirSlate\ApiClient\Services
  */
-class DocumentsService extends AbstractService
+class DocumentsService extends AbstractService implements AsyncService
 {
-    /** @const int */
-    private const DEFAULT_CONCURRENCY = 10;
-
     /**
      * Create document
      *
