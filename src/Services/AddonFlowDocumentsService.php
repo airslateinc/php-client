@@ -62,7 +62,6 @@ class AddonFlowDocumentsService extends AbstractService implements AsyncService
         int $concurrency = self::DEFAULT_CONCURRENCY
     ): array {
         $results = [];
-
         $requestPool = function () use ($flowUid, $documentsIds) {
             foreach ($documentsIds as $documentUid) {
                 $url = $this->resolveEndpoint("/addons/slates/{$flowUid}/documents/{$documentUid}/fields");

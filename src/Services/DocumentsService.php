@@ -190,6 +190,7 @@ class DocumentsService extends AbstractService implements AsyncService
      */
     public function fieldsAsync(array $documentsIds, int $concurrency = self::DEFAULT_CONCURRENCY): array
     {
+        $results = [];
         $requestPool = function () use ($documentsIds) {
             foreach ($documentsIds as $documentUid) {
                 $url = $this->resolveEndpoint("/documents/{$documentUid}/fields");
