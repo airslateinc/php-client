@@ -75,7 +75,7 @@ class AddonFlowDocumentsService extends AbstractService
         Promise\each_limit_all(
             $requestPool(),
             $concurrency,
-            function (array $result, string $documentId) use (&$results) {
+            function (Field $result, string $documentId) use (&$results) {
                 $results[$documentId] = $result;
             }
         )->wait();

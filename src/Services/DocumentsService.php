@@ -204,7 +204,7 @@ class DocumentsService extends AbstractService
         Promise\each_limit_all(
             $requestPool(),
             $concurrency,
-            function (array $result, string $documentId) use (&$results) {
+            function (Field $result, string $documentId) use (&$results) {
                 $results[$documentId] = $result;
             }
         )->wait();
@@ -279,7 +279,7 @@ class DocumentsService extends AbstractService
         Promise\each_limit_all(
             $requestPool(),
             $concurrency,
-            function (array $result) use (&$results) {
+            function (Document $result) use (&$results) {
                 $results[] = $result;
             }
         )->wait();
