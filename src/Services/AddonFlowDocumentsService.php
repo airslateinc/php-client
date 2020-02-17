@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
-use AirSlate\ApiClient\Contracts\Services\AsyncService;
 use AirSlate\ApiClient\Entities\Document;
 use AirSlate\ApiClient\Entities\Field;
 use Exception;
@@ -15,7 +14,7 @@ use GuzzleHttp\Promise;
  * Class AddonFlowDocumentsService
  * @package AirSlate\ApiClient\Services
  */
-class AddonFlowDocumentsService extends AbstractService implements AsyncService
+class AddonFlowDocumentsService extends AbstractService
 {
     /**
      * @param string $flowUid

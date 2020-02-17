@@ -12,7 +12,12 @@ use AirSlate\ApiClient\Http\Client;
  */
 abstract class AbstractService
 {
+    /** @const string  */
     public const API_VERSION = 'v1';
+
+    /** @const int */
+    public const DEFAULT_CONCURRENCY = 10;
+
     /**
      * @var Client
      */

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
-use AirSlate\ApiClient\Contracts\Services\AsyncService;
 use AirSlate\ApiClient\DTO\UpdateDocumentFieldsDTO;
 use AirSlate\ApiClient\Entities\Document;
 use AirSlate\ApiClient\Entities\DocumentAttachment;
@@ -32,7 +31,7 @@ use Throwable;
  * Class DocumentsService
  * @package AirSlate\ApiClient\Services
  */
-class DocumentsService extends AbstractService implements AsyncService
+class DocumentsService extends AbstractService
 {
     /**
      * Create document
@@ -186,7 +185,7 @@ class DocumentsService extends AbstractService implements AsyncService
     /**
      * @param array $documentsIds
      * @param int $concurrency
-     * @return array
+     * @return Field[]
      */
     public function fieldsAsync(array $documentsIds, int $concurrency = self::DEFAULT_CONCURRENCY): array
     {
