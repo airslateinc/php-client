@@ -185,7 +185,7 @@ class DocumentsService extends AbstractService
     /**
      * @param array $documentsIds
      * @param int $concurrency
-     * @return Field[]
+     * @return array
      */
     public function fieldsAsync(array $documentsIds, int $concurrency = self::DEFAULT_CONCURRENCY): array
     {
