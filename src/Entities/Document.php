@@ -56,7 +56,7 @@ class Document extends BaseEntity
      * @return Field[]
      * @throws \Exception
      */
-    public function getDocumentFields()
+    public function getDocumentFields(): array
     {
         return $this->hasMany(Field::class, 'fields');
     }
