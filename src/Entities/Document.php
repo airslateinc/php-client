@@ -7,6 +7,7 @@ namespace AirSlate\ApiClient\Entities;
  * @package AirSlate\ApiClient\Entities
  *
  * @property string $id
+ * @property string $name
  * @property string $version
  * @property string $pdf_status
  * @property string $created_at
