@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
@@ -20,6 +21,7 @@ class UsersService extends AbstractService
     {
         return new OrganizationsService($this->httpClient);
     }
+
     /**
      * @param string $organizationId
      * @return Organization
@@ -102,23 +104,24 @@ class UsersService extends AbstractService
      *
      * @param string $organization
      * @param array $emails
+     * @param bool|null $sendEmail
      * @return User[]
-     * @throws \Exception
      */
-    public function invite(string $organization, array $emails): array
+    public function invite(string $organization, array $emails, bool $sendEmail = null): array
     {
         $url = $this->resolveEndpoint('/organizations/' . $organization . '/users/invite');
-        $response = $this->httpClient->post($url, [
-            RequestOptions::JSON => [
-                'data' => [
-                    'type' => EntityType::USER,
-                    'attributes' => [
-                        'emails' => $emails
-                    ]
+        $data = [
+            'data' => [
+                'type' => EntityType::USER,
+                'attributes' => [
+                    'emails' => $emails
                 ]
             ]
-        ]);
-
+        ];
+        if ($sendEmail !== null) {
+            $data['data']['attributes']['send_invite_email'] = $sendEmail;
+        }
+        $response = $this->httpClient->post($url, [RequestOptions::JSON => $data]);
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return User::createFromCollection($content);
@@ -139,5 +142,14 @@ class UsersService extends AbstractService
         }
 
         return $response && $response->getStatusCode() === 204;
+    }
+
+    public function join(string $orgUid): OrganizationUser
+    {
+        $url = $this->resolveEndpoint('/organizations/' . $orgUid . '/join');
+        $response = $this->httpClient->post($url);
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return OrganizationUser::createFromOne($content);
     }
 }
