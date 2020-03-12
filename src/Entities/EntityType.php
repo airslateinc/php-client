@@ -45,6 +45,7 @@ interface EntityType
     public const TEMPLATE = 'templates';
     public const TOKEN = 'tokens';
     public const USER = 'users';
+    public const ORGANIZATION_INVITE = 'organization_invite';
     public const EXPORT = 'export';
     public const EVENT = 'events';
     public const INVITE_EMAIL_ADDITION = 'invite_email_additions';

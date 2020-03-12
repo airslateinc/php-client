@@ -112,7 +112,7 @@ class UsersService extends AbstractService
         $url = $this->resolveEndpoint('/organizations/' . $organization . '/users/invite');
         $data = [
             'data' => [
-                'type' => EntityType::USER,
+                'type' => EntityType::ORGANIZATION_INVITE,
                 'attributes' => [
                     'emails' => $emails
                 ]
