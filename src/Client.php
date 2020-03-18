@@ -5,17 +5,17 @@ namespace AirSlate\ApiClient;
 
 use AirSlate\ApiClient\Http\Client as HttpClient;
 use AirSlate\ApiClient\Services\AddonFlowDocumentsService;
-use AirSlate\ApiClient\Services\AddonsService;
 use AirSlate\ApiClient\Services\AddonLogsService;
+use AirSlate\ApiClient\Services\AddonsService;
+use AirSlate\ApiClient\Services\AddonsSmsService;
 use AirSlate\ApiClient\Services\DocumentsService;
 use AirSlate\ApiClient\Services\ExportService;
 use AirSlate\ApiClient\Services\FilesService;
 use AirSlate\ApiClient\Services\FlowsService;
+use AirSlate\ApiClient\Services\PacketRevisionsService;
 use AirSlate\ApiClient\Services\PermissionsService;
 use AirSlate\ApiClient\Services\RevisionsService;
 use AirSlate\ApiClient\Services\UsersService;
-use AirSlate\ApiClient\Services\AddonsSmsService;
-use AirSlate\ApiClient\Services\PacketRevisionsService;
 
 /**
  * Class Client
@@ -23,6 +23,9 @@ use AirSlate\ApiClient\Services\PacketRevisionsService;
  */
 class Client
 {
+    private const CONTENT_TYPE_JSON_API = 'application/vnd.api+json';
+    private const CONTENT_TYPE_JSON = 'application/json';
+
     /**
      * @var HttpClient
      */
@@ -125,7 +128,10 @@ class Client
     {
         return [
             'Authorization' => 'Bearer ' . ($config['token'] ?? ''),
-            'X-Request-Id' => $config['requestId'] ?? ''
+            'X-Request-Id' => $config['requestId'] ?? '',
+            // json:api specific headers
+            'Content-Type' => self::CONTENT_TYPE_JSON_API,
+            'Accept' => self::CONTENT_TYPE_JSON . ', ' . self::CONTENT_TYPE_JSON_API,
         ];
     }
 
