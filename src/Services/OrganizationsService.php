@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
+use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Entities\LookupOrganization;
 use AirSlate\ApiClient\Entities\Organization;
+use AirSlate\ApiClient\Entities\User;
 use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Models\Organization\Create;
 use AirSlate\ApiClient\Models\Organization\Update;
@@ -101,5 +103,24 @@ class OrganizationsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return LookupOrganization::createFromCollection($content);
+    }
+
+    public function changeOwner(string $organizationUid, string $userUid): User
+    {
+        $url = $this->resolveEndpoint("/organizations/{$organizationUid}/relationships/owner");
+        $response = $this->httpClient->patch(
+            $url,
+            [
+                RequestOptions::JSON => [
+                    'data' => [
+                        'type' => EntityType::USER,
+                        'id' => $userUid,
+                    ]
+                ],
+            ]
+        );
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return User::createFromOne($content);
     }
 }
