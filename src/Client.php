@@ -4,14 +4,15 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient;
 
 use AirSlate\ApiClient\Http\Client as HttpClient;
+use AirSlate\ApiClient\Services\AddonFlowDocumentsService;
 use AirSlate\ApiClient\Services\AddonsService;
+use AirSlate\ApiClient\Services\AddonLogsService;
 use AirSlate\ApiClient\Services\DocumentsService;
-use AirSlate\ApiClient\Services\EventBusService;
 use AirSlate\ApiClient\Services\ExportService;
 use AirSlate\ApiClient\Services\FilesService;
+use AirSlate\ApiClient\Services\FlowsService;
 use AirSlate\ApiClient\Services\PermissionsService;
 use AirSlate\ApiClient\Services\RevisionsService;
-use AirSlate\ApiClient\Services\SlatesService;
 use AirSlate\ApiClient\Services\UsersService;
 use AirSlate\ApiClient\Services\AddonsSmsService;
 use AirSlate\ApiClient\Services\PacketRevisionsService;
@@ -44,17 +45,13 @@ class Client
      */
     private $exportService;
     /**
-     * @var SlatesService
+     * @var FlowsService
      */
-    private $slatesService;
+    private $flowsService;
     /**
      * @var AddonsService
      */
     private $addonsService;
-    /**
-     * @var EventBusService
-     */
-    private $eventBusService;
     /**
      * @var PermissionsService
      */
@@ -71,6 +68,16 @@ class Client
      * @var PacketRevisionsService
      */
     private $packetRevisionsService;
+
+    /**
+     * @var AddonLogsService
+     */
+    private $addonLogsService;
+
+    /**
+     * @var AddonFlowDocumentsService
+     */
+    private $addonFlowDocumentsService;
 
     /**
      * Client instances.
@@ -210,15 +217,15 @@ class Client
     }
 
     /**
-     * @return SlatesService
+     * @return FlowsService
      */
-    public function slates(): SlatesService
+    public function flows(): FlowsService
     {
-        if (!$this->slatesService) {
-            $this->slatesService = new SlatesService($this->httpClient);
+        if (!$this->flowsService) {
+            $this->flowsService = new FlowsService($this->httpClient);
         }
 
-        return $this->slatesService;
+        return $this->flowsService;
     }
 
     /**
@@ -231,19 +238,6 @@ class Client
         }
 
         return $this->addonsService;
-    }
-
-    /**
-     * @deprecated This service is going to be moved to separate client
-     * @return EventBusService
-     */
-    public function eventBus(): EventBusService
-    {
-        if (!$this->eventBusService) {
-            $this->eventBusService = new EventBusService($this->httpClient);
-        }
-
-        return $this->eventBusService;
     }
 
     /**
@@ -289,5 +283,29 @@ class Client
         }
 
         return $this->packetRevisionsService;
+    }
+
+    /**
+     * @return AddonLogsService
+     */
+    public function addonLogs(): AddonLogsService
+    {
+        if (!$this->addonLogsService) {
+            $this->addonLogsService = new AddonLogsService($this->httpClient);
+        }
+
+        return $this->addonLogsService;
+    }
+
+    /**
+     * @return AddonFlowDocumentsService
+     */
+    public function addonFlowDocuments(): AddonFlowDocumentsService
+    {
+        if (!$this->addonFlowDocumentsService) {
+            $this->addonFlowDocumentsService = new AddonFlowDocumentsService($this->httpClient);
+        }
+
+        return $this->addonFlowDocumentsService;
     }
 }

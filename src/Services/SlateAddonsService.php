@@ -1,15 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Addons\SlateAddon;
 use AirSlate\ApiClient\Models\SlateAddon\Create as CreateSlateAddon;
 use AirSlate\ApiClient\Models\SlateAddon\Update as UpdateSlateAddon;
 use AirSlate\ApiClient\Models\SlateAddonMessage\Create as CreateSlateAddonMessage;
+use Generator;
 use GuzzleHttp\RequestOptions;
 
 class SlateAddonsService extends AbstractService
 {
+    /**
+     * @return SlateAddonFileService
+     */
+    public function slateAddonFiles(): SlateAddonFileService
+    {
+        return new SlateAddonFileService($this->httpClient);
+    }
+
     /**
      * @param CreateSlateAddon $model
      * @return SlateAddon
@@ -105,5 +116,14 @@ class SlateAddonsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return SlateAddon::createFromCollection($content);
+    }
+
+    /**
+     * @return Generator|SlateAddon[]
+     */
+    public function collectionIterator(): Generator
+    {
+        $url = $this->resolveEndpoint('/slate-addons');
+        yield from $this->pagination()->resolve($url, SlateAddon::class);
     }
 }

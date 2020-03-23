@@ -1,8 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
+use AirSlate\ApiClient\DTO\UpdateDocumentFieldsDTO;
 use AirSlate\ApiClient\Entities\Document;
 use AirSlate\ApiClient\Entities\DocumentAttachment;
 use AirSlate\ApiClient\Entities\DocumentPermissions;
@@ -13,12 +15,17 @@ use AirSlate\ApiClient\Models\Document\AddDocumentAttachments;
 use AirSlate\ApiClient\Models\Document\Create as CreateModel;
 use AirSlate\ApiClient\Models\Document\DocumentEvent;
 use AirSlate\ApiClient\Models\Document\Event;
+use AirSlate\ApiClient\Models\Document\UnlockPdf;
 use AirSlate\ApiClient\Models\Document\Update as UpdateModel;
 use AirSlate\ApiClient\Models\Document\Duplicate as DuplicateModel;
-use AirSlate\ApiClient\Models\Document\Export as ExportModel;
 use AirSlate\ApiClient\Models\Document\UpdateFields;
 use AirSlate\ApiClient\Models\Document\Upload as UploadModel;
+use Exception;
+use Generator;
+use GuzzleHttp\Promise;
 use GuzzleHttp\RequestOptions;
+use Psr\Http\Message\ResponseInterface;
+use Throwable;
 
 /**
  * Class DocumentsService
@@ -31,7 +38,7 @@ class DocumentsService extends AbstractService
      *
      * @param CreateModel $document
      * @return Document
-     * @throws \Exception
+     * @throws Exception
      */
     public function create(CreateModel $document): Document
     {
@@ -50,9 +57,9 @@ class DocumentsService extends AbstractService
      *
      * @param UpdateModel $document
      * @return Document
-     * @throws \Exception
+     * @throws Exception
      */
-    public function update(UpdateModel $document) : Document
+    public function update(UpdateModel $document): Document
     {
         $url = $this->resolveEndpoint("/documents/$document->id");
 
@@ -68,7 +75,7 @@ class DocumentsService extends AbstractService
      *
      * @param DuplicateModel $document
      * @return Document[]|array
-     * @throws \Exception
+     * @throws Exception
      */
     public function duplicate(DuplicateModel $document): array
     {
@@ -88,7 +95,7 @@ class DocumentsService extends AbstractService
      *
      * @param string $documentId
      * @return Document
-     * @throws \Exception
+     * @throws Exception
      */
     public function get(string $documentId): Document
     {
@@ -105,7 +112,7 @@ class DocumentsService extends AbstractService
      * @param array $filter
      * @param array $options
      * @return Document[]
-     * @throws \Exception
+     * @throws Exception
      */
     public function collection($filter = [], array $options = []): array
     {
@@ -114,70 +121,25 @@ class DocumentsService extends AbstractService
     }
 
     /**
+     * @return Generator|Document[]
+     */
+    public function collectionIterator(): Generator
+    {
+        $url = $this->resolveEndpoint('/documents');
+        yield from $this->pagination()->resolve($url, Document::class);
+    }
+
+    /**
      * Get documents collection with content
      * @param array $filter
      * @param array $options
      * @return Document[]
-     * @throws \Exception
+     * @throws Exception
      */
     public function content($filter = [], array $options = []): array
     {
         $url = $this->resolveEndpoint('/documents/content');
         return $this->getDocuments($url, $filter, $options);
-    }
-
-    /**
-     * Export documents
-     *
-     * @param ExportModel $document
-     *
-     * @return mixed
-     *
-     * @throws \Exception
-     *
-     * @deprecated
-     * @see ExportService::create()
-     */
-    public function export(ExportModel $document): array
-    {
-        $url = $this->resolveEndpoint('/export/bulk');
-
-        try {
-            $response = $this->httpClient->post($url, [
-                RequestOptions::JSON => $document->toArray(),
-            ]);
-
-            $content = \GuzzleHttp\json_decode($response->getBody(), true);
-        } catch (DomainException $e) {
-            $content = \GuzzleHttp\json_decode($e->getMessage(), true);
-        }
-
-        return $content;
-    }
-
-    /**
-     * Check the export status
-     *
-     * @param string $exportId
-     *
-     * @return array
-     *
-     * @deprecated
-     * @see ExportService::get()
-     */
-    public function exportStatus(string $exportId): array
-    {
-        $url = $this->resolveEndpoint("/export/$exportId/status");
-
-        try {
-            $response = $this->httpClient->get($url);
-
-            $content = \GuzzleHttp\json_decode($response->getBody(), true);
-        } catch (DomainException $e) {
-            $content = \GuzzleHttp\json_decode($e->getMessage(), true);
-        }
-
-        return $content;
     }
 
     /**
@@ -207,7 +169,7 @@ class DocumentsService extends AbstractService
      * Extract document fields
      * @param string $documentId
      * @return Field[]
-     * @throws \Exception
+     * @throws Exception
      */
     public function fields(string $documentId): array
     {
@@ -221,11 +183,41 @@ class DocumentsService extends AbstractService
     }
 
     /**
+     * @param array $documentsIds
+     * @param int $concurrency
+     * @return array
+     */
+    public function fieldsAsync(array $documentsIds, int $concurrency = self::DEFAULT_CONCURRENCY): array
+    {
+        $results = [];
+        $requestPool = function () use ($documentsIds) {
+            foreach ($documentsIds as $documentUid) {
+                $url = $this->resolveEndpoint("/documents/{$documentUid}/fields");
+
+                yield $documentUid => $this->httpClient->getAsync($url)->then(function (ResponseInterface $response) {
+                    $content = \GuzzleHttp\json_decode($response->getBody(), true);
+                    return Field::createFromCollection($content);
+                });
+            }
+        };
+
+        Promise\each_limit_all(
+            $requestPool(),
+            $concurrency,
+            function (array $result, string $documentId) use (&$results) {
+                $results[$documentId] = $result;
+            }
+        )->wait();
+
+        return $results;
+    }
+
+    /**
      * @param $url string
      * @param array $filter
      * @param array $options
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     protected function getDocuments($url, $filter = [], array $options = [])
     {
@@ -247,7 +239,7 @@ class DocumentsService extends AbstractService
      * @param string $documentId
      * @param UpdateFields $fields
      * @return Document
-     * @throws \Exception
+     * @throws Exception
      */
     public function updateFields(string $documentId, UpdateFields $fields): Document
     {
@@ -263,10 +255,63 @@ class DocumentsService extends AbstractService
     }
 
     /**
+     * @param UpdateDocumentFieldsDTO[] $documentFields
+     * @param int $concurrency
+     * @return Document[]
+     * @throws Throwable
+     */
+    public function updateFieldsAsync(array $documentFields, int $concurrency = self::DEFAULT_CONCURRENCY): array
+    {
+        $results = [];
+        $requestPool = function () use ($documentFields) {
+            foreach ($documentFields as $documentFieldsDTO) {
+                $url = $this->resolveEndpoint("/documents/{$documentFieldsDTO->getDocumentUid()}/fields");
+
+                yield $this->httpClient->patchAsync($url, [
+                    RequestOptions::JSON => $documentFieldsDTO->getFields()->toArray(),
+                ])->then(function (ResponseInterface $response) {
+                    $content = \GuzzleHttp\json_decode($response->getBody(), true);
+                    return Document::createFromOne($content);
+                });
+            }
+        };
+
+        Promise\each_limit_all(
+            $requestPool(),
+            $concurrency,
+            function (Document $result) use (&$results) {
+                $results[] = $result;
+            }
+        )->wait();
+
+        return $results;
+    }
+
+    /**
+     * Unlock password-protected PDF-file previously uploaded with password
+     * @param string $documentId
+     * @param UnlockPdf $unlockPdf
+     *
+     * @return Document
+     */
+    public function unlockPdf(string $documentId, UnlockPdf $unlockPdf): Document
+    {
+        $url = $this->resolveEndpoint("/documents/$documentId/unlock-pdf");
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $unlockPdf->toArray()
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Document::createFromOne($content);
+    }
+
+    /**
      * @param string $documentId
      * @param AddAttachments $addAttachments
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public function addAttachments(string $documentId, AddAttachments $addAttachments)
     {
@@ -285,7 +330,7 @@ class DocumentsService extends AbstractService
     /**
      * @param string $documentId
      * @return DocumentAttachment[]
-     * @throws \Exception
+     * @throws Exception
      */
     public function getDocumentAttachments(string $documentId): array
     {
@@ -302,7 +347,7 @@ class DocumentsService extends AbstractService
      * @param string $userId
      * @param string $type
      * @return DocumentAttachment[]
-     * @throws \Exception
+     * @throws Exception
      */
     public function getDocumentAttachmentsByUser(string $userId, string $type): array
     {
@@ -323,7 +368,7 @@ class DocumentsService extends AbstractService
      * @param string $documentId
      * @param AddDocumentAttachments $addDocumentAttachments
      * @return DocumentAttachment
-     * @throws \Exception
+     * @throws Exception
      */
     public function addDocumentAttachments(
         string $documentId,
@@ -374,7 +419,7 @@ class DocumentsService extends AbstractService
     /**
      * @param string $documentId
      * @return Document
-     * @throws \Exception
+     * @throws Exception
      */
     public function documentContent(string $documentId): Document
     {
@@ -390,7 +435,7 @@ class DocumentsService extends AbstractService
     /**
      * @param string $documentId
      * @return DocumentPermissions|null
-     * @throws \Exception
+     * @throws Exception
      */
     public function documentPermissions(string $documentId): ?DocumentPermissions
     {

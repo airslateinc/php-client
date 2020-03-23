@@ -172,7 +172,8 @@ class BaseEntity implements JsonSerializable
     /**
      * @param array $jsonApi
      * @return static
-     * @throws \Exception
+     * @throws MissingDataException
+     * @throws TypeMismatchException
      */
     public static function createFromOne(array $jsonApi)
     {
@@ -206,7 +207,8 @@ class BaseEntity implements JsonSerializable
     /**
      * @param array $jsonApi
      * @return array
-     * @throws \Exception
+     * @throws MissingDataException
+     * @throws TypeMismatchException
      */
     public static function createFromCollection(array $jsonApi): array
     {
@@ -259,7 +261,9 @@ class BaseEntity implements JsonSerializable
      * @param string $className
      * @param string $relName
      * @return null|BaseEntity
-     * @throws \Exception
+     * @throws RelationNotExistException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
      */
     protected function hasOne(string $className, string $relName): ?BaseEntity
     {

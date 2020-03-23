@@ -1,0 +1,339 @@
+{
+  "meta": {
+    "packets_info": {
+      "own_count": 1,
+      "finished_count": 1,
+      "draft_count": 0,
+      "all_count": 1
+    },
+    "roles_info": {
+      "count": 0
+    }
+  },
+  "data": {
+    "type": "slates",
+    "id": "EAFA2129-1000-0000-0000BA29",
+    "attributes": {
+      "name": "Admin email2 Copy1",
+      "previous_status": "DRAFT",
+      "status": "PUBLISHED",
+      "archived_by": "",
+      "description": null,
+      "source": null,
+      "is_editable": false,
+      "wizard_status": "DONE",
+      "is_public": false,
+      "packets_redirect_url": null,
+      "packets_redirect_enabled": false,
+      "last_activity": "2019-11-15 14:15:05",
+      "created_at": "2019-11-15 14:15:01",
+      "updated_at": "2019-11-15 14:15:05",
+      "customization": {
+        "visible": true,
+        "visited": true,
+        "read": true
+      }
+    },
+    "relationships": {
+      "admins": {
+        "data": {
+          "type": "users",
+          "id": "3B777F50-0000-0000-00009BC6"
+        }
+      },
+      "organizations": {
+        "data": {
+          "type": "organizations",
+          "id": "3B4FE821-0000-0000-0000D981"
+        }
+      },
+      "templates": {
+        "data": {
+          "type": "templates",
+          "id": "12F39919-1000-0000-0000FED3"
+        }
+      },
+      "parent": {
+        "data": {
+          "type": "slates",
+          "id": "BDFD57D8-1000-0000-0000BA29"
+        }
+      },
+      "meta_permissions": {
+        "data": {
+          "type": "meta_permissions",
+          "id": "C0532129-1000-0000-0000A2D0"
+        }
+      },
+      "documents": {
+        "data": [
+          {
+            "type": "documents",
+            "id": "63FB205D-4000-0000-000021F6"
+          }
+        ]
+      }
+    }
+  },
+  "included": [
+    {
+      "type": "users",
+      "id": "3B777F50-0000-0000-00009BC6",
+      "attributes": {
+        "email": "khaniukov.rostyslav@pdffiller.team",
+        "username": "khaniukov.rostyslav",
+        "first_name": "Rost",
+        "last_name": "Khaniukov",
+        "status": "ACTIVE",
+        "is_system": 0,
+        "auto_generated": 0,
+        "created_at": "2019-01-18 12:09:47",
+        "updated_at": "2019-08-07 06:48:11"
+      },
+      "relationships": {
+        "organizations": {
+          "data": [
+            {
+              "type": "organizations",
+              "id": "7D07D610-0000-0000-0000D981"
+            },
+            {
+              "type": "organizations",
+              "id": "DAB1BD4D-0000-0000-0000D981"
+            },
+            {
+              "type": "organizations",
+              "id": "1624AA00-0000-0000-0000D981"
+            },
+            {
+              "type": "organizations",
+              "id": "A28C9530-0000-0000-0000D981"
+            },
+            {
+              "type": "organizations",
+              "id": "29AE6810-0000-0000-0000D981"
+            },
+            {
+              "type": "organizations",
+              "id": "4AB75901-1000-0000-0000D981"
+            },
+            {
+              "type": "organizations",
+              "id": "0A5D8C00-0000-0000-0000D981"
+            },
+            {
+              "type": "organizations",
+              "id": "3B4FE821-0000-0000-0000D981"
+            },
+            {
+              "type": "organizations",
+              "id": "87C59810-0000-0000-0000D981"
+            },
+            {
+              "type": "organizations",
+              "id": "0BA9BC00-0000-0000-0000D981"
+            },
+            {
+              "type": "organizations",
+              "id": "7A037661-0000-0000-0000D981"
+            },
+            {
+              "type": "organizations",
+              "id": "5CB6D810-0000-0000-0000D981"
+            },
+            {
+              "type": "organizations",
+              "id": "AEE8CF00-0000-0000-0000D981"
+            },
+            {
+              "type": "organizations",
+              "id": "249B4861-0000-0000-0000D981"
+            },
+            {
+              "type": "organizations",
+              "id": "F9885910-0000-0000-0000D981"
+            },
+            {
+              "type": "organizations",
+              "id": "2AAA2110-0000-0000-0000D981"
+            },
+            {
+              "type": "organizations",
+              "id": "B418D368-0000-0000-0000D981"
+            },
+            {
+              "type": "organizations",
+              "id": "55A18A10-0000-0000-0000D981"
+            },
+            {
+              "type": "organizations",
+              "id": "E4875610-0000-0000-0000D981"
+            },
+            {
+              "type": "organizations",
+              "id": "7696FAAB-0000-0000-0000D981"
+            },
+            {
+              "type": "organizations",
+              "id": "9A296E20-0000-0000-0000D981"
+            }
+          ]
+        },
+        "profile": {
+          "data": {
+            "type": "profile",
+            "id": "B2CA7F50-0000-0000-0000AEEC"
+          }
+        },
+        "settings": {
+          "data": {
+            "type": "user_settings",
+            "id": "F3847F50-0000-0000-0000D045"
+          }
+        }
+      },
+      "meta": {
+        "source": ""
+      },
+      "included": [
+        {
+          "type": "profile",
+          "id": "B2CA7F50-0000-0000-0000AEEC",
+          "attributes": {
+            "phone_number": "",
+            "fax_number": "",
+            "password_modified_at": "2019-01-18 12:11:35",
+            "created_at": "2019-01-18 12:10:35",
+            "country": null,
+            "state": null,
+            "city": "",
+            "zip": "",
+            "position": "",
+            "skype": null,
+            "zoom": null,
+            "address_line_1": "",
+            "address_line_2": "",
+            "avatar": "https:\/\/cdn.airslate-stage.xyz\/user\/c201f1cb557e4cedab57f47b1c886a0a.png"
+          },
+          "relationships": {
+            "user": {
+              "data": {
+                "type": "users",
+                "id": "3B777F50-0000-0000-00009BC6"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "profile",
+      "id": "B2CA7F50-0000-0000-0000AEEC",
+      "attributes": {
+        "phone_number": "",
+        "fax_number": "",
+        "password_modified_at": "2019-01-18 12:11:35",
+        "created_at": "2019-01-18 12:10:35",
+        "country": null,
+        "state": null,
+        "city": "",
+        "zip": "",
+        "position": "",
+        "skype": null,
+        "zoom": null,
+        "address_line_1": "",
+        "address_line_2": "",
+        "avatar": "https:\/\/cdn.airslate-stage.xyz\/user\/c201f1cb557e4cedab57f47b1c886a0a.png"
+      },
+      "relationships": {
+        "user": {
+          "data": {
+            "type": "users",
+            "id": "3B777F50-0000-0000-00009BC6"
+          }
+        }
+      }
+    },
+    {
+      "type": "documents",
+      "id": "63FB205D-4000-0000-000021F6",
+      "attributes": {
+        "name": "Admin email 2",
+        "status": "DRAFT",
+        "type": "PDF",
+        "editor_type": "PDF",
+        "version": 1,
+        "is_filled": true,
+        "processing_status": "COMPLETED",
+        "properties": [],
+        "created_at": "2019-11-15 14:15:01",
+        "updated_at": "2019-11-15 14:15:01"
+      },
+      "relationships": {
+        "author": {
+          "data": {
+            "type": "users",
+            "id": "3B777F50-0000-0000-00009BC6"
+          }
+        },
+        "parent": {
+          "data": {
+            "type": "documents",
+            "id": "888043AC-4000-0000-000021F6"
+          }
+        },
+        "pages_file": {
+          "data": null
+        },
+        "attributes_file": {
+          "data": null
+        },
+        "content_file": {
+          "data": null
+        },
+        "fields_file": {
+          "data": {
+            "type": "files",
+            "id": "705EF5B2-2100-0000-000045B9"
+          }
+        },
+        "roles_file": {
+          "data": null
+        },
+        "comments_file": {
+          "data": null
+        },
+        "original_file": {
+          "data": {
+            "type": "files",
+            "id": "FA9BD5B2-2100-0000-000045B9"
+          }
+        },
+        "image_file": {
+          "data": null
+        },
+        "pdf_file": {
+          "data": {
+            "type": "files",
+            "id": "EDDDE5B2-2100-0000-000045B9"
+          }
+        },
+        "doc_gen_content_file": {
+          "data": null
+        },
+        "doc_gen_fields_file": {
+          "data": null
+        },
+        "final_pdf_file": {
+          "data": null
+        }
+      },
+      "meta": {
+        "pdf_file_url": "https:\/\/api.airslate-stage.xyz\/v1\/download\/EDDDE5B2-2100-0000-000045B9?expires=1574413818&signature=1d93b141eb135044cf1241eb745db155",
+        "fillable_fields_count": 1,
+        "num_pages": 1,
+        "num_visible_pages": 1
+      }
+    }
+  ]
+}

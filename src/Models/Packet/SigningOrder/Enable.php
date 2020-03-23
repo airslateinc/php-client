@@ -11,21 +11,24 @@ class Enable extends AbstractModel
 {
     /**
      * @param string $role
-     * @param string $email
+     * @param string|null $email
      * @param int $order
      * @param InviteEmailAddition $emailAddition
      * @return void
      */
-    public function enable(string $role, string $email, int $order, ?InviteEmailAddition $emailAddition = null): void
+    public function enable(string $role, ?string $email, int $order, ?InviteEmailAddition $emailAddition = null): void
     {
         $payload = [
             'type' => 'packet_signing_order',
             'attributes' => [
                 'role' => $role,
-                'email' => $email,
                 'order' => $order,
             ],
         ];
+
+        if (!empty($email)) {
+            $payload['attributes']['email'] = $email;
+        }
 
         if ($emailAddition !== null) {
             $payload['relationships'][InviteEmailAddition::RELATIONSHIP_KEY] = [
@@ -62,13 +65,21 @@ class Enable extends AbstractModel
     private function setInviteEmailAddition(InviteEmailAddition $emailAddition): void
     {
         if (array_search($emailAddition->getId(), array_column($this->included, 'id')) === false) {
+            $attributes = [
+                'subject' => $emailAddition->getSubject(),
+                'text' => $emailAddition->getText(),
+            ];
+            if ($emailAddition->getCustomPreheader() !== null) {
+                $attributes['custom_preheader'] = $emailAddition->getCustomPreheader();
+            }
+
+            if ($emailAddition->getCustomTitle() !== null) {
+                $attributes['custom_title'] = $emailAddition->getCustomTitle();
+            }
             $this->included[] = [
                 'id' => $emailAddition->getId(),
                 'type' => EntityType::INVITE_EMAIL_ADDITION,
-                'attributes' => [
-                    'subject' => $emailAddition->getSubject(),
-                    'text' => $emailAddition->getText(),
-                ]
+                'attributes' => $attributes
             ];
         }
     }

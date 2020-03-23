@@ -16,6 +16,10 @@ use GuzzleHttp\RequestOptions;
  */
 class UsersService extends AbstractService
 {
+    public function organizations(): OrganizationsService
+    {
+        return new OrganizationsService($this->httpClient);
+    }
     /**
      * @param string $organizationId
      * @return Organization
@@ -49,15 +53,10 @@ class UsersService extends AbstractService
      * Return one user.
      *
      * @param string $userId
-     * @param null|string $deprecatedUserId for back compatibility
      * @return User
-     * @throws \Exception
      */
-    public function one(string $userId, ?string $deprecatedUserId = null): User
+    public function one(string $userId): User
     {
-        if ($deprecatedUserId !== null) {
-            $userId = $deprecatedUserId;
-        }
         $url = $this->resolveEndpoint('/users/' . $userId);
         $response = $this->httpClient->get($url);
 

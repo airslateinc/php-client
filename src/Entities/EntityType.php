@@ -19,7 +19,9 @@ interface EntityType
     public const PACKET_REVISION = 'packet_revisions';
     public const PACKET_REVISION_DOCUMENT = 'packet_revision_documents';
     public const PACKET_REVISION_LINK = 'packet_revision_links';
+    public const PACKET_ROLES = 'packet_roles';
     public const PERMISSION = 'permissions';
+    public const META_PERMISSION = 'meta_permissions';
     public const DOCUMENT = 'documents';
     public const DOCUMENT_ATTACHMENT = 'document_attachments';
     public const DOCUMENT_PERMISSION = 'document_permissions';
@@ -35,6 +37,7 @@ interface EntityType
     public const PACKET = 'packets';
     public const SLATE = 'slates';
     public const SLATE_ADDON = 'slate_addons';
+    public const SLATE_ADDON_FILE = 'slate_addon_files';
     public const SLATE_LINKS = 'slate_links';
     public const SLATE_INVITE = 'slate_invites';
     public const SLATE_DOCUMENT = 'slate_documents';
@@ -45,6 +48,8 @@ interface EntityType
     public const EXPORT = 'export';
     public const EVENT = 'events';
     public const INVITE_EMAIL_ADDITION = 'invite_email_additions';
+    public const SLATE_ADDON_LOG = 'slate_addon_logs';
+    public const LOOKUP_ORGANIZATION = 'lookup-organizations';
     public const SLATE_ADDON_INTEGRATION = 'slate_addon_integrations';
     public const PACKET_SIGNING_ORDER = 'packet_signing_order';
     public const FLOW_TAG = 'flow_tags';

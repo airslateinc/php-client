@@ -1,10 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AirSlate\ApiClient\Entities\Addons;
 
 use AirSlate\ApiClient\Entities\BaseEntity;
 use AirSlate\ApiClient\Entities\EntityType;
 
+/**
+ * @deprecated
+ */
 class AddonFile extends BaseEntity
 {
     /**

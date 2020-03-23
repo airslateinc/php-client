@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Models\Template;
@@ -31,7 +32,7 @@ class TemplateDocument extends AbstractModel
     public function toArray(): array
     {
         return [
-            'data' => $this->data
+            'data' => $this->data,
         ];
     }
 }

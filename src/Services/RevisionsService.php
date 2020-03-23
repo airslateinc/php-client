@@ -1,32 +1,36 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Packets\RevisionDocument;
 use AirSlate\ApiClient\Entities\Packets\RevisionLinks;
+use AirSlate\ApiClient\Exceptions\DomainException;
+use AirSlate\ApiClient\Exceptions\MissingDataException;
+use AirSlate\ApiClient\Exceptions\TypeMismatchException;
 use AirSlate\ApiClient\Models\Revision\Create;
 use AirSlate\ApiClient\Models\RevisionDocument\BulkUpdate;
-use GuzzleHttp\RequestOptions;
 use AirSlate\ApiClient\Entities\Packets\Revision;
+use Generator;
+use GuzzleHttp\RequestOptions;
+use InvalidArgumentException;
 
 class RevisionsService extends AbstractService
 {
-    /** @var string */
-    private $slateId;
-
-    /** @var string */
-    private $packetId;
-
     /**
-     * @param $revisionId
+     * @param string $flowUid
+     * @param string $packetUid
+     * @param string $revisionUid
      * @return RevisionLinks
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
      */
-    public function links($revisionId): RevisionLinks
+    public function links(string $flowUid, string $packetUid, string $revisionUid): RevisionLinks
     {
-        $url = $this->resolveEndpoint(
-            '/slates/' . $this->slateId . '/packets/' . $this->packetId . '/revisions/' . $revisionId . '/links'
-        );
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/revisions/{$revisionUid}/links");
 
         $response = $this->httpClient->get($url);
 
@@ -35,63 +39,73 @@ class RevisionsService extends AbstractService
         return RevisionLinks::createFromOne($content);
     }
 
-    public function getDocuments(string $revisionId)
+    /**
+     * @deprecated
+     * @see PacketsService::revisions()->with('documents')->get()
+     *
+     * @param string $flowUid
+     * @param string $packetUid
+     * @param string $revisionUid
+     * @return RevisionDocument[]
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
+     */
+    public function getDocuments(string $flowUid, string $packetUid, string $revisionUid): array
     {
-        $url = $this->resolveEndpoint(
-            '/flows/' . $this->slateId . '/packets/' . $this->packetId . '/revisions/' . $revisionId . '/documents'
-        );
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/revisions/{$revisionUid}/documents");
 
         $response = $this->httpClient->get($url);
+
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return RevisionDocument::createFromCollection($content);
     }
 
-    public function updateDocuments(string $revisionId, BulkUpdate $revisionDocuments)
-    {
-        $url = $this->resolveEndpoint(
-            '/flows/' . $this->slateId . '/packets/' . $this->packetId . '/revisions/' . $revisionId . '/documents'
-        );
+    /**
+     * @deprecated
+     * Endpoint updates attribute 'hidden' of document. This logic will be removed.
+     *
+     * @param string $flowUid
+     * @param string $packetUid
+     * @param string $revisionUid
+     * @param BulkUpdate $revisionDocuments
+     * @return array
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
+     */
+    public function updateDocuments(
+        string $flowUid,
+        string $packetUid,
+        string $revisionUid,
+        BulkUpdate $revisionDocuments
+    ): array {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/revisions/{$revisionUid}/documents");
 
         $response = $this->httpClient->patch($url, [
             RequestOptions::JSON => $revisionDocuments->toArray(),
         ]);
+
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return RevisionDocument::createFromCollection($content);
     }
 
     /**
-     * @param string $slateId
-     *
-     * @return RevisionsService
-     */
-    public function setSlateId($slateId): RevisionsService
-    {
-        $this->slateId = $slateId;
-
-        return $this;
-    }
-
-    /**
-     * @param string $packetId
-     *
-     * @return RevisionsService
-     */
-    public function setPacketId($packetId): RevisionsService
-    {
-        $this->packetId = $packetId;
-
-        return $this;
-    }
-
-    /**
+     * @param string $flowUid
+     * @param string $packetUid
      * @return Revision[]
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
      */
-    public function collection(): array
+    public function collection(string $flowUid, string $packetUid): array
     {
-        $url = $this->resolveEndpoint('/flows/' . $this->slateId . '/packets/' . $this->packetId . '/revisions');
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/revisions");
 
         $response = $this->httpClient->get($url);
 
@@ -101,13 +115,50 @@ class RevisionsService extends AbstractService
     }
 
     /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @return Generator|Revision[]
+     */
+    public function collectionIterator(string $flowUid, string $packetUid): Generator
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/revisions");
+        yield from $this->pagination()->resolve($url, Revision::class);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @param string $revisionUid
+     * @return Revision
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
+     */
+    public function get(string $flowUid, string $packetUid, string $revisionUid): Revision
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/revisions/{$revisionUid}");
+
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Revision::createFromOne($content);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
      * @param Create $revision
      * @return Revision
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws MissingDataException
+     * @throws TypeMismatchException
+     * @throws DomainException
      */
-    public function create(Create $revision): Revision
+    public function create(string $flowUid, string $packetUid, Create $revision): Revision
     {
-        $url = $this->resolveEndpoint('/flows/' . $this->slateId . '/packets/' . $this->packetId . '/revisions');
+        $url = $this->resolveEndpoint('/flows/' . $flowUid . '/packets/' . $packetUid . '/revisions');
 
         $response = $this->httpClient->post($url, [
             RequestOptions::JSON => $revision->toArray(),

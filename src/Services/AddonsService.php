@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AirSlate\ApiClient\Services;
 
-use AirSlate\ApiClient\Entities\Addon;
+use Generator;
 use GuzzleHttp\RequestOptions;
+use AirSlate\ApiClient\Entities\Addon;
 
 class AddonsService extends AbstractService
 {
@@ -67,6 +70,25 @@ class AddonsService extends AbstractService
     }
 
     /**
+     * @return Generator|Addon[]
+     */
+    public function collectionIterator(): Generator
+    {
+        $url = $this->resolveEndpoint('/addons');
+        yield from $this->pagination()->resolve($url, Addon::class);
+    }
+
+    /**
+     * @deprecated
+     * @see SlateAddonFileService
+     * @return AddonFileService
+     */
+    public function addonFiles(): AddonFileService
+    {
+        return new AddonFileService($this->httpClient);
+    }
+
+    /**
      * @return OrganizationAddonsService
      */
     public function organizationAddons(): OrganizationAddonsService
@@ -80,14 +102,6 @@ class AddonsService extends AbstractService
     public function slateAddons(): SlateAddonsService
     {
         return new SlateAddonsService($this->httpClient);
-    }
-    
-    /**
-     * @return AddonFileService
-     */
-    public function addonFiles(): AddonFileService
-    {
-        return new AddonFileService($this->httpClient);
     }
     
     /**

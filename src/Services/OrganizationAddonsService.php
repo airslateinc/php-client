@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Addons\OrganizationAddon;
+use AirSlate\ApiClient\Entities\Template;
 use AirSlate\ApiClient\Models\OrganizationAddon\Create as CreateOrganizationAddon;
+use Generator;
 use GuzzleHttp\RequestOptions;
 
 class OrganizationAddonsService extends AbstractService
@@ -68,5 +72,14 @@ class OrganizationAddonsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return OrganizationAddon::createFromCollection($content);
+    }
+
+    /**
+     * @return Generator|OrganizationAddon[]
+     */
+    public function collectionIterator(): Generator
+    {
+        $url = $this->resolveEndpoint('/organization-addons');
+        yield from $this->pagination()->resolve($url, Template::class);
     }
 }

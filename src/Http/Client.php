@@ -3,6 +3,7 @@
 namespace AirSlate\ApiClient\Http;
 
 use AirSlate\ApiClient\Exceptions\DomainException;
+use Exception;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\RequestOptions;
 
@@ -13,30 +14,33 @@ use GuzzleHttp\RequestOptions;
 class Client extends \GuzzleHttp\Client
 {
     /**
-     * @var string
+     * @var string|null
      */
     private $include;
     /**
-     * @var array
+     * @var array|null
      */
     private $filter;
-    
     /**
-     * @var array
+     * @var array|null
      */
     private $queryParams;
+    /**
+     * @var string|null
+     */
+    private $bearerToken;
 
     /**
      * @inheritdoc
-     * @throws \AirSlate\ApiClient\Exceptions\DomainException
+     * @throws DomainException
      */
     public function request($method, $uri = '', array $options = [])
     {
         try {
             $resolvedOptions = $this->resolveOptions($options);
-            
+
             $this->clearOptions();
-            
+
             $response = parent::request($method, $uri, $resolvedOptions);
         } catch (RequestException $exception) {
             $code = $exception->getCode();
@@ -44,7 +48,7 @@ class Client extends \GuzzleHttp\Client
                 $code = $exception->getResponse()->getStatusCode();
             }
             throw new DomainException($exception->getMessage(), $code, $exception);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             throw new DomainException($exception->getMessage(), 0, $exception);
         }
 
@@ -54,7 +58,7 @@ class Client extends \GuzzleHttp\Client
     /**
      * @param string|array $include
      * @return Client
-     * @throws \Exception
+     * @throws Exception
      */
     public function with($include): Client
     {
@@ -90,7 +94,7 @@ class Client extends \GuzzleHttp\Client
 
         return $this;
     }
-    
+
     /**
      * @param string $key
      * @param $values
@@ -101,9 +105,19 @@ class Client extends \GuzzleHttp\Client
         if (\is_array($values)) {
             $values = implode(',', $values);
         }
-        
         $this->queryParams[$key] = $values;
-        
+
+        return $this;
+    }
+
+    /**
+     * @param string $token
+     * @return Client
+     */
+    public function authToken(string $token): Client
+    {
+        $this->bearerToken = $token;
+
         return $this;
     }
 
@@ -124,14 +138,21 @@ class Client extends \GuzzleHttp\Client
                 $options[RequestOptions::QUERY][$param] = $value;
             }
         }
+        if (null !== $this->bearerToken) {
+            $options[RequestOptions::HEADERS]['Authorization'] = "Bearer {$this->bearerToken}";
+        }
 
         return $options;
     }
-    
+
+    /**
+     * @return void
+     */
     private function clearOptions(): void
     {
         $this->include = null;
         $this->filter = null;
         $this->queryParams = null;
+        $this->bearerToken = null;
     }
 }
