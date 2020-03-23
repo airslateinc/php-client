@@ -50,4 +50,7 @@ interface EntityType
     public const INVITE_EMAIL_ADDITION = 'invite_email_additions';
     public const SLATE_ADDON_LOG = 'slate_addon_logs';
     public const LOOKUP_ORGANIZATION = 'lookup-organizations';
+    public const SLATE_ADDON_INTEGRATION = 'slate_addon_integrations';
+    public const PACKET_SIGNING_ORDER = 'packet_signing_order';
+    public const FLOW_TAG = 'flow_tags';
 }

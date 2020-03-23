@@ -8,6 +8,7 @@ use AirSlate\ApiClient\Entities\DocumentRole;
 use Exception;
 use AirSlate\ApiClient\Entities\User;
 use AirSlate\ApiClient\Entities\BaseEntity;
+use AirSlate\ApiClient\Entities\EntityType;
 
 /**
  * Class PacketSigningOrder
@@ -28,7 +29,7 @@ class PacketSigningOrder extends BaseEntity
     /**
      * @var string
      */
-    protected $type = 'packet_signing_order';
+    protected $type = EntityType::PACKET_SIGNING_ORDER;
 
     /**
      * @return User|BaseEntity

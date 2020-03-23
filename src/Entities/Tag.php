@@ -17,5 +17,5 @@ class Tag extends BaseEntity
     /**
      * @var string
      */
-    protected $type = 'flow_tags';
+    protected $type = EntityType::FLOW_TAG;
 }
