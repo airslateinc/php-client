@@ -111,4 +111,12 @@ class AddonsService extends AbstractService
     {
         return new AddonIntegrationsService($this->httpClient);
     }
+
+    /**
+     * @return SlateAddonIntegrationsService
+     */
+    public function slateAddonIntegrations(): SlateAddonIntegrationsService
+    {
+        return new SlateAddonIntegrationsService($this->httpClient);
+    }
 }
