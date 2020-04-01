@@ -16,6 +16,7 @@ use AirSlate\ApiClient\Entities\EntityType;
  * @property string $created_at
  * @property string $updated_at
  * @property string $sender_uid
+ * @property int $is_author
  */
 class PacketSend extends BaseEntity
 {
