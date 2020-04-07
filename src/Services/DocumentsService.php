@@ -8,12 +8,14 @@ use AirSlate\ApiClient\DTO\UpdateDocumentFieldsDTO;
 use AirSlate\ApiClient\Entities\Document;
 use AirSlate\ApiClient\Entities\DocumentAttachment;
 use AirSlate\ApiClient\Entities\DocumentPermissions;
+use AirSlate\ApiClient\Entities\EditorOptions;
 use AirSlate\ApiClient\Entities\Field;
 use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Models\Document\AddAttachments;
 use AirSlate\ApiClient\Models\Document\AddDocumentAttachments;
 use AirSlate\ApiClient\Models\Document\Create as CreateModel;
 use AirSlate\ApiClient\Models\Document\DocumentEvent;
+use AirSlate\ApiClient\Models\Document\EditorOptionsUpdate;
 use AirSlate\ApiClient\Models\Document\Event;
 use AirSlate\ApiClient\Models\Document\UnlockPdf;
 use AirSlate\ApiClient\Models\Document\Update as UpdateModel;
@@ -448,6 +450,40 @@ class DocumentsService extends AbstractService
         $model = DocumentPermissions::createFromOne($content);
 
         return $model->hasPermissions() ? $model : null;
+    }
+
+    /**
+     * @param string $documentId
+     * @return EditorOptions|null
+     * @throws Exception
+     */
+    public function editorOptions(string $documentId): ?EditorOptions
+    {
+        $url = $this->resolveEndpoint("/documents/$documentId/editor-options");
+
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return EditorOptions::createFromOne($content);
+    }
+
+    /**
+     * @param string $documentUid
+     * @param EditorOptionsUpdate $editorOptions
+     * @return EditorOptions
+     */
+    public function updateEditorOptions(string $documentUid, EditorOptionsUpdate $editorOptions): EditorOptions
+    {
+        $url = $this->resolveEndpoint("/documents/$documentUid/editor-options");
+
+        $response = $this->httpClient->patch($url, [
+            RequestOptions::JSON => $editorOptions->toArray(),
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return EditorOptions::createFromOne($content);
     }
 
     /**
