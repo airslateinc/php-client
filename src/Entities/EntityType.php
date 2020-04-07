@@ -25,6 +25,7 @@ interface EntityType
     public const DOCUMENT = 'documents';
     public const DOCUMENT_ATTACHMENT = 'document_attachments';
     public const DOCUMENT_PERMISSION = 'document_permissions';
+    public const EDITOR_OPTIONS = 'editor_options';
     public const DOCUMENT_ROLE = 'document_roles';
     public const DICTIONARY = 'dictionary';
     public const FILE = 'files';
