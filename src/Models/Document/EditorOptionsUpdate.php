@@ -62,7 +62,7 @@ class EditorOptionsUpdate extends AbstractModel
                     'editor_options' => $this->editorOptions,
                 ],
                 'relationships' => [
-                    'document' => [
+                    'documents' => [
                         'data' => [
                             'id' => $this->documentUid,
                             'type' => 'documents'
