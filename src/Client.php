@@ -89,6 +89,18 @@ class Client
     private static $instances;
 
     /**
+     * Client ID
+     * @var string|null
+     */
+    private $clientId = '';
+
+    /**
+     * Client Secret
+     * @var string|null
+     */
+    private $clientSecret = '';
+
+    /**
      * Client constructor.
      * @param string $baseUri
      * @param array $config
@@ -109,12 +121,17 @@ class Client
      */
     public function configureClient($baseUri, array $config = []): HttpClient
     {
+        $this->clientId = $config['client_id'] ?? null;
+        $this->clientSecret = $config['client_secret'] ?? null;
+
         $httpClient = new HttpClient([
             'base_uri' => $this->prepareBaserUri($baseUri),
             'headers' => $this->prepareHeaders($config),
             'connect_timeout' => $config['connectTimeout'] ?? 30,
             'timeout' => $config['requestTimeout'] ?? 30,
-            'handler' => $config['handler'] ?? null
+            'handler' => $config['handler'] ?? null,
+            'client_id' => $this->clientId,
+            'client_secret' => $this->clientSecret,
         ]);
 
         return $httpClient;

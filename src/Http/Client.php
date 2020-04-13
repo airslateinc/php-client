@@ -31,6 +31,35 @@ class Client extends \GuzzleHttp\Client
     private $bearerToken;
 
     /**
+     * @var string|null
+     */
+    private $clientId = '';
+
+    /**
+     * @var string|null
+     */
+    private $clientSecret = '';
+
+    /**
+     * @param array $config
+     */
+    public function __construct(array $config = [])
+    {
+        $this->configure($config);
+
+        parent::__construct($config);
+    }
+
+    /**
+     * @param array $config
+     */
+    private function configure(array $config): void
+    {
+        $this->clientId = $config['client_id'] ?? null;
+        $this->clientSecret = $config['client_secret'] ?? null;
+    }
+
+    /**
      * @inheritdoc
      * @throws DomainException
      */
@@ -154,5 +183,25 @@ class Client extends \GuzzleHttp\Client
         $this->filter = null;
         $this->queryParams = null;
         $this->bearerToken = null;
+    }
+
+    /**
+     * Get Client ID.
+     *
+     * @return string|null
+     */
+    public function getClientId(): ?string
+    {
+        return $this->clientId;
+    }
+
+    /**
+     * Get Client Secret.
+     *
+     * @return string|null
+     */
+    public function getClientSecret(): ?string
+    {
+        return $this->clientSecret;
     }
 }

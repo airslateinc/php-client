@@ -6,7 +6,11 @@ namespace AirSlate\ApiClient\Services;
 use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Entities\Organization;
 use AirSlate\ApiClient\Entities\OrganizationUser;
+use AirSlate\ApiClient\Entities\Token;
 use AirSlate\ApiClient\Entities\User;
+use AirSlate\ApiClient\Exceptions\DomainException;
+use AirSlate\ApiClient\Exceptions\Users\UnauthorizedClient;
+use BadMethodCallException;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\RequestOptions;
 
@@ -33,6 +37,69 @@ class UsersService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Organization::createFromOne($content);
+    }
+
+    /**
+     * @param string $email
+     * @param string $password
+     * @param string $clientToken
+     * @return Token
+     * @throws UnauthorizedClient
+     *
+     * @see UsersService::authenticate() to get client token
+     */
+    public function signIn(string $email, string $password, string $clientToken): Token
+    {
+        $url = $this->resolveEndpoint('/auth/sign-in');
+
+        $this->authToken($clientToken);
+        try {
+            $response = $this->httpClient->post($url, [
+                RequestOptions::JSON => [
+                    'username' => $email,
+                    'password' => $password,
+                ]
+            ]);
+
+            $content = \GuzzleHttp\json_decode($response->getBody(), true);
+        } catch (DomainException $exception) {
+            if ($exception->getCode() === 401) {
+                throw new UnauthorizedClient();
+            }
+
+            throw $exception;
+        }
+
+        return Token::createFromMeta($content);
+    }
+
+    /**
+     * @return Token
+     * @throws BadMethodCallException
+     */
+    public function authenticate(): Token
+    {
+        $url = $this->resolveEndpoint('/auth/token');
+
+        $clientId = $this->httpClient->getClientId();
+        $clientSecret = $this->httpClient->getClientSecret();
+
+        if (empty($clientId) || empty($clientSecret)) {
+            throw new BadMethodCallException('Client credentials attributes are required');
+        }
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => [
+                'meta' => [
+                    'grant_type' => 'client_credentials',
+                    'client_id' => $clientId,
+                    'client_secret' => $clientSecret,
+                ],
+            ]
+        ]);
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Token::createFromMeta($content);
     }
 
     /**

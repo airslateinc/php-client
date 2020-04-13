@@ -45,7 +45,9 @@ class ApiClientServiceProvider extends ServiceProvider
                 [
                     'token' => $request->bearerToken(),
                     'requestId' => $request->header('X-Request-Id'),
-                    'headers' => []
+                    'headers' => [],
+                    'client_id' => $config->get('airslate-api.client_id'),
+                    'client_secret' => $config->get('airslate-api.client_secret'),
                 ]
             );
         });
