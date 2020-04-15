@@ -11,6 +11,7 @@ use AirSlate\ApiClient\Services\AddonsSmsService;
 use AirSlate\ApiClient\Services\DocumentsService;
 use AirSlate\ApiClient\Services\ExportService;
 use AirSlate\ApiClient\Services\FilesService;
+use AirSlate\ApiClient\Services\StorageFilesService;
 use AirSlate\ApiClient\Services\FlowsService;
 use AirSlate\ApiClient\Services\PacketRevisionsService;
 use AirSlate\ApiClient\Services\PermissionsService;
@@ -43,6 +44,10 @@ class Client
      * @var FilesService
      */
     private $filesService;
+    /**
+     * @var StorageFilesService
+     */
+    private $storageFilesService;
     /**
      * @var ExportService
      */
@@ -225,6 +230,18 @@ class Client
         }
 
         return $this->filesService;
+    }
+
+    /**
+     * @return StorageFilesService
+     */
+    public function storageFiles(): StorageFilesService
+    {
+        if (!$this->storageFilesService) {
+            $this->storageFilesService = new StorageFilesService($this->httpClient);
+        }
+
+        return $this->storageFilesService;
     }
 
     /**

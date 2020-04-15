@@ -29,6 +29,7 @@ interface EntityType
     public const DOCUMENT_ROLE = 'document_roles';
     public const DICTIONARY = 'dictionary';
     public const FILE = 'files';
+    public const STORAGE_FILE = 'storage_files';
     public const FLOW_ROLE = 'flow_roles';
     public const FLOW_ROLE_DOCUMENT = 'flow_role_documents';
     public const FLOW_ROLE_FIELD = 'flow_role_fields';
