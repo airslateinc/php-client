@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
@@ -6,6 +7,7 @@ namespace AirSlate\ApiClient\Services;
 use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Entities\Organization;
 use AirSlate\ApiClient\Entities\OrganizationUser;
+use AirSlate\ApiClient\Entities\ParticipantRole;
 use AirSlate\ApiClient\Entities\Token;
 use AirSlate\ApiClient\Entities\User;
 use AirSlate\ApiClient\Exceptions\DomainException;
@@ -24,6 +26,7 @@ class UsersService extends AbstractService
     {
         return new OrganizationsService($this->httpClient);
     }
+
     /**
      * @param string $organizationId
      * @return Organization
@@ -54,12 +57,15 @@ class UsersService extends AbstractService
 
         $this->authToken($clientToken);
         try {
-            $response = $this->httpClient->post($url, [
-                RequestOptions::JSON => [
-                    'username' => $email,
-                    'password' => $password,
+            $response = $this->httpClient->post(
+                $url,
+                [
+                    RequestOptions::JSON => [
+                        'username' => $email,
+                        'password' => $password,
+                    ]
                 ]
-            ]);
+            );
 
             $content = \GuzzleHttp\json_decode($response->getBody(), true);
         } catch (DomainException $exception) {
@@ -88,15 +94,18 @@ class UsersService extends AbstractService
             throw new BadMethodCallException('Client credentials attributes are required');
         }
 
-        $response = $this->httpClient->post($url, [
-            RequestOptions::JSON => [
-                'meta' => [
-                    'grant_type' => 'client_credentials',
-                    'client_id' => $clientId,
-                    'client_secret' => $clientSecret,
-                ],
+        $response = $this->httpClient->post(
+            $url,
+            [
+                RequestOptions::JSON => [
+                    'meta' => [
+                        'grant_type' => 'client_credentials',
+                        'client_id' => $clientId,
+                        'client_secret' => $clientSecret,
+                    ],
+                ]
             ]
-        ]);
+        );
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Token::createFromMeta($content);
@@ -175,16 +184,19 @@ class UsersService extends AbstractService
     public function invite(string $organization, array $emails): array
     {
         $url = $this->resolveEndpoint('/organizations/' . $organization . '/users/invite');
-        $response = $this->httpClient->post($url, [
-            RequestOptions::JSON => [
-                'data' => [
-                    'type' => EntityType::USER,
-                    'attributes' => [
-                        'emails' => $emails
+        $response = $this->httpClient->post(
+            $url,
+            [
+                RequestOptions::JSON => [
+                    'data' => [
+                        'type' => EntityType::USER,
+                        'attributes' => [
+                            'emails' => $emails
+                        ]
                     ]
                 ]
             ]
-        ]);
+        );
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
@@ -206,5 +218,39 @@ class UsersService extends AbstractService
         }
 
         return $response && $response->getStatusCode() === 204;
+    }
+
+    /**
+     * auth required
+     * @return ParticipantRole[]
+     */
+    public function getParticipantRoles(): array
+    {
+        $url = $this->resolveEndpoint('/participant-roles');
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return ParticipantRole::createFromCollection($content);
+    }
+
+    public function assignParticipantRoles(
+        string $userOrganizationUid,
+        string ...$participantRolesUids
+    ): void {
+        $data = [];
+        foreach ($participantRolesUids as $uid) {
+            $data[] = [
+                'type' => EntityType::PARTICIPANT_ROLES,
+                'id' => $uid,
+            ];
+        }
+        $url = $this->resolveEndpoint("/organization-users/{$userOrganizationUid}/roles");
+        $this->httpClient->patch(
+            $url,
+            [
+                RequestOptions::JSON => ['data' => $data]
+            ]
+        );
     }
 }

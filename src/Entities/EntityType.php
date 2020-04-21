@@ -56,4 +56,5 @@ interface EntityType
     public const PACKET_SIGNING_ORDER = 'packet_signing_order';
     public const FLOW_TAG = 'flow_tags';
     public const PLANS = 'plans';
+    public const PARTICIPANT_ROLES = 'participant_roles';
 }
