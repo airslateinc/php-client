@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
-use AirSlate\ApiClient\Entities\Plan;
+use AirSlate\ApiClient\Entities\Paywall\Plan;
 
 class PaywallService extends AbstractService
 {
