@@ -253,4 +253,20 @@ class UsersService extends AbstractService
             ]
         );
     }
+
+    public function changeOrganizationOwner(string $organizationUid, string $userUid): void
+    {
+        $url = $this->resolveEndpoint("/organizations/{$organizationUid}/relationships/owner");
+        $this->httpClient->patch(
+            $url,
+            [
+                RequestOptions::JSON => [
+                    'data' => [
+                        'type' => EntityType::USER,
+                        'id' => $userUid
+                    ]
+                ]
+            ]
+        );
+    }
 }
