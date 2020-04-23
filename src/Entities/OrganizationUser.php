@@ -15,4 +15,9 @@ class OrganizationUser extends BaseEntity
      * @var string $type
      */
     protected $type = EntityType::ORGANIZATION_USER;
+
+    public function user(): User
+    {
+        return $this->hasOne(User::class, 'user');
+    }
 }
