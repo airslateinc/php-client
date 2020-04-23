@@ -6,6 +6,8 @@ namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\File as FileEntity;
 use AirSlate\ApiClient\Models\File\Bulk as FileModel;
+use AirSlate\ApiClient\Models\File\FileRename;
+use Exception;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -19,7 +21,7 @@ class FilesService extends AbstractService
      *
      * @param FileModel $file
      * @return FileEntity[]
-     * @throws \Exception
+     * @throws Exception
      */
     public function bulk(FileModel $file): array
     {
@@ -43,6 +45,24 @@ class FilesService extends AbstractService
         $url = $this->resolveEndpoint("/files/{$fileUid}");
 
         $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return FileEntity::createFromOne($content);
+    }
+
+    /**
+     * @param string $fileUid
+     * @param FileRename $fileRename
+     * @return FileEntity
+     */
+    public function rename(string $fileUid, FileRename $fileRename): FileEntity
+    {
+        $url = $this->resolveEndpoint("/files/{$fileUid}/rename");
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $fileRename->toArray(),
+        ]);
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
