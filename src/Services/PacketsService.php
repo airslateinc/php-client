@@ -9,10 +9,14 @@ use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Entities\Packet;
 use AirSlate\ApiClient\Entities\Packets\PacketSend;
 use AirSlate\ApiClient\Entities\Packets\PacketSigningOrder;
+use AirSlate\ApiClient\Exceptions\DeleteRevisionException;
 use AirSlate\ApiClient\Exceptions\DomainException;
+use AirSlate\ApiClient\Exceptions\ForbiddenException;
 use AirSlate\ApiClient\Exceptions\MissingDataException;
 use AirSlate\ApiClient\Exceptions\Packets\UserHasNoAccessException;
 use AirSlate\ApiClient\Exceptions\TypeMismatchException;
+use AirSlate\ApiClient\Exceptions\UnauthorizedException as CustomUnauthorizedException;
+use AirSlate\ApiClient\Exceptions\UnprocessableEntity;
 use AirSlate\ApiClient\Models\Packet\ActivateOpenAsRole;
 use AirSlate\ApiClient\Models\Packet\Create;
 use AirSlate\ApiClient\Models\Packet\Lock;
@@ -393,7 +397,34 @@ class PacketsService extends AbstractService
     {
         $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}");
 
-        $response = $this->httpClient->delete($url);
+        try {
+            $response = $this->httpClient->delete($url);
+        } catch (\Throwable $e) {
+            switch ((int)$e->getCode()) {
+                case self::FORBIDDEN:
+                    throw new ForbiddenException(
+                        \sprintf(
+                            "You don't have permission for this endpoint %s with this method %s",
+                            $url,
+                            self::METHOD_DELETE
+                        )
+                    );
+                case self::UNPROCESSABLE_ENTITY:
+                    throw new UnprocessableEntity(
+                        \sprintf(
+                            "You data with request in endpoint %s with this method %s is incorrect",
+                            $url,
+                            self::METHOD_DELETE
+                        )
+                    );
+                case self::UNAUTHORIZED:
+                    throw new CustomUnauthorizedException(
+                        'You are unauthorized'
+                    );
+                default:
+                    throw new DeleteRevisionException();
+            }
+        }
 
         return $response && $response->getStatusCode() === 204;
     }

@@ -6,12 +6,17 @@ namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Packets\RevisionDocument;
 use AirSlate\ApiClient\Entities\Packets\RevisionLinks;
+use AirSlate\ApiClient\Exceptions\DeleteRevisionException;
 use AirSlate\ApiClient\Exceptions\DomainException;
+use AirSlate\ApiClient\Exceptions\ForbiddenException;
 use AirSlate\ApiClient\Exceptions\MissingDataException;
 use AirSlate\ApiClient\Exceptions\TypeMismatchException;
+use AirSlate\ApiClient\Exceptions\UnauthorizedException as CustomUnauthorizedException;
+use AirSlate\ApiClient\Exceptions\UnprocessableEntity;
 use AirSlate\ApiClient\Models\Revision\Create;
 use AirSlate\ApiClient\Models\RevisionDocument\BulkUpdate;
 use AirSlate\ApiClient\Entities\Packets\Revision;
+use Cassandra\Exception\UnauthorizedException;
 use Generator;
 use GuzzleHttp\RequestOptions;
 use InvalidArgumentException;

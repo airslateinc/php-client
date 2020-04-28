@@ -6,25 +6,30 @@ namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Http\Client;
 
-/**
- * Class UsersService
- * @package AirSlate\ApiClient\Services
- */
 abstract class AbstractService
 {
     /** @const string  */
-    public const API_VERSION = 'v1';
+    private const API_VERSION = 'v1';
 
     /** @const int */
     public const DEFAULT_CONCURRENCY = 10;
 
-    /**
-     * @var Client
-     */
+    /** @const int  */
+    protected const FORBIDDEN = 403;
+
+    /** @const int  */
+    protected const UNPROCESSABLE_ENTITY = 422;
+
+    /** @const int  */
+    protected const UNAUTHORIZED = 401;
+
+    /** @const string  */
+    protected const METHOD_DELETE = 'DELETE';
+
+    /** @var Client  */
     protected $httpClient;
-    /**
-     * @var string
-     */
+
+    /** @var string  */
     protected $apiVersion;
 
     /**
