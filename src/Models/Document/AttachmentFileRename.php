@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AirSlate\ApiClient\Models\File;
+namespace AirSlate\ApiClient\Models\Document;
 
 use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Models\AbstractModel;
@@ -10,10 +10,10 @@ use AirSlate\ApiClient\Models\AbstractModel;
 /**
  * @package AirSlate\ApiClient\Models\Document
  */
-class FileRename extends AbstractModel
+class AttachmentFileRename extends AbstractModel
 {
     /** @var string */
-    protected $type = EntityType::FILE;
+    protected $type = EntityType::DOCUMENT_ATTACHMENT;
 
     /** @var string */
     private $name;
