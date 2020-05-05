@@ -38,6 +38,11 @@ class Create extends AbstractModel
     private $editorType;
 
     /**
+     * @var bool
+     */
+    private $hideStamps;
+
+    /**
      * @param string $layer
      * @param string $id
      */
@@ -152,6 +157,9 @@ class Create extends AbstractModel
         if (!empty($this->editorType)) {
             $payload['data']['attributes']['editor_type'] = $this->editorType;
         }
+        if (!empty($this->hideStamps)) {
+            $payload['data']['attributes']['properties']['hide_stamps'] = $this->hideStamps;
+        }
 
         //meta
         if ($this->pagesCount != null) {
@@ -220,6 +228,17 @@ class Create extends AbstractModel
     public function setEditorType(string $editorType): Create
     {
         $this->editorType = $editorType;
+
+        return $this;
+    }
+
+    /**
+     * @param bool $hideStamps
+     * @return Create|static
+     */
+    public function setHideStamps(bool $hideStamps): Create
+    {
+        $this->hideStamps = $hideStamps;
 
         return $this;
     }
