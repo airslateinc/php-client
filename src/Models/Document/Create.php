@@ -38,7 +38,7 @@ class Create extends AbstractModel
     private $editorType;
 
     /**
-     * @var string
+     * @var bool
      */
     private $hideStamps;
 
@@ -233,10 +233,10 @@ class Create extends AbstractModel
     }
 
     /**
-     * @param string $hideStamps
+     * @param bool $hideStamps
      * @return Create|static
      */
-    public function setHideStamps(string $hideStamps): Create
+    public function setHideStamps(bool $hideStamps): Create
     {
         $this->hideStamps = $hideStamps;
 
