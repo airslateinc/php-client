@@ -234,7 +234,7 @@ class Create extends AbstractModel
 
     /**
      * @param string $hideStamps
-     * @return Create
+     * @return Create|static
      */
     public function setHideStamps(string $hideStamps): Create
     {
