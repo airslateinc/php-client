@@ -401,7 +401,7 @@ class DocumentsService extends AbstractService
     ): DocumentAttachment {
         $url = $this->resolveEndpoint("/documents/{$documentUid}/document-attachments/{$attachmentUid}/rename");
 
-        $response = $this->httpClient->post($url, [
+        $response = $this->httpClient->patch($url, [
             RequestOptions::JSON => $attachmentFileRename->toArray(),
         ]);
 
