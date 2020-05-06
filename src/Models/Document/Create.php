@@ -157,7 +157,7 @@ class Create extends AbstractModel
         if (!empty($this->editorType)) {
             $payload['data']['attributes']['editor_type'] = $this->editorType;
         }
-        if (!empty($this->hideStamps)) {
+        if (($this->hideStamps === true) || ($this->hideStamps === false)) {
             $payload['data']['attributes']['properties']['hide_stamps'] = $this->hideStamps;
         }
 
