@@ -36,15 +36,14 @@ class PacketRevisionsService extends AbstractService
     }
 
     /**
-     * @param string $slateId
-     * @param string $packetId
-     * @param string $revisionId
+     * @param string $flowUid
+     * @param string $packetUid
+     * @param string $revisionUid
      * @return PacketRevision
-     * @throws \Exception
      */
-    public function oneBySlateIdAndRevisionId(string $slateId, string $packetId, string $revisionId): PacketRevision
+    public function oneBySlateIdAndRevisionId(string $flowUid, string $packetUid, string $revisionUid): PacketRevision
     {
-        $url = $this->resolveEndpoint('flows/' . $slateId . '/packets/' . $packetId . '/revisions/' . $revisionId);
+        $url = $this->resolveEndpoint("flows/{$flowUid}/packets/{$packetUid}/revisions/{$revisionUid}");
 
         $response = $this->httpClient->get($url, [
             RequestOptions::QUERY  => [
@@ -58,19 +57,19 @@ class PacketRevisionsService extends AbstractService
     }
 
     /**
-     * @param string $slateId
-     * @param string $packetId
-     * @param string $revisionId
+     * @param string $flowUid
+     * @param string $packetUid
+     * @param string $revisionUid
      * @param Update $revisionUpdate
      * @return PacketRevision
      */
     public function update(
-        string $slateId,
-        string $packetId,
-        string $revisionId,
+        string $flowUid,
+        string $packetUid,
+        string $revisionUid,
         Update $revisionUpdate
     ): PacketRevision {
-        $url = $this->resolveEndpoint('flows/' . $slateId . '/packets/' . $packetId . '/revisions/' . $revisionId);
+        $url = $this->resolveEndpoint("flows/{$flowUid}/packets/{$packetUid}/revisions/{$revisionUid}");
 
         $response = $this->httpClient->patch($url, [
             RequestOptions::JSON => $revisionUpdate->toArray()
