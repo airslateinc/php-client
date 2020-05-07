@@ -6,6 +6,7 @@ namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\File as FileEntity;
 use AirSlate\ApiClient\Models\File\Bulk as FileModel;
+use Exception;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -19,7 +20,7 @@ class FilesService extends AbstractService
      *
      * @param FileModel $file
      * @return FileEntity[]
-     * @throws \Exception
+     * @throws Exception
      */
     public function bulk(FileModel $file): array
     {

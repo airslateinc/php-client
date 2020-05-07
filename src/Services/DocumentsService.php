@@ -13,6 +13,7 @@ use AirSlate\ApiClient\Entities\Field;
 use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Models\Document\AddAttachments;
 use AirSlate\ApiClient\Models\Document\AddDocumentAttachments;
+use AirSlate\ApiClient\Models\Document\AttachmentFileRename;
 use AirSlate\ApiClient\Models\Document\Create as CreateModel;
 use AirSlate\ApiClient\Models\Document\DocumentEvent;
 use AirSlate\ApiClient\Models\Document\EditorOptionsUpdate;
@@ -380,6 +381,28 @@ class DocumentsService extends AbstractService
 
         $response = $this->httpClient->post($url, [
             RequestOptions::JSON => $addDocumentAttachments->toArray()
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return DocumentAttachment::createFromOne($content);
+    }
+
+    /**
+     * @param string $documentUid
+     * @param string $attachmentUid
+     * @param AttachmentFileRename $attachmentFileRename
+     * @return DocumentAttachment
+     */
+    public function renameDocumentAttachment(
+        string $documentUid,
+        string $attachmentUid,
+        AttachmentFileRename $attachmentFileRename
+    ): DocumentAttachment {
+        $url = $this->resolveEndpoint("/documents/{$documentUid}/document-attachments/{$attachmentUid}/rename");
+
+        $response = $this->httpClient->patch($url, [
+            RequestOptions::JSON => $attachmentFileRename->toArray(),
         ]);
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
