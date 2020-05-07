@@ -468,7 +468,7 @@ class PacketsService extends AbstractService
 
     public function getEditableFieldsByRevisionDocument(string $documentUid)
     {
-        $url = $this->resolveEndpoint("/flows/packets/roles/documents/{$documentUid}");
+        $url = $this->resolveEndpoint("/flows/packets/roles/document/{$documentUid}");
 
         $response = $this->httpClient->get($url);
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
