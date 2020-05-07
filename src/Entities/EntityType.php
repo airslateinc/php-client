@@ -20,6 +20,7 @@ interface EntityType
     public const PACKET_REVISION_DOCUMENT = 'packet_revision_documents';
     public const PACKET_REVISION_LINK = 'packet_revision_links';
     public const PACKET_ROLES = 'packet_roles';
+    public const PACKET_ROLE_DOCUMENT = 'packet_role_documents';
     public const PERMISSION = 'permissions';
     public const META_PERMISSION = 'meta_permissions';
     public const DOCUMENT = 'documents';

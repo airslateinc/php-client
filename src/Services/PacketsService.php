@@ -9,6 +9,7 @@ use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Entities\Packet;
 use AirSlate\ApiClient\Entities\Packets\PacketSend;
 use AirSlate\ApiClient\Entities\Packets\PacketSigningOrder;
+use AirSlate\ApiClient\Entities\Packets\RoleDocument;
 use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Exceptions\MissingDataException;
 use AirSlate\ApiClient\Exceptions\Packets\UserHasNoAccessException;
@@ -463,5 +464,15 @@ class PacketsService extends AbstractService
         ]);
 
         return $response && $response->getStatusCode() === 200;
+    }
+
+    public function getEditableFieldsByRevisionDocument(string $documentUid)
+    {
+        $url = $this->resolveEndpoint("/flows/packets/roles/document/{$documentUid}");
+
+        $response = $this->httpClient->get($url);
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return RoleDocument::createFromOne($content) ;
     }
 }
