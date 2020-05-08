@@ -138,6 +138,28 @@ class Create extends AbstractModel
     }
 
     /**
+     * @param string $id
+     * @return Create
+     */
+    public function addRoles(string $id): Create
+    {
+        $this->addRelationshipLayer('roles_file', $id);
+
+        return $this;
+    }
+
+    /**
+     * @param string $id
+     * @return Create
+     */
+    public function addComments(string $id): Create
+    {
+        $this->addRelationshipLayer('comments_file', $id);
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function toArray(): array
