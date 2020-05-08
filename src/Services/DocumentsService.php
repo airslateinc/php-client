@@ -36,6 +36,9 @@ use Throwable;
  */
 class DocumentsService extends AbstractService
 {
+    /** @const int */
+    private const DOCUMENTS_IDS_CHUNK_SIZE = 15;
+
     /**
      * Create document
      *
@@ -121,6 +124,39 @@ class DocumentsService extends AbstractService
     {
         $url = $this->resolveEndpoint('/documents');
         return $this->getDocuments($url, $filter, $options);
+    }
+
+    /**
+     * @param array $documentIds
+     * @param int $concurrency
+     * @return array
+     */
+    public function collectionAsync(array $documentIds, int $concurrency = self::DEFAULT_CONCURRENCY): array
+    {
+        $results = [];
+        $requestPool = function () use ($documentIds) {
+            foreach (array_chunk($documentIds, self::DOCUMENTS_IDS_CHUNK_SIZE) as $idsChunk) {
+                $url = $url = $this->resolveEndpoint('/documents');
+
+                $httpClient = clone $this->httpClient;
+                $httpClient->addFilter('id', $idsChunk);
+
+                yield $httpClient->getAsync($url)->then(function (ResponseInterface $response) {
+                    $content = \GuzzleHttp\json_decode($response->getBody(), true);
+                    return Document::createFromCollection($content);
+                });
+            }
+        };
+
+        Promise\each_limit_all(
+            $requestPool(),
+            $concurrency,
+            function (array $result, string $documentId) use (&$results) {
+                $results = array_merge($results, $result);
+            }
+        )->wait();
+
+        return $results;
     }
 
     /**
