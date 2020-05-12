@@ -66,11 +66,7 @@ class Client extends \GuzzleHttp\Client
     public function request($method, $uri = '', array $options = [])
     {
         try {
-            $resolvedOptions = $this->resolveOptions($options);
-
-            $this->clearOptions();
-
-            $response = parent::request($method, $uri, $resolvedOptions);
+            $response = parent::request($method, $uri, $options);
         } catch (RequestException $exception) {
             $code = $exception->getCode();
             if ($exception->hasResponse()) {
@@ -82,6 +78,21 @@ class Client extends \GuzzleHttp\Client
         }
 
         return $response;
+    }
+
+    /**
+     * @param $method
+     * @param string $uri
+     * @param array $options
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function requestAsync($method, $uri = '', array $options = [])
+    {
+        $resolvedOptions = $this->resolveOptions($options);
+
+        $this->clearOptions();
+
+        return parent::requestAsync($method, $uri, $resolvedOptions);
     }
 
     /**
