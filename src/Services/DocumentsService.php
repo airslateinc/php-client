@@ -146,6 +146,8 @@ class DocumentsService extends AbstractService
                     return Document::createFromCollection($content);
                 });
             }
+
+            $this->httpClient->clearOptions();
         };
 
         Promise\each_limit_all(
