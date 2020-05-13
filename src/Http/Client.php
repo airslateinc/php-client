@@ -188,7 +188,7 @@ class Client extends \GuzzleHttp\Client
     /**
      * @return void
      */
-    private function clearOptions(): void
+    public function clearOptions(): void
     {
         $this->include = null;
         $this->filter = null;
