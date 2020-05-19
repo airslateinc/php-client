@@ -58,4 +58,5 @@ interface EntityType
     public const FLOW_TAG = 'flow_tags';
     public const PLANS = 'plans';
     public const PARTICIPANT_ROLES = 'participant_roles';
+    public const RESEND_PACKET_INVITE = 'resend_packet_invite';
 }
