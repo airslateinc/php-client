@@ -28,12 +28,17 @@ class PaginationResolver
      */
     public function resolve(string $url, string $entityClass): Generator
     {
+        $rawHttpClient = clone $this->httpClient;
+        $this->httpClient->clearOptions();
+
         $page = 0;
 
         do {
             $page++;
 
-            $response = $this->httpClient->addQueryParam('page', $page)->get($url);
+            $httpClient = clone $rawHttpClient;
+
+            $response = $httpClient->addQueryParam('page', $page)->get($url);
 
             $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
