@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AirSlate\ApiClient\Entities;
 
 /**
@@ -15,8 +17,6 @@ namespace AirSlate\ApiClient\Entities;
  */
 class Export extends BaseEntity
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $type = EntityType::EXPORT;
 }
