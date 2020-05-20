@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
-use AirSlate\ApiClient\Exceptions\DomainException;
+use AirSlate\ApiClient\Models\Document\ExportSms;
 use AirSlate\ApiClient\Models\Export\Create;
 use GuzzleHttp\RequestOptions;
 
@@ -48,6 +48,26 @@ class ExportService extends AbstractService
         $url = $this->resolveEndpoint("/export/$exportId");
 
         $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return $content;
+    }
+
+    /**
+     * Check the export status
+     *
+     * @param string $exportId
+     * @param ExportSms $exportSms
+     * @return array
+     */
+    public function exportSms(string $exportId, ExportSms $exportSms): array
+    {
+        $url = $this->resolveEndpoint("/export/$exportId/envelopes/sms");
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $exportSms->toArray(),
+        ]);
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
