@@ -10,13 +10,46 @@ use AirSlate\ApiClient\Models\ArrayableInterface;
 class ResendPacketInvite implements ArrayableInterface
 {
     /** @var string */
-    protected $email;
+    private $email;
 
     /** @var string */
     private $userUid;
 
     /** @var string */
     private $packetRoleUid;
+
+    /**
+     * @param string $email
+     * @return $this
+     */
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * @param string $userUid
+     * @return $this
+     */
+    public function setUserUid(string $userUid): self
+    {
+        $this->userUid = $userUid;
+
+        return $this;
+    }
+
+    /**
+     * @param string $packetRoleUid
+     * @return $this
+     */
+    public function setPacketRoleUid(string $packetRoleUid): self
+    {
+        $this->packetRoleUid = $packetRoleUid;
+
+        return $this;
+    }
 
     /**
      * @return array
@@ -52,38 +85,5 @@ class ResendPacketInvite implements ArrayableInterface
         return [
             'data' => $data
         ];
-    }
-
-    /**
-     * @param string $email
-     * @return $this
-     */
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * @param string $userUid
-     * @return $this
-     */
-    public function setUserUid(string $userUid): self
-    {
-        $this->userUid = $userUid;
-
-        return $this;
-    }
-
-    /**
-     * @param string $packetRoleUid
-     * @return $this
-     */
-    public function setPacketRoleUid(string $packetRoleUid): self
-    {
-        $this->packetRoleUid = $packetRoleUid;
-
-        return $this;
     }
 }
