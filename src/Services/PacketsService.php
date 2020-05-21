@@ -17,6 +17,7 @@ use AirSlate\ApiClient\Exceptions\TypeMismatchException;
 use AirSlate\ApiClient\Models\Packet\ActivateOpenAsRole;
 use AirSlate\ApiClient\Models\Packet\Create;
 use AirSlate\ApiClient\Models\Packet\Lock;
+use AirSlate\ApiClient\Models\Packet\ResendPacketInvite;
 use AirSlate\ApiClient\Models\Packet\Send\Create as CreatePacketSend;
 use AirSlate\ApiClient\Models\Packet\Send\Bulk as BulkPacketSend;
 use AirSlate\ApiClient\Models\Packet\UnassignRole;
@@ -160,6 +161,23 @@ class PacketsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return PacketSend::createFromCollection($content);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @param ResendPacketInvite $packetInvite
+     * @return bool
+     */
+    public function resendPacketInvite(string $flowUid, string $packetUid, ResendPacketInvite $packetInvite): bool
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/resend");
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $packetInvite->toArray(),
+        ]);
+
+        return $response && $response->getStatusCode() === 204;
     }
 
     /**
