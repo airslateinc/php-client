@@ -64,7 +64,7 @@ class ExportService extends AbstractService
      */
     public function exportSms(string $exportId, ExportSms $exportSms): EnvelopeSms
     {
-        $url = $this->resolveEndpoint("/export/$exportId/envelope_sms");
+        $url = $this->resolveEndpoint("/export/$exportId/envelope-sms");
 
         $response = $this->httpClient->post($url, [
             RequestOptions::JSON => $exportSms->toArray(),
