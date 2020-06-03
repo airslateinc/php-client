@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
-use AirSlate\ApiClient\Exceptions\DomainException;
+use AirSlate\ApiClient\Entities\EnvelopeSms;
+use AirSlate\ApiClient\Models\Document\ExportSms;
 use AirSlate\ApiClient\Models\Export\Create;
 use GuzzleHttp\RequestOptions;
 
@@ -52,5 +53,25 @@ class ExportService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return $content;
+    }
+
+    /**
+     * Export documents via sms
+     *
+     * @param string $exportId
+     * @param ExportSms $exportSms
+     * @return EnvelopeSms
+     */
+    public function exportSms(string $exportId, ExportSms $exportSms): EnvelopeSms
+    {
+        $url = $this->resolveEndpoint("/export/$exportId/envelope-sms");
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $exportSms->toArray(),
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return EnvelopeSms::createFromOne($content);
     }
 }

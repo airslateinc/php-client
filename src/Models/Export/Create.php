@@ -106,4 +106,10 @@ class Create extends AbstractModel
         $this->data['meta']['app_name'] = $appName;
         return $this;
     }
+
+    public function callback(string $callback): self
+    {
+        $this->data['meta']['callback_url'] = $callback;
+        return $this;
+    }
 }
