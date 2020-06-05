@@ -14,6 +14,7 @@ use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Models\Document\AddAttachments;
 use AirSlate\ApiClient\Models\Document\AddDocumentAttachments;
 use AirSlate\ApiClient\Models\Document\AttachmentFileRename;
+use AirSlate\ApiClient\Models\Document\BulkEditorOptionsUpdate;
 use AirSlate\ApiClient\Models\Document\Create as CreateModel;
 use AirSlate\ApiClient\Models\Document\DocumentEvent;
 use AirSlate\ApiClient\Models\Document\EditorOptionsUpdate;
@@ -545,6 +546,23 @@ class DocumentsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return EditorOptions::createFromOne($content);
+    }
+
+    /**
+     * @param BulkEditorOptionsUpdate $editorOptions
+     * @return EditorOptions[]|array
+     */
+    public function bulkUpdateEditorOptions(BulkEditorOptionsUpdate $editorOptions): array
+    {
+        $url = $this->resolveEndpoint("/documents/editor-options/bulk");
+
+        $response = $this->httpClient->patch($url, [
+            RequestOptions::JSON => $editorOptions->toArray(),
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return EditorOptions::createFromCollection($content);
     }
 
     /**
