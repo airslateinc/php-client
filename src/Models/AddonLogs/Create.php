@@ -66,7 +66,11 @@ class Create extends AbstractAddonLog
             ],
         ];
 
-        if($this->packetRevisionUid !== null) {
+        if ($this->trigger !== null) {
+            $payload['data']['attributes']['trigger'] = $this->trigger;
+        }
+
+        if ($this->packetRevisionUid !== null) {
             $payload['data']['relationships']['revision'] = [
                 'data' => [
                     'id' => $this->packetRevisionUid,
@@ -75,7 +79,7 @@ class Create extends AbstractAddonLog
             ];
         }
 
-        if($this->packetUid !== null) {
+        if ($this->packetUid !== null) {
             $payload['data']['relationships']['packet'] = [
                 'data' => [
                     'id' => $this->packetUid,

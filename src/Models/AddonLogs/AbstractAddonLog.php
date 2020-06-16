@@ -23,6 +23,9 @@ abstract class AbstractAddonLog extends AbstractModel
     /** @var string  */
     protected const PASSED = 'PASSED';
 
+    /** @var string */
+    protected const DEFAULT_TRIGGER = 'schedule';
+
     /** @var array  */
     protected $responseBody = [];
 
@@ -34,6 +37,9 @@ abstract class AbstractAddonLog extends AbstractModel
 
     /** @var string  */
     protected $condition = self::PASSED;
+
+    /** @var null|string */
+    protected $trigger = null;
 
     /**
      * @param array $responseBody
@@ -65,5 +71,13 @@ abstract class AbstractAddonLog extends AbstractModel
     public function setCondition(string $condition): void
     {
         $this->condition = $condition;
+    }
+
+    /**
+     * @param string $trigger
+     */
+    public function setTrigger(string $trigger = self::DEFAULT_TRIGGER): void
+    {
+        $this->trigger = $trigger;
     }
 }
