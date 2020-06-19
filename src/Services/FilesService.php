@@ -16,6 +16,8 @@ use GuzzleHttp\RequestOptions;
 class FilesService extends AbstractService
 {
     /**
+     * @deprecated use DocumentsService::uploadDocumentFiles/addAttachments instead
+     *
      * Create files
      *
      * @param FileModel $file

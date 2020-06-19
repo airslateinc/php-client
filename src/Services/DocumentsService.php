@@ -17,6 +17,7 @@ use AirSlate\ApiClient\Models\Document\AttachmentFileRename;
 use AirSlate\ApiClient\Models\Document\BulkEditorOptionsUpdate;
 use AirSlate\ApiClient\Models\Document\Create as CreateModel;
 use AirSlate\ApiClient\Models\Document\DocumentEvent;
+use AirSlate\ApiClient\Models\Document\DocumentFiles;
 use AirSlate\ApiClient\Models\Document\EditorOptionsUpdate;
 use AirSlate\ApiClient\Models\Document\Event;
 use AirSlate\ApiClient\Models\Document\UnlockPdf;
@@ -580,5 +581,23 @@ class DocumentsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return !empty($content['meta']['ok']);
+    }
+
+    /**
+     * @param string $documentUid
+     * @param DocumentFiles $documentFiles
+     * @return Document
+     */
+    public function uploadDocumentFiles(string $documentUid, DocumentFiles $documentFiles): Document
+    {
+        $url = $this->resolveEndpoint("/documents/$documentUid/files/bulk");
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $documentFiles->toArray(),
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Document::createFromOne($content);
     }
 }

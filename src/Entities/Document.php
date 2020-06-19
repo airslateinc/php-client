@@ -25,13 +25,45 @@ class Document extends BaseEntity
      */
     protected $type = EntityType::DOCUMENT;
 
+    public const PAGES_FILE = 'pages_file';
+    public const ATTRIBUTES_FILE = 'attributes_file';
+    public const CONTENT_FILE = 'content_file';
+    public const FIELDS_FILE = 'fields_file';
+    public const ROLES_FILE = 'roles_file';
+    public const COMMENTS_FILE = 'comments_file';
+    public const ORIGINAL_FILE = 'original_file';
+    public const IMAGE_FILE = 'image_file';
+    public const PDF_FILE = 'pdf_file';
+    public const DOC_GEN_CONTENT_FILE = 'doc_gen_content_file';
+    public const DOC_GEN_FIELDS_FILE = 'doc_gen_fields_file';
+    public const DOC_GEN_BLOCKS_FILE = 'doc_gen_blocks_file';
+    public const FINAL_PDF_FILE = 'final_pdf_file';
+    public const SIGNING_CERTIFICATE_PDF_FILE = 'signing_certificate_pdf_file';
+
+    public const DOCUMENT_FILES = [
+        self::PAGES_FILE,
+        self::ATTRIBUTES_FILE,
+        self::CONTENT_FILE,
+        self::FIELDS_FILE,
+        self::ROLES_FILE,
+        self::COMMENTS_FILE,
+        self::ORIGINAL_FILE,
+        self::IMAGE_FILE,
+        self::PDF_FILE,
+        self::DOC_GEN_CONTENT_FILE,
+        self::DOC_GEN_FIELDS_FILE,
+        self::DOC_GEN_BLOCKS_FILE,
+        self::FINAL_PDF_FILE,
+        self::SIGNING_CERTIFICATE_PDF_FILE,
+    ];
+
     /**
      * @return File|null
      * @throws \Exception
      */
     public function getPages()
     {
-        return $this->hasOne(File::class, 'pages_file');
+        return $this->hasOne(File::class, self::PAGES_FILE);
     }
 
     /**
@@ -40,7 +72,7 @@ class Document extends BaseEntity
      */
     public function getAttributesFile()
     {
-        return $this->hasOne(File::class, 'attributes_file');
+        return $this->hasOne(File::class, self::ATTRIBUTES_FILE);
     }
 
     /**
@@ -49,7 +81,7 @@ class Document extends BaseEntity
      */
     public function getContent()
     {
-        return $this->hasOne(File::class, 'content_file');
+        return $this->hasOne(File::class, self::CONTENT_FILE);
     }
 
     /**
@@ -67,7 +99,7 @@ class Document extends BaseEntity
      */
     public function getFields()
     {
-        return $this->hasOne(File::class, 'fields_file');
+        return $this->hasOne(File::class, self::FIELDS_FILE);
     }
 
     /**
@@ -76,7 +108,7 @@ class Document extends BaseEntity
      */
     public function getRoles()
     {
-        return $this->hasOne(File::class, 'roles_file');
+        return $this->hasOne(File::class, self::ROLES_FILE);
     }
 
     /**
@@ -85,7 +117,7 @@ class Document extends BaseEntity
      */
     public function getComments()
     {
-        return $this->hasOne(File::class, 'comments_file');
+        return $this->hasOne(File::class, self::COMMENTS_FILE);
     }
 
     /**
@@ -94,7 +126,7 @@ class Document extends BaseEntity
      */
     public function getOriginal()
     {
-        return $this->hasOne(File::class, 'original_file');
+        return $this->hasOne(File::class, self::ORIGINAL_FILE);
     }
 
     /**
@@ -103,7 +135,7 @@ class Document extends BaseEntity
      */
     public function getImage()
     {
-        return $this->hasOne(File::class, 'image_file');
+        return $this->hasOne(File::class, self::IMAGE_FILE);
     }
 
     /**
@@ -112,6 +144,6 @@ class Document extends BaseEntity
      */
     public function getPdf()
     {
-        return $this->hasOne(File::class, 'pdf_file');
+        return $this->hasOne(File::class, self::PDF_FILE);
     }
 }
