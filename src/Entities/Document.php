@@ -2,6 +2,8 @@
 
 namespace AirSlate\ApiClient\Entities;
 
+use AirSlate\ApiClient\Models\Document\DocumentFiles;
+
 /**
  * Class Document
  * @package AirSlate\ApiClient\Entities
@@ -31,7 +33,7 @@ class Document extends BaseEntity
      */
     public function getPages()
     {
-        return $this->hasOne(File::class, 'pages_file');
+        return $this->hasOne(File::class, DocumentFiles::PAGES_FILE);
     }
 
     /**
@@ -40,7 +42,7 @@ class Document extends BaseEntity
      */
     public function getAttributesFile()
     {
-        return $this->hasOne(File::class, 'attributes_file');
+        return $this->hasOne(File::class, DocumentFiles::ATTRIBUTES_FILE);
     }
 
     /**
@@ -49,7 +51,7 @@ class Document extends BaseEntity
      */
     public function getContent()
     {
-        return $this->hasOne(File::class, 'content_file');
+        return $this->hasOne(File::class, DocumentFiles::CONTENT_FILE);
     }
 
     /**
@@ -67,7 +69,7 @@ class Document extends BaseEntity
      */
     public function getFields()
     {
-        return $this->hasOne(File::class, 'fields_file');
+        return $this->hasOne(File::class, DocumentFiles::FIELDS_FILE);
     }
 
     /**
@@ -76,7 +78,7 @@ class Document extends BaseEntity
      */
     public function getRoles()
     {
-        return $this->hasOne(File::class, 'roles_file');
+        return $this->hasOne(File::class, DocumentFiles::ROLES_FILE);
     }
 
     /**
@@ -85,7 +87,7 @@ class Document extends BaseEntity
      */
     public function getComments()
     {
-        return $this->hasOne(File::class, 'comments_file');
+        return $this->hasOne(File::class, DocumentFiles::COMMENTS_FILE);
     }
 
     /**
@@ -94,7 +96,7 @@ class Document extends BaseEntity
      */
     public function getOriginal()
     {
-        return $this->hasOne(File::class, 'original_file');
+        return $this->hasOne(File::class, DocumentFiles::ORIGINAL_FILE);
     }
 
     /**
@@ -103,7 +105,7 @@ class Document extends BaseEntity
      */
     public function getImage()
     {
-        return $this->hasOne(File::class, 'image_file');
+        return $this->hasOne(File::class, DocumentFiles::IMAGE_FILE);
     }
 
     /**
@@ -112,6 +114,6 @@ class Document extends BaseEntity
      */
     public function getPdf()
     {
-        return $this->hasOne(File::class, 'pdf_file');
+        return $this->hasOne(File::class, DocumentFiles::PDF_FILE);
     }
 }
