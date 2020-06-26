@@ -144,6 +144,16 @@ class FlowsService extends AbstractService
     }
 
     /**
+     * @param string $flowUid
+     * @return Generator|SlateInvite[]
+     */
+    public function invitesIterator(string $flowUid): Generator
+    {
+        $url = $this->resolveEndpoint("/flows/$flowUid/invites");
+        yield from $this->pagination()->resolve($url, SlateInvite::class);
+    }
+
+    /**
      * @param string $flowId
      * @return SlateLinks
      * @throws \Exception
