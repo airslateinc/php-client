@@ -33,7 +33,6 @@ class DocumentAttachment extends BaseEntity
      */
     public function getFile(): ?File
     {
-        /** @var File|null */
         return $this->hasOne(File::class, 'file');
     }
 }
