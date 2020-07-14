@@ -168,4 +168,19 @@ class RevisionsService extends AbstractService
 
         return Revision::createFromOne($content);
     }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @param string $revisionUid
+     * @return bool
+     */
+    public function clear(string $flowUid, string $packetUid, string $revisionUid): bool
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/revisions/{$revisionUid}/clear");
+
+        $response = $this->httpClient->delete($url);
+
+        return $response && $response->getStatusCode() === 204;
+    }
 }
