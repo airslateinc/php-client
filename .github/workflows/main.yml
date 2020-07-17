@@ -1,0 +1,34 @@
+name: Static analyse and unit testing
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Composer Cache
+        uses: actions/cache@v1
+        with:
+          path: vendor
+          key: composer-dev-${{ hashFiles('composer.json') }}
+          restore-keys: |
+            composer-dev-${{ hashFiles('composer.json') }}
+            composer-dev-
+      # Build Test Image
+      - name: Composer Install Dev
+        env:
+          APP_GITHUB_TOKEN: ${{ secrets.APP_GITHUB_TOKEN }}
+        run: |
+          composer config --global github-oauth.github.com ${APP_GITHUB_TOKEN}
+          composer install -n --prefer-dist --ignore-platform-reqs --no-scripts
+      # Tests
+      - name: Run PHPCS
+        run: |
+          ./vendor/bin/phpcs
+      - name: Run PHPStan
+        run: |
+          ./vendor/bin/phpstan a -c ./phpstan.neon --no-progress --no-ansi --memory-limit=256M
+      - name: Run PHPUnit
+        run: |
+          ./vendor/bin/phpunit
