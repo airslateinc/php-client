@@ -28,7 +28,7 @@ jobs:
           ./vendor/bin/phpcs
       - name: Run PHPMD
         run: |
-          ./vendor/bin/phpmd ./app text codesize
+          ./vendor/bin/phpmd ./src text codesize
       - name: Run PHPMD for tests
         run: |
           ./vendor/bin/phpmd ./tests text codesize
