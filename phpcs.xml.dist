@@ -13,7 +13,7 @@
     <arg name="colors"/>
 
     <!-- Use PSR-2 as a base -->
-    <rule ref="PSR2"/>
+    <rule ref="PSR12"/>
     
     <file>./src</file>
     <file>./tests</file>

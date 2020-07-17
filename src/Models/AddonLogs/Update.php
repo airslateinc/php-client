@@ -35,6 +35,6 @@ class Update extends AbstractAddonLog
                     'response_body' => $this->responseBody,
                 ],
             ],
-        ];
+         ];
     }
 }
