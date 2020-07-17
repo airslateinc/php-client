@@ -35,6 +35,7 @@ use Throwable;
 /**
  * Class DocumentsService
  * @package AirSlate\ApiClient\Services
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class DocumentsService extends AbstractService
 {

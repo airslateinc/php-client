@@ -23,6 +23,7 @@ use AirSlate\ApiClient\Services\UsersService;
 /**
  * Class Client
  * @package AirSlate\ApiClient
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class Client
 {
