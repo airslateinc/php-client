@@ -4,6 +4,7 @@ namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Addons\SlateAddonIntegration;
 use Exception;
+
 use function GuzzleHttp\json_decode;
 
 class SlateAddonIntegrationsService extends AbstractService

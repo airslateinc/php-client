@@ -195,7 +195,7 @@ class FlowsService extends AbstractService
      *
      * @throws DomainException
      */
-    public function checkAccess(string $flowId) : bool
+    public function checkAccess(string $flowId): bool
     {
         $url = $this->resolveEndpoint("flows/{$flowId}/public");
         $result = true;
@@ -217,7 +217,7 @@ class FlowsService extends AbstractService
      *
      * @return Document
      */
-    public function getDocumentType(string $documentUid) : Document
+    public function getDocumentType(string $documentUid): Document
     {
         $url = $this->resolveEndpoint("flows/documents/{$documentUid}");
 
