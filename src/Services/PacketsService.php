@@ -493,4 +493,18 @@ class PacketsService extends AbstractService
 
         return RoleDocument::createFromOne($content) ;
     }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @return bool
+     */
+    public function clear(string $flowUid, string $packetUid): bool
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/clear");
+
+        $response = $this->httpClient->delete($url);
+
+        return $response && $response->getStatusCode() === 204;
+    }
 }
