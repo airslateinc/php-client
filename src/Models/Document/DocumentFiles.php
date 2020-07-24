@@ -51,9 +51,7 @@ class DocumentFiles extends AbstractModel
      */
     public function addFile(string $type, string $name, string $content): void
     {
-        if (!in_array($type, self::DOCUMENT_FILES)) {
-            throw new InvalidArgumentException(sprintf('Unsupported document file type: %s', $type));
-        }
+        $this->assertFileType($type);
 
         $this->data[] = [
             'type' => $type,
@@ -62,5 +60,33 @@ class DocumentFiles extends AbstractModel
                 'file' => base64_encode($content),
             ]
         ];
+    }
+
+    /**
+     * @param string $type
+     * @param string $name
+     * @param string $url
+     */
+    public function addUrl(string $type, string $name, string $url): void
+    {
+        $this->assertFileType($type);
+
+        $this->data[] = [
+            'type' => $type,
+            'attributes' => [
+                'name' => $name,
+                'url' => $url,
+            ]
+        ];
+    }
+
+    /**
+     * @param string $type
+     */
+    private function assertFileType(string $type)
+    {
+        if (!in_array($type, self::DOCUMENT_FILES)) {
+            throw new InvalidArgumentException(sprintf('Unsupported document file type: %s', $type));
+        }
     }
 }
