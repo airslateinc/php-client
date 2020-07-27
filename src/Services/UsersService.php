@@ -13,6 +13,7 @@ use AirSlate\ApiClient\Entities\User;
 use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Exceptions\Users\UnauthorizedClient;
 use BadMethodCallException;
+use Generator;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\RequestOptions;
 
@@ -154,6 +155,16 @@ class UsersService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return User::createFromCollection($content);
+    }
+
+    /**
+     * @param string $organizationId
+     * @return Generator
+     */
+    public function collectionIterator(string $organizationId): Generator
+    {
+        $url = $this->resolveEndpoint('/organizations/' . $organizationId . '/users');
+        yield from $this->pagination()->resolve($url, User::class);
     }
 
     /**
