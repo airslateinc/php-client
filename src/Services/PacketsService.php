@@ -7,6 +7,7 @@ namespace AirSlate\ApiClient\Services;
 use AirSlate\ApiClient\Entities\DocumentRole;
 use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Entities\Packet;
+use AirSlate\ApiClient\Entities\Packets\PacketRole;
 use AirSlate\ApiClient\Entities\Packets\PacketSend;
 use AirSlate\ApiClient\Entities\Packets\PacketSigningOrder;
 use AirSlate\ApiClient\Entities\Packets\RoleDocument;
@@ -299,6 +300,21 @@ class PacketsService extends AbstractService
     {
         $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/roles");
         yield from $this->pagination()->resolve($url, DocumentRole::class);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @return PacketRole[]
+     */
+    public function getPacketRolesNew(string $flowUid, string $packetUid): array
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/packet-roles-new");
+
+        $response = $this->httpClient->get($url);
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return PacketRole::createFromCollection($content);
     }
 
     /**
