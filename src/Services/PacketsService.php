@@ -16,6 +16,7 @@ use AirSlate\ApiClient\Exceptions\MissingDataException;
 use AirSlate\ApiClient\Exceptions\Packets\UserHasNoAccessException;
 use AirSlate\ApiClient\Exceptions\TypeMismatchException;
 use AirSlate\ApiClient\Models\Packet\ActivateOpenAsRole;
+use AirSlate\ApiClient\Models\Packet\AssignRole;
 use AirSlate\ApiClient\Models\Packet\Create;
 use AirSlate\ApiClient\Models\Packet\Lock;
 use AirSlate\ApiClient\Models\Packet\ResendPacketInvite;
@@ -373,6 +374,25 @@ class PacketsService extends AbstractService
         ]);
 
         return $response && $response->getStatusCode() === 200;
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @param AssignRole $assignRole
+     * @return PacketRole[]
+     */
+    public function assignRole(string $flowUid, string $packetUid, AssignRole $assignRole): array
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/assign-role");
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $assignRole->toArray(),
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return PacketRole::createFromCollection($content);
     }
 
     /**

@@ -60,4 +60,5 @@ interface EntityType
     public const PLANS = 'plans';
     public const PARTICIPANT_ROLES = 'participant_roles';
     public const RESEND_PACKET_INVITE = 'resend_packet_invite';
+    public const PACKET_ROLES_ASSIGN = 'packet_roles_assign';
 }
