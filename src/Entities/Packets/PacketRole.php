@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient\Entities\Packets;
 
 use AirSlate\ApiClient\Entities\BaseEntity;
+use AirSlate\ApiClient\Entities\ContactGroup;
 use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Entities\User;
 
@@ -33,5 +34,14 @@ class PacketRole extends BaseEntity
     public function getUsers(): array
     {
         return $this->hasMany(User::class, 'users');
+    }
+
+    /**
+     * @return ContactGroup[]
+     * @throws \Exception
+     */
+    public function getContactGroups(): array
+    {
+        return $this->hasMany(ContactGroup::class, 'contact_groups');
     }
 }
