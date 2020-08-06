@@ -50,7 +50,7 @@ class ExportSms extends AbstractModel
 
         return [
             'data' => [
-                'type' => 'sms',
+                'type' => 'envelope_sms',
                 'attributes' =>
                     [
                         'name' => $this->name,
