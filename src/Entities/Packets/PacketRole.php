@@ -10,7 +10,7 @@ use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Entities\User;
 
 /**
- * Class PacketSend
+ * Class PacketRole
  * @package AirSlate\ApiClient\Entities\Packets
  *
  * @property string $id

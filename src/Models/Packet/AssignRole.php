@@ -11,8 +11,8 @@ class AssignRole extends AbstractModel
 {
     /**
      * @param string $roleUid
-     * @param array $email
-     * @param array $contactGroups
+     * @param string[] $email
+     * @param string[] $contactGroups
      * @param InviteEmailAddition|null $emailAddition
      */
     public function addRole(

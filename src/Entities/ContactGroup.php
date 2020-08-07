@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient\Entities;
 
 /**
- * Class PacketSend
- * @package AirSlate\ApiClient\Entities\Packets
+ * Class ContactGroup
+ * @package AirSlate\ApiClient\Entities
  *
  * @property string $id
  * @property string $title
