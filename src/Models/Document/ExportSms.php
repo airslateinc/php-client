@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Models\Document;
 
+use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Models\AbstractModel;
 
 /**
@@ -50,7 +51,7 @@ class ExportSms extends AbstractModel
 
         return [
             'data' => [
-                'type' => 'envelope_sms',
+                'type' => EntityType::ENVELOPE_SMS,
                 'attributes' =>
                     [
                         'name' => $this->name,
