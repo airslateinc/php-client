@@ -43,13 +43,17 @@ class UnassignRole extends AbstractModel
     {
         return [
             'data' => [
-                'packet_roles' => [
-                    'type' => EntityType::PACKET_ROLES,
-                    'id' => $this->packetRoleUid,
-                ],
-                'users' => [
-                    'type' => EntityType::USER,
-                    'id' => $this->userUid,
+                'id' => $this->packetRoleUid,
+                'type' => EntityType::PACKET_ROLES,
+                'relationships' => [
+                    'users' => [
+                        'data' => [
+                            [
+                                'id' => $this->userUid,
+                                'type' => EntityType::USER,
+                            ]
+                        ],
+                    ],
                 ],
             ],
         ];
