@@ -48,8 +48,10 @@ class UnassignRole extends AbstractModel
                 'relationships' => [
                     'users' => [
                         'data' => [
-                            'id' => $this->userUid,
-                            'type' => EntityType::USER,
+                            [
+                                'id' => $this->userUid,
+                                'type' => EntityType::USER,
+                            ]
                         ],
                     ],
                 ],
