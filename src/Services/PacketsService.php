@@ -7,6 +7,7 @@ namespace AirSlate\ApiClient\Services;
 use AirSlate\ApiClient\Entities\DocumentRole;
 use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Entities\Packet;
+use AirSlate\ApiClient\Entities\Packets\PacketRole;
 use AirSlate\ApiClient\Entities\Packets\PacketSend;
 use AirSlate\ApiClient\Entities\Packets\PacketSigningOrder;
 use AirSlate\ApiClient\Entities\Packets\RoleDocument;
@@ -15,6 +16,7 @@ use AirSlate\ApiClient\Exceptions\MissingDataException;
 use AirSlate\ApiClient\Exceptions\Packets\UserHasNoAccessException;
 use AirSlate\ApiClient\Exceptions\TypeMismatchException;
 use AirSlate\ApiClient\Models\Packet\ActivateOpenAsRole;
+use AirSlate\ApiClient\Models\Packet\AssignRole;
 use AirSlate\ApiClient\Models\Packet\Create;
 use AirSlate\ApiClient\Models\Packet\Lock;
 use AirSlate\ApiClient\Models\Packet\ResendPacketInvite;
@@ -304,6 +306,21 @@ class PacketsService extends AbstractService
     /**
      * @param string $flowUid
      * @param string $packetUid
+     * @return PacketRole[]
+     */
+    public function getPacketRolesNew(string $flowUid, string $packetUid): array
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/packet-roles-new");
+
+        $response = $this->httpClient->get($url);
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return PacketRole::createFromCollection($content);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
      * @return PacketSigningOrder[]
      * @throws InvalidArgumentException
      * @throws MissingDataException
@@ -357,6 +374,25 @@ class PacketsService extends AbstractService
         ]);
 
         return $response && $response->getStatusCode() === 200;
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @param AssignRole $assignRole
+     * @return PacketRole[]
+     */
+    public function assignRole(string $flowUid, string $packetUid, AssignRole $assignRole): array
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/assign-role");
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $assignRole->toArray(),
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return PacketRole::createFromCollection($content);
     }
 
     /**
