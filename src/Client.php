@@ -11,6 +11,7 @@ use AirSlate\ApiClient\Services\AddonsSmsService;
 use AirSlate\ApiClient\Services\DocumentsService;
 use AirSlate\ApiClient\Services\ExportService;
 use AirSlate\ApiClient\Services\FilesService;
+use AirSlate\ApiClient\Services\NotificationsService;
 use AirSlate\ApiClient\Services\PaywallService;
 use AirSlate\ApiClient\Services\StorageFilesService;
 use AirSlate\ApiClient\Services\FlowsService;
@@ -92,6 +93,11 @@ class Client
      * @var PaywallService
      */
     private $paywallService;
+
+    /**
+     * @var NotificationsService
+     */
+    private $notificationsService;
 
     /**
      * Client instances.
@@ -354,6 +360,7 @@ class Client
 
         return $this->addonFlowDocumentsService;
     }
+
     /**
      * @return PaywallService
      */
@@ -364,5 +371,17 @@ class Client
         }
 
         return $this->paywallService;
+    }
+
+    /**
+     * @return NotificationsService
+     */
+    public function notifications(): NotificationsService
+    {
+        if (!$this->notificationsService) {
+            $this->notificationsService = new NotificationsService($this->httpClient);
+        }
+
+        return $this->notificationsService;
     }
 }
