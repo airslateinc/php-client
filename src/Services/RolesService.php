@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
+use AirSlate\ApiClient\Entities\Packets\PacketRole;
 use AirSlate\ApiClient\Entities\Slates\FlowRole;
 use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Exceptions\MissingDataException;
 use AirSlate\ApiClient\Exceptions\TypeMismatchException;
 use AirSlate\ApiClient\Models\Role\Create;
 use AirSlate\ApiClient\Models\Role\Delete;
+use AirSlate\ApiClient\Models\Role\GrantAndAssign;
 use Generator;
 use GuzzleHttp\RequestOptions;
 use InvalidArgumentException;
@@ -83,5 +85,29 @@ class RolesService extends AbstractService
         ]);
 
         return $response && $response->getStatusCode() === 204;
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @param string $roleUid
+     * @param GrantAndAssign $grantAndAssign
+     * @return PacketRole
+     */
+    public function grantAndAssign(
+        string $flowUid,
+        string $packetUid,
+        string $roleUid,
+        GrantAndAssign $grantAndAssign
+    ): PacketRole {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/roles/{$roleUid}/grant-and-assign");
+
+        $response = $this->httpClient->patch($url, [
+            RequestOptions::JSON => $grantAndAssign->toArray(),
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return PacketRole::createFromOne($content);
     }
 }
