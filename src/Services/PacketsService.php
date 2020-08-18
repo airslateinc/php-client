@@ -52,6 +52,14 @@ class PacketsService extends AbstractService
     }
 
     /**
+     * @return RolesService
+     */
+    public function roles(): RolesService
+    {
+        return new RolesService($this->httpClient);
+    }
+
+    /**
      * @param string $flowUid
      * @return Packet[]
      * @throws InvalidArgumentException
