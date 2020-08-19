@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient\Models\Role;
 
 use AirSlate\ApiClient\Entities\EntityType;
+use AirSlate\ApiClient\Entities\User;
 use AirSlate\ApiClient\Models\AbstractModel;
 use AirSlate\ApiClient\Models\Packet\InviteEmailAddition;
 
@@ -28,22 +29,20 @@ class GrantAndAssign extends AbstractModel
     }
 
     /**
-     * @param string $email
+     * @param User $user
      */
-    public function addUser(string $email): void
+    public function addUser(User $user): void
     {
-        $uniqId = uniqid();
-
         $this->relationships[EntityType::USER]['data'][] = [
             'type' => EntityType::USER,
-            'id' => $uniqId
+            'id' => $user->id
         ];
 
         $this->included[] = [
-            'id' => $uniqId,
+            'id' => $user->id,
             'type' => EntityType::USER,
             'attributes' => [
-                'email' => $email,
+                'email' => $user->email,
             ]
         ];
     }
