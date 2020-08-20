@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Models\Role;
 
+use AirSlate\ApiClient\Entities\ContactGroup;
 use AirSlate\ApiClient\Entities\EntityType;
+use AirSlate\ApiClient\Entities\RelationshipEntityType;
 use AirSlate\ApiClient\Entities\User;
 use AirSlate\ApiClient\Models\AbstractModel;
 use AirSlate\ApiClient\Models\Packet\InviteEmailAddition;
@@ -52,7 +54,7 @@ class GrantAndAssign extends AbstractModel
      */
     public function addInviteEmailAddition(InviteEmailAddition $inviteEmailAddition): void
     {
-        $this->relationships[InviteEmailAddition::RELATIONSHIP_KEY_NEW]['data'] = [
+        $this->relationships[RelationshipEntityType::INVITE_EMAIL_ADDITION]['data'] = [
             'type' => EntityType::INVITE_EMAIL_ADDITION,
             'id' => $inviteEmailAddition->getId(),
         ];
@@ -74,6 +76,17 @@ class GrantAndAssign extends AbstractModel
             'id' => $inviteEmailAddition->getId(),
             'type' => EntityType::INVITE_EMAIL_ADDITION,
             'attributes' => $attributes
+        ];
+    }
+
+    /**
+     * @param ContactGroup $contactGroup
+     */
+    public function addContactGroup(ContactGroup $contactGroup): void
+    {
+        $this->relationships[RelationshipEntityType::CONTACT_GROUP]['data'] = [
+            'type' => EntityType::CONTACT_GROUP,
+            'id' => $contactGroup->id,
         ];
     }
 
