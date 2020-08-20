@@ -8,6 +8,7 @@ use AirSlate\ApiClient\Services\AddonFlowDocumentsService;
 use AirSlate\ApiClient\Services\AddonLogsService;
 use AirSlate\ApiClient\Services\AddonsService;
 use AirSlate\ApiClient\Services\AddonsSmsService;
+use AirSlate\ApiClient\Services\CloudStorageService;
 use AirSlate\ApiClient\Services\DocumentsService;
 use AirSlate\ApiClient\Services\ExportService;
 use AirSlate\ApiClient\Services\FilesService;
@@ -98,6 +99,11 @@ class Client
      * @var NotificationsService
      */
     private $notificationsService;
+
+    /**
+     * @var CloudStorageService
+     */
+    private $cloudStorageService;
 
     /**
      * Client instances.
@@ -383,5 +389,17 @@ class Client
         }
 
         return $this->notificationsService;
+    }
+
+    /**
+     * @return CloudStorageService
+     */
+    public function cloudStorage(): CloudStorageService
+    {
+        if (!$this->cloudStorageService) {
+            $this->cloudStorageService = new CloudStorageService($this->httpClient);
+        }
+
+        return $this->cloudStorageService;
     }
 }
