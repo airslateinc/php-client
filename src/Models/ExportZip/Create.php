@@ -13,7 +13,7 @@ class Create extends AbstractModel
     {
         $data = array_merge_recursive(
             [
-                'type' => EntityType::EXPORT,
+                'type' => EntityType::EXPORT_ZIP,
                 'attributes' => [
                     'files' => [],
                 ],
@@ -26,7 +26,7 @@ class Create extends AbstractModel
 
     public function addFile(string $name, string $downloadUrl, string $path = ''): self
     {
-        $this->data['attributes'][] = [
+        $this->data['attributes']['files'][] = [
             'name' => $name,
             'path' => $path,
             'url' => $downloadUrl
