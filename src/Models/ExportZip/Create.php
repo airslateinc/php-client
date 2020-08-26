@@ -34,4 +34,11 @@ class Create extends AbstractModel
 
         return $this;
     }
+
+    public function setCallback(string $callback): self
+    {
+        $this->data['meta']['callback_url'] = $callback;
+
+        return $this;
+    }
 }
