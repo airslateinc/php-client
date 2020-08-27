@@ -27,9 +27,17 @@ class AddDocumentAttachmentFile extends AbstractModel
             'attributes' => [
                 'type' => $category,
                 'subtype' => $type,
-                'file' => base64_encode($file),
-                'name' => $name,
                 'meta' => $meta
+            ],
+        ];
+
+        $this->included = [
+            [
+                'type' => EntityType::FILE,
+                'attributes' => [
+                    'file' => base64_encode($file),
+                    'name' => $name,
+                ],
             ],
         ];
     }
