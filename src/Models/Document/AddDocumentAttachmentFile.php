@@ -15,7 +15,7 @@ class AddDocumentAttachmentFile extends AbstractModel
      * @param string $file
      * @param array $meta
      */
-    public function addDocumentAttachmentContent(
+    public function addDocumentAttachmentFile(
         string $category,
         string $type,
         string $name,
@@ -27,7 +27,7 @@ class AddDocumentAttachmentFile extends AbstractModel
             'attributes' => [
                 'type' => $category,
                 'subtype' => $type,
-                'file' => $file,
+                'file' => base64_encode($file),
                 'name' => $name,
                 'meta' => $meta
             ],
