@@ -12,14 +12,14 @@ class AddDocumentAttachmentFile extends AbstractModel
      * @param string $category
      * @param string $type
      * @param string $name
-     * @param string $file
+     * @param string $fileContent
      * @param array $meta
      */
     public function addDocumentAttachmentFile(
         string $category,
         string $type,
         string $name,
-        string $file,
+        string $fileContent,
         array $meta = []
     ) {
         $this->data = [
@@ -35,7 +35,7 @@ class AddDocumentAttachmentFile extends AbstractModel
             [
                 'type' => EntityType::FILE,
                 'attributes' => [
-                    'file' => base64_encode($file),
+                    'file' => base64_encode($fileContent),
                     'name' => $name,
                 ],
             ],

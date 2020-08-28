@@ -439,7 +439,7 @@ class DocumentsService extends AbstractService
         string $documentId,
         AddDocumentAttachmentFile $addDocumentAttachmentFile
     ): DocumentAttachment {
-        $url = $this->resolveEndpoint("/documents/$documentId/document-attachments/files");
+        $url = $this->resolveEndpoint("/documents/{$documentId}/document-attachments/files");
 
         $response = $this->httpClient->post($url, [
             RequestOptions::JSON => $addDocumentAttachmentFile->toArray()
