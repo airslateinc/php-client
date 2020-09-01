@@ -7,6 +7,7 @@ namespace AirSlate\ApiClient\Services;
 use AirSlate\ApiClient\Entities\CloudStorage\DataProvideResponse;
 use AirSlate\ApiClient\Models\CloudStorage\Provide;
 use AirSlate\ApiClient\Models\CloudStorage\Subscribe;
+use AirSlate\ApiClient\Models\CloudStorage\Update;
 use GuzzleHttp\RequestOptions;
 
 class CloudStorageService extends AbstractService
@@ -41,5 +42,20 @@ class CloudStorageService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return DataProvideResponse::createFromOne($content);
+    }
+
+    /**
+     * @param Update $update
+     * @return bool
+     */
+    public function update(Update $update): bool
+    {
+        $url = $this->resolveEndpoint('/cloud-storage/update');
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $update->toArray(),
+        ]);
+
+        return $response && $response->getStatusCode() === 200;
     }
 }
