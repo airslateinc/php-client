@@ -14,12 +14,14 @@ class AssignRole extends AbstractModel
      * @param string[] $email
      * @param string[] $contactGroups
      * @param InviteEmailAddition|null $emailAddition
+     * @param int|null $order
      */
     public function addRole(
         string $roleUid,
         array $email,
         array $contactGroups,
-        ?InviteEmailAddition $emailAddition = null
+        ?InviteEmailAddition $emailAddition = null,
+        int $order = null
     ): void {
         $payload = [
             'type' => EntityType::PACKET_ROLES_ASSIGN,
@@ -36,6 +38,10 @@ class AssignRole extends AbstractModel
                 ]
             ]
         ];
+
+        if ($order !== null) {
+            $payload['attributes']['order'] = $order;
+        }
 
         if ($emailAddition !== null) {
             $payload['relationships'][InviteEmailAddition::RELATIONSHIP_KEY] = [
