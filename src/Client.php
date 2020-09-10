@@ -11,6 +11,7 @@ use AirSlate\ApiClient\Services\AddonsSmsService;
 use AirSlate\ApiClient\Services\DocumentsService;
 use AirSlate\ApiClient\Services\ExportService;
 use AirSlate\ApiClient\Services\FilesService;
+use AirSlate\ApiClient\Services\IntegrationProxyService;
 use AirSlate\ApiClient\Services\NotificationsService;
 use AirSlate\ApiClient\Services\PaywallService;
 use AirSlate\ApiClient\Services\StorageFilesService;
@@ -98,6 +99,11 @@ class Client
      * @var NotificationsService
      */
     private $notificationsService;
+
+    /**
+     * @var IntegrationProxyService
+     */
+    private $integrationProxyService;
 
     /**
      * Client instances.
@@ -383,5 +389,17 @@ class Client
         }
 
         return $this->notificationsService;
+    }
+
+    /**
+     * @return IntegrationProxyService
+     */
+    public function integrationProxy(): IntegrationProxyService
+    {
+        if (!$this->integrationProxyService) {
+            $this->integrationProxyService = new IntegrationProxyService($this->httpClient);
+        }
+
+        return $this->integrationProxyService;
     }
 }
