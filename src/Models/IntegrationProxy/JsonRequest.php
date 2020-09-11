@@ -7,31 +7,61 @@ use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Models\AbstractModel;
 
 /**
- * Class Create
+ * Class JsonRequest
  *
  * @package AirSlate\ApiClient\Models\IntegrationProxy
  */
-class Request extends AbstractModel
+class JsonRequest extends AbstractModel implements ProxyRequest
 {
-    public function __construct(array $data = [])
-    {
-        $data = array_merge_recursive([
+    /** @const string */
+    private const TYPE = 'json';
+
+    public function __construct(
+        string $slateAddonIntegration,
+        string $httpMethod,
+        string $url,
+        ?array $data,
+        array $query = []
+    ) {
+        parent::__construct();
+
+        $this->data = [
             'type' => EntityType::INTEGRATION_REQUESTS,
             'attributes' => [
-                'arguments'=>[
-                    'query' =>[]
+                'http_method' => $httpMethod,
+                'action' => $url,
+                'arguments' => [
+                    'query' => $query
                 ]
             ],
             'relationships' => [
                 'slate_addon_integration' => [
                     'data' => [
-                        'type' => EntityType::SLATE_ADDON_INTEGRATION
+                        'type' => EntityType::SLATE_ADDON_INTEGRATION,
+                        'id' => $slateAddonIntegration
+
                     ]
                 ]
             ]
-        ], $data);
+        ];
 
-        parent::__construct($data);
+        $this->addBody($data);
+    }
+
+    /**
+     * @param array|null $data
+     * @return $this
+     */
+    private function addBody(?array $data): self
+    {
+        if ($data !== null) {
+            $this->data['attributes']['arguments']['body'] = [
+                'type' => self::TYPE,
+                'data' => $data,
+            ];
+        }
+
+        return $this;
     }
 
     /**
@@ -64,23 +94,6 @@ class Request extends AbstractModel
     public function addQuery(array $query = []): self
     {
         $this->data['attributes']['arguments']['query'] = $query;
-
-        return $this;
-    }
-
-    /**
-     * @param string $type
-     * @param array|null $data
-     * @return $this
-     */
-    public function addBody(string $type, ?array $data): self
-    {
-        if ($data !== null) {
-            $this->data['attributes']['arguments']['body'] = [
-                'type' => $type,
-                'data' => $data,
-            ];
-        }
 
         return $this;
     }
