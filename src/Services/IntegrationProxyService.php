@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Services;
 
-use AirSlate\ApiClient\Models\IntegrationProxy\ProxyRequest;
+use AirSlate\ApiClient\Models\IntegrationProxy\JsonRequest;
 use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\RequestOptions;
 
@@ -12,10 +12,10 @@ use GuzzleHttp\RequestOptions;
 class IntegrationProxyService extends AbstractService
 {
     /**
-     * @param ProxyRequest $request
+     * @param JsonRequest $request
      * @return ResponseInterface
      */
-    public function proxyRequest(ProxyRequest $request)
+    public function proxyRequest(JsonRequest $request)
     {
         $url = $this->resolveEndpoint("/integration-requests");
 

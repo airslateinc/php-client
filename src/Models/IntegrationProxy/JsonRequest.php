@@ -11,17 +11,17 @@ use AirSlate\ApiClient\Models\AbstractModel;
  *
  * @package AirSlate\ApiClient\Models\IntegrationProxy
  */
-class JsonRequest extends AbstractModel implements ProxyRequest
+class JsonRequest extends AbstractModel
 {
-    /** @const string */
-    private const TYPE = 'json';
+    /* we can use only 'json' or 'form-data' type */
 
     public function __construct(
         string $slateAddonIntegration,
         string $httpMethod,
         string $url,
         ?array $data,
-        array $query = []
+        array $query = [],
+        string $type = 'json'
     ) {
         parent::__construct();
 
@@ -45,18 +45,19 @@ class JsonRequest extends AbstractModel implements ProxyRequest
             ]
         ];
 
-        $this->addBody($data);
+        $this->addBody($data, $type);
     }
 
     /**
      * @param array|null $data
+     * @param string $type
      * @return $this
      */
-    private function addBody(?array $data): self
+    private function addBody(?array $data, string $type): self
     {
         if ($data !== null) {
             $this->data['attributes']['arguments']['body'] = [
-                'type' => self::TYPE,
+                'type' => $type,
                 'data' => $data,
             ];
         }
