@@ -63,4 +63,5 @@ interface EntityType
     public const NOTIFICATION = 'notifications';
     public const PACKET_ROLES_ASSIGN = 'packet_roles_assign';
     public const CONTACT_GROUP = 'contact_groups';
+    public const INTEGRATION_REQUESTS = 'integration_requests';
 }
