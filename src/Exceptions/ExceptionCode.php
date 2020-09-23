@@ -7,4 +7,6 @@ namespace AirSlate\ApiClient\Exceptions;
 interface ExceptionCode
 {
     public const FORBIDDEN_CHANGE_PACKET_ROLE_USER_FOR_BOT = 14086;
+    public const PAYWALL_SLATES_API = 12111;
+    public const PAYWALL_EXPORT_API = 17001;
 }

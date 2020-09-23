@@ -16,9 +16,6 @@ class GrantAndAssign extends AbstractModel
     /** @var array */
     private $relationships;
 
-    /** @var array */
-    protected $included;
-
     /** @var bool */
     private $accessGranted;
 
