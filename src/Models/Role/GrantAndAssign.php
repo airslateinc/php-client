@@ -17,7 +17,10 @@ class GrantAndAssign extends AbstractModel
     private $relationships;
 
     /** @var bool */
-    private $accessGranted;
+    private $accessGranted = true;
+
+    /** @var bool */
+    private $skipEmail = false;
 
     /**
      * @param bool $accessGranted
@@ -25,6 +28,14 @@ class GrantAndAssign extends AbstractModel
     public function setAccessGranted(bool $accessGranted): void
     {
         $this->accessGranted = $accessGranted;
+    }
+
+    /**
+     * @param bool $skipEmail
+     */
+    public function setSkipEmail(bool $skipEmail): void
+    {
+        $this->skipEmail = $skipEmail;
     }
 
     /**
@@ -97,6 +108,7 @@ class GrantAndAssign extends AbstractModel
                 'type' => EntityType::PACKET_ROLES,
                 'attributes' => [
                     'access_granted' => $this->accessGranted,
+                    'skip_email' => $this->skipEmail,
                 ],
                 'relationships' => $this->relationships
             ],
