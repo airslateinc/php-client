@@ -3,8 +3,10 @@
 namespace AirSlate\ApiClient\Http;
 
 use AirSlate\ApiClient\Exceptions\DomainException;
+use AirSlate\ApiClient\Http\Middleware\WrapIntoDomainExceptionMiddlewareFactory;
 use Exception;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\HandlerStack;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -47,6 +49,16 @@ class Client extends \GuzzleHttp\Client
     {
         $this->configure($config);
 
+        if (!isset($config['handler'])) {
+            $config['handler'] = HandlerStack::create();
+        }
+
+        if ($config['handler'] instanceof HandlerStack) {
+            $config['handler']->unshift(
+                (new WrapIntoDomainExceptionMiddlewareFactory())->make()
+            );
+        }
+
         parent::__construct($config);
     }
 
@@ -67,6 +79,8 @@ class Client extends \GuzzleHttp\Client
     {
         try {
             $response = parent::request($method, $uri, $options);
+        } catch (DomainException $exception) {
+            throw $exception;
         } catch (RequestException $exception) {
             $code = $exception->getCode();
             if ($exception->hasResponse()) {
