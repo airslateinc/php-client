@@ -20,8 +20,9 @@ class Upload extends AbstractModel
      * @param string $name
      * @param string $file
      * @param int|null $ttl
+     * @param int|null $linkTtl
      */
-    public function __construct(string $name, string $file, ?int $ttl = null)
+    public function __construct(string $name, string $file, ?int $ttl = null, ?int $linkTtl = null)
     {
         $data = [
             'attributes' => [
@@ -34,6 +35,10 @@ class Upload extends AbstractModel
             $data['attributes']['ttl'] = $ttl;
         }
 
+        if (!is_null($linkTtl)) {
+            $data['meta']['link_ttl'] = $linkTtl;
+        }
+
         parent::__construct($data);
     }
 
@@ -42,11 +47,17 @@ class Upload extends AbstractModel
      */
     public function toArray(): array
     {
-        return [
+        $data = [
             'data' => [
                 'type' => EntityType::STORAGE_FILE,
                 'attributes' => $this->data['attributes'],
             ]
         ];
+
+        if (isset($this->data['meta'])) {
+            $data['data']['meta'] = $this->data['meta'];
+        }
+
+        return $data;
     }
 }
