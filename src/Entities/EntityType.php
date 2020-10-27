@@ -15,6 +15,7 @@ interface EntityType
     public const ADDON_INTEGRATION = 'addon_integrations';
     public const APPLICATION_MESSAGE_BUS_EVENT = 'applications-message-bus-event';
     public const APPLICATION_CALLBACK = 'applications-callback';
+    public const BRANCH = 'branches';
     public const PACKET_SEND = 'packet_send';
     public const PACKET_REVISION = 'packet_revisions';
     public const PACKET_REVISION_DOCUMENT = 'packet_revision_documents';
@@ -30,7 +31,9 @@ interface EntityType
     public const ENVELOPE_SMS = 'envelope_sms';
     public const DOCUMENT_ROLE = 'document_roles';
     public const DICTIONARY = 'dictionary';
+    public const EXPERIMENT = 'experiment';
     public const FILE = 'files';
+    public const GUEST = 'guests';
     public const STORAGE_FILE = 'storage_files';
     public const FLOW_ROLE = 'flow_roles';
     public const FLOW_ROLE_DOCUMENT = 'flow_role_documents';
