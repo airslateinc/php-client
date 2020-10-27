@@ -9,6 +9,7 @@ use AirSlate\ApiClient\Services\AddonLogsService;
 use AirSlate\ApiClient\Services\AddonsService;
 use AirSlate\ApiClient\Services\AddonsSmsService;
 use AirSlate\ApiClient\Services\DocumentsService;
+use AirSlate\ApiClient\Services\ExperimentsService;
 use AirSlate\ApiClient\Services\ExportService;
 use AirSlate\ApiClient\Services\FilesService;
 use AirSlate\ApiClient\Services\IntegrationProxyService;
@@ -104,6 +105,11 @@ class Client
      * @var IntegrationProxyService
      */
     private $integrationProxyService;
+
+    /**
+     * @var ExperimentsService
+     */
+    private $experimentsService;
 
     /**
      * Client instances.
@@ -401,5 +407,17 @@ class Client
         }
 
         return $this->integrationProxyService;
+    }
+
+    /**
+     * @return ExperimentsService
+     */
+    public function experimentsService(): ExperimentsService
+    {
+        if (!$this->experimentsService) {
+            $this->experimentsService = new ExperimentsService($this->httpClient);
+        }
+
+        return $this->experimentsService;
     }
 }
