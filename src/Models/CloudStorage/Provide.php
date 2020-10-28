@@ -11,13 +11,13 @@ class Provide extends AbstractModel
 {
     /**
      * @param array $resourceIdentifier
-     * @param array $searchParameters
+     * @param string $entityType
      * @param string $slateAddonIntegrationId
      * @param string $organizationId
      */
     public function __construct(
         array $resourceIdentifier,
-        array $searchParameters,
+        string $entityType,
         string $slateAddonIntegrationId,
         string $organizationId
     ) {
@@ -25,7 +25,8 @@ class Provide extends AbstractModel
             'type' => 'data_provide_request',
             'attributes' => [
                 'resource_information' => $resourceIdentifier,
-                'search_parameters' => $searchParameters,
+                'entity_type' => $entityType,
+                'search_parameters' => [],
             ],
             'relationships' => [
                 'slate_addon_integrations' => [
@@ -44,5 +45,20 @@ class Provide extends AbstractModel
         ];
 
         parent::__construct($data);
+    }
+
+    /**
+     * @param string $attribute
+     * @param string[] $inArray
+     * @return $this
+     */
+    public function addSearchParameter(string $attribute, array $inArray): self
+    {
+        $this->data['attributes']['search_parameters'][] = [
+            'attribute' => $attribute,
+            'in_array' => $inArray,
+        ];
+
+        return $this;
     }
 }
