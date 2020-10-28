@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace AirSlate\ApiClient\Models\Role;
 
+use AirSlate\ApiClient\Entities\ContactGroup;
 use AirSlate\ApiClient\Entities\EntityType;
+use AirSlate\ApiClient\Entities\RelationshipEntityType;
 use AirSlate\ApiClient\Entities\User;
 use AirSlate\ApiClient\Models\AbstractModel;
 use AirSlate\ApiClient\Models\Packet\InviteEmailAddition;
@@ -14,11 +16,11 @@ class GrantAndAssign extends AbstractModel
     /** @var array */
     private $relationships;
 
-    /** @var array */
-    protected $included;
+    /** @var bool */
+    private $accessGranted = true;
 
     /** @var bool */
-    private $accessGranted;
+    private $skipEmail = false;
 
     /**
      * @param bool $accessGranted
@@ -26,6 +28,14 @@ class GrantAndAssign extends AbstractModel
     public function setAccessGranted(bool $accessGranted): void
     {
         $this->accessGranted = $accessGranted;
+    }
+
+    /**
+     * @param bool $skipEmail
+     */
+    public function setSkipEmail(bool $skipEmail): void
+    {
+        $this->skipEmail = $skipEmail;
     }
 
     /**
@@ -52,7 +62,7 @@ class GrantAndAssign extends AbstractModel
      */
     public function addInviteEmailAddition(InviteEmailAddition $inviteEmailAddition): void
     {
-        $this->relationships[InviteEmailAddition::RELATIONSHIP_KEY_NEW]['data'] = [
+        $this->relationships[RelationshipEntityType::INVITE_EMAIL_ADDITION]['data'] = [
             'type' => EntityType::INVITE_EMAIL_ADDITION,
             'id' => $inviteEmailAddition->getId(),
         ];
@@ -78,6 +88,17 @@ class GrantAndAssign extends AbstractModel
     }
 
     /**
+     * @param ContactGroup $contactGroup
+     */
+    public function addContactGroup(ContactGroup $contactGroup): void
+    {
+        $this->relationships[RelationshipEntityType::CONTACT_GROUP]['data'] = [
+            'type' => EntityType::CONTACT_GROUP,
+            'id' => $contactGroup->id,
+        ];
+    }
+
+    /**
      * @return array
      */
     public function toArray(): array
@@ -87,6 +108,7 @@ class GrantAndAssign extends AbstractModel
                 'type' => EntityType::PACKET_ROLES,
                 'attributes' => [
                     'access_granted' => $this->accessGranted,
+                    'skip_email' => $this->skipEmail,
                 ],
                 'relationships' => $this->relationships
             ],

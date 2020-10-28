@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\Addons\SlateAddon;
+use AirSlate\ApiClient\Entities\Tag;
 use AirSlate\ApiClient\Models\SlateAddon\Create as CreateSlateAddon;
+use AirSlate\ApiClient\Models\SlateAddon\ResolveTags;
 use AirSlate\ApiClient\Models\SlateAddon\Update as UpdateSlateAddon;
 use AirSlate\ApiClient\Models\SlateAddonMessage\Create as CreateSlateAddonMessage;
 use Generator;
@@ -101,6 +103,26 @@ class SlateAddonsService extends AbstractService
         ]);
 
         return $response->getStatusCode() === 200;
+    }
+
+    /**
+     * @param string $slateAddonUid
+     * @param ResolveTags $resolveTags
+     * @return Tag[]
+     */
+    public function assignTags(
+        string $slateAddonUid,
+        ResolveTags $resolveTags
+    ): array {
+        $url = $this->resolveEndpoint("/slate-addons/{$slateAddonUid}/resolve-tags");
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $resolveTags->toArray()
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Tag::createFromCollection($content);
     }
 
     /**

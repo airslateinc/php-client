@@ -14,7 +14,6 @@ namespace AirSlate\ApiClient\Entities;
  * @property string $updated_at
  *
  */
-
 class Packet extends BaseEntity
 {
     /**

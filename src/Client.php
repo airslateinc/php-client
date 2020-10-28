@@ -10,8 +10,10 @@ use AirSlate\ApiClient\Services\AddonsService;
 use AirSlate\ApiClient\Services\AddonsSmsService;
 use AirSlate\ApiClient\Services\CloudStorageService;
 use AirSlate\ApiClient\Services\DocumentsService;
+use AirSlate\ApiClient\Services\ExperimentsService;
 use AirSlate\ApiClient\Services\ExportService;
 use AirSlate\ApiClient\Services\FilesService;
+use AirSlate\ApiClient\Services\IntegrationProxyService;
 use AirSlate\ApiClient\Services\NotificationsService;
 use AirSlate\ApiClient\Services\PaywallService;
 use AirSlate\ApiClient\Services\StorageFilesService;
@@ -104,6 +106,16 @@ class Client
      * @var CloudStorageService
      */
     private $cloudStorageService;
+
+    /**
+     * @var IntegrationProxyService
+     */
+    private $integrationProxyService;
+
+    /**
+     * @var ExperimentsService
+     */
+    private $experimentsService;
 
     /**
      * Client instances.
@@ -401,5 +413,29 @@ class Client
         }
 
         return $this->cloudStorageService;
+    }
+
+    /**
+     * @return IntegrationProxyService
+     */
+    public function integrationProxy(): IntegrationProxyService
+    {
+        if (!$this->integrationProxyService) {
+            $this->integrationProxyService = new IntegrationProxyService($this->httpClient);
+        }
+
+        return $this->integrationProxyService;
+    }
+
+    /**
+     * @return ExperimentsService
+     */
+    public function experimentsService(): ExperimentsService
+    {
+        if (!$this->experimentsService) {
+            $this->experimentsService = new ExperimentsService($this->httpClient);
+        }
+
+        return $this->experimentsService;
     }
 }
