@@ -17,6 +17,7 @@ class Subscribe extends AbstractModel
     public function __construct(array $resourceIdentifier, string $slateAddonIntegrationId, string $organizationId)
     {
         $data = [
+            'id' => 'C3890000-0000-0000-000050E2', // encoded 0
             'type' => 'data_storage_request',
             'attributes' => [
                 'resource_information' => $resourceIdentifier,

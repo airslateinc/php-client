@@ -22,6 +22,7 @@ class Provide extends AbstractModel
         string $organizationId
     ) {
         $data = [
+            'id' => '87AB0000-0000-0000-0000A55C', // encoded 0
             'type' => 'data_provide_request',
             'attributes' => [
                 'resource_information' => $resourceIdentifier,

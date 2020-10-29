@@ -23,6 +23,7 @@ class Update extends AbstractModel
         string $organizationId
     ) {
         $data = [
+            'id' => '4AC10000-0000-0000-0000ED29', // encoded 0
             'type' => 'data_update_request',
             'attributes' => [
                 'resource_information' => $resourceIdentifier,
