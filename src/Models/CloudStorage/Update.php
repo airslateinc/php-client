@@ -11,13 +11,13 @@ use AirSlate\ApiClient\Models\AbstractModel;
 class Update extends AbstractModel
 {
     /**
-     * @param array $resourceIdentifier
+     * @param array $resourceInformation
      * @param string $entityType
      * @param string $slateAddonIntegrationId
      * @param string $organizationId
      */
     public function __construct(
-        array $resourceIdentifier,
+        array $resourceInformation,
         string $entityType,
         string $slateAddonIntegrationId,
         string $organizationId
@@ -26,7 +26,7 @@ class Update extends AbstractModel
             'id' => '4AC10000-0000-0000-0000ED29', // encoded 0
             'type' => 'data_update_request',
             'attributes' => [
-                'resource_information' => $resourceIdentifier,
+                'resource_information' => $resourceInformation,
                 'entity_type' => $entityType,
                 'search_parameters' => [],
                 'entities' => [],

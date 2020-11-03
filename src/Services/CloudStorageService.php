@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\CloudStorage\DataProvideResponse;
+use AirSlate\ApiClient\Entities\CloudStorage\DataStorage;
 use AirSlate\ApiClient\Models\CloudStorage\Provide;
+use AirSlate\ApiClient\Models\CloudStorage\StructureUpdate;
 use AirSlate\ApiClient\Models\CloudStorage\Subscribe;
 use AirSlate\ApiClient\Models\CloudStorage\Update;
 use GuzzleHttp\RequestOptions;
@@ -16,7 +18,7 @@ class CloudStorageService extends AbstractService
      * @param Subscribe $subscribe
      * @return bool
      */
-    public function subscribe(Subscribe $subscribe): bool
+    public function subscribe(Subscribe $subscribe): DataStorage
     {
         $url = $this->resolveEndpoint('/cloud-storage/subscribe');
 
@@ -24,7 +26,9 @@ class CloudStorageService extends AbstractService
             RequestOptions::JSON => $subscribe->toArray(),
         ]);
 
-        return $response && $response->getStatusCode() === 201;
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return DataStorage::createFromOne($content);
     }
 
     /**
@@ -57,5 +61,22 @@ class CloudStorageService extends AbstractService
         ]);
 
         return $response && $response->getStatusCode() === 200;
+    }
+
+    /**
+     * @param StructureUpdate $structureUpdate
+     * @return DataStorage
+     */
+    public function updateStructure(StructureUpdate $structureUpdate): DataStorage
+    {
+        $url = $this->resolveEndpoint('/cloud-storage/structure-update');
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $structureUpdate->toArray(),
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return DataStorage::createFromOne($content);
     }
 }

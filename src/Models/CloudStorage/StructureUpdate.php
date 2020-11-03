@@ -7,27 +7,26 @@ namespace AirSlate\ApiClient\Models\CloudStorage;
 use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Models\AbstractModel;
 
-class Provide extends AbstractModel
+class StructureUpdate extends AbstractModel
 {
     /**
      * @param array $resourceInformation
-     * @param string $entityType
+     * @param array $structureChanges
      * @param string $slateAddonIntegrationId
      * @param string $organizationId
      */
     public function __construct(
         array $resourceInformation,
-        string $entityType,
+        array $structureChanges,
         string $slateAddonIntegrationId,
         string $organizationId
     ) {
         $data = [
-            'id' => '87AB0000-0000-0000-0000A55C', // encoded 0
-            'type' => 'data_provide_request',
+            'id' => '52650000-0000-0000-000062FD', // encoded 0
+            'type' => 'structure_update_request',
             'attributes' => [
                 'resource_information' => $resourceInformation,
-                'entity_type' => $entityType,
-                'search_parameters' => [],
+                'structure_changes' => $structureChanges,
             ],
             'relationships' => [
                 'slate_addon_integrations' => [
@@ -46,20 +45,5 @@ class Provide extends AbstractModel
         ];
 
         parent::__construct($data);
-    }
-
-    /**
-     * @param string $attribute
-     * @param string[] $inArray
-     * @return $this
-     */
-    public function addSearchParameter(string $attribute, array $inArray): self
-    {
-        $this->data['attributes']['search_parameters'][] = [
-            'attribute' => $attribute,
-            'in_array' => $inArray,
-        ];
-
-        return $this;
     }
 }
