@@ -9,6 +9,7 @@ use AirSlate\ApiClient\Entities\Organization;
 use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Models\Organization\Create;
 use AirSlate\ApiClient\Models\Organization\Update;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
 
 class OrganizationsService extends AbstractService
@@ -89,6 +90,21 @@ class OrganizationsService extends AbstractService
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
         return Organization::createFromOne($content);
+    }
+
+    /**
+     * @param string $userUid
+     * @return array
+     * @throws GuzzleException
+     */
+    public function allByUser(string $userUid): array
+    {
+        $url = $this->resolveEndpoint("users/{$userUid}/organizations");
+        $response = $this->httpClient->get($url);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Organization::createFromCollection($content);
     }
 
     /**
