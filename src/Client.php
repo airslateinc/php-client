@@ -11,6 +11,7 @@ use AirSlate\ApiClient\Services\AddonsSmsService;
 use AirSlate\ApiClient\Services\DocumentsService;
 use AirSlate\ApiClient\Services\ExperimentsService;
 use AirSlate\ApiClient\Services\ExportService;
+use AirSlate\ApiClient\Services\ExportZipService;
 use AirSlate\ApiClient\Services\FilesService;
 use AirSlate\ApiClient\Services\IntegrationProxyService;
 use AirSlate\ApiClient\Services\NotificationsService;
@@ -56,6 +57,10 @@ class Client
      * @var ExportService
      */
     private $exportService;
+    /**
+     * @var ExportZipService
+     */
+    private $exportZipService;
     /**
      * @var FlowsService
      */
@@ -278,6 +283,15 @@ class Client
         }
 
         return $this->exportService;
+    }
+
+    public function exportZip(): ExportZipService
+    {
+        if (!$this->exportZipService) {
+            $this->exportZipService = new ExportZipService($this->httpClient);
+        }
+
+        return $this->exportZipService;
     }
 
     /**
