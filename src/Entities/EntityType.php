@@ -53,6 +53,7 @@ interface EntityType
     public const TOKEN = 'tokens';
     public const USER = 'users';
     public const EXPORT = 'export';
+    public const EXPORT_ZIP = 'export_zip';
     public const EVENT = 'events';
     public const INVITE_EMAIL_ADDITION = 'invite_email_additions';
     public const SLATE_ADDON_LOG = 'slate_addon_logs';

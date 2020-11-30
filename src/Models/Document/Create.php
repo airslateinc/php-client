@@ -43,6 +43,11 @@ class Create extends AbstractModel
     private $hideStamps;
 
     /**
+     * @var string
+     */
+    private $template;
+
+    /**
      * @param string $layer
      * @param string $id
      */
@@ -182,6 +187,9 @@ class Create extends AbstractModel
         if (is_bool($this->hideStamps)) {
             $payload['data']['attributes']['properties']['hide_stamps'] = $this->hideStamps;
         }
+        if (!empty($this->template)) {
+            $payload['data']['attributes']['properties']['template'] = $this->template;
+        }
 
         //meta
         if ($this->pagesCount != null) {
@@ -261,6 +269,17 @@ class Create extends AbstractModel
     public function setHideStamps(bool $hideStamps): Create
     {
         $this->hideStamps = $hideStamps;
+
+        return $this;
+    }
+
+    /**
+     * @param string $template
+     * @return Create|static
+     */
+    public function setTemplate(string $template): Create
+    {
+        $this->template = $template;
 
         return $this;
     }
