@@ -49,16 +49,12 @@ class Provide extends AbstractModel
     }
 
     /**
-     * @param string $attribute
-     * @param string[] $inArray
+     * @param array $searchParameter
      * @return $this
      */
-    public function addSearchParameter(string $attribute, array $inArray): self
+    public function addSearchParameter(array $searchParameter): self
     {
-        $this->data['attributes']['search_parameters'][] = [
-            'attribute' => $attribute,
-            'in_array' => $inArray,
-        ];
+        $this->data['attributes']['search_parameters'][] = $searchParameter;
 
         return $this;
     }
