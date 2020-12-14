@@ -60,6 +60,14 @@ class PacketsService extends AbstractService
     }
 
     /**
+     * @return PacketExtendedDataService
+     */
+    public function extendedData(): PacketExtendedDataService
+    {
+        return new PacketExtendedDataService($this->httpClient);
+    }
+
+    /**
      * @param string $flowUid
      * @return Packet[]
      * @throws InvalidArgumentException

@@ -69,4 +69,5 @@ interface EntityType
     public const CONTACT_GROUP = 'contact_groups';
     public const INTEGRATION_REQUESTS = 'integration_requests';
     public const RESOLVE_TAGS = 'resolve_tags';
+    public const PACKET_EXTENDED_DATA = 'packet_extended_data';
 }
