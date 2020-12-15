@@ -48,6 +48,11 @@ class Create extends AbstractModel
     private $template;
 
     /**
+     * @var int
+     */
+    private $contentVersion;
+
+    /**
      * @param string $layer
      * @param string $id
      */
@@ -184,6 +189,9 @@ class Create extends AbstractModel
         if (!empty($this->editorType)) {
             $payload['data']['attributes']['editor_type'] = $this->editorType;
         }
+        if (!empty($this->contentVersion)) {
+            $payload['data']['attributes']['content_version'] = $this->contentVersion;
+        }
         if (is_bool($this->hideStamps)) {
             $payload['data']['attributes']['properties']['hide_stamps'] = $this->hideStamps;
         }
@@ -214,6 +222,18 @@ class Create extends AbstractModel
     public function setName(string $name): Create
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+
+    /**
+     * @param int $contentVersion
+     * @return Create|static
+     */
+    public function setContentVersion(int $contentVersion): Create
+    {
+        $this->contentVersion = $contentVersion;
 
         return $this;
     }
