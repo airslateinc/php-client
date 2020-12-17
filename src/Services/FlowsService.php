@@ -11,6 +11,7 @@ use AirSlate\ApiClient\Entities\SlateLinks;
 use AirSlate\ApiClient\Entities\Slates\Document;
 use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Models\Slate\Create;
+use AirSlate\ApiClient\Models\SlateInvite\Create as SlateInviteCreate;
 use AirSlate\ApiClient\Models\Slate\Update;
 use Generator;
 use GuzzleHttp\RequestOptions;
@@ -151,6 +152,24 @@ class FlowsService extends AbstractService
     {
         $url = $this->resolveEndpoint("/flows/$flowUid/invites");
         yield from $this->pagination()->resolve($url, SlateInvite::class);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param SlateInviteCreate $slateInvite
+     * @return SlateInvite
+     */
+    public function inviteUser(string $flowUid, SlateInviteCreate $slateInvite): SlateInvite
+    {
+        $url = $this->resolveEndpoint("/flows/$flowUid/invites/bulk");
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $slateInvite->toArray(),
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return SlateInvite::createFromOne($content);
     }
 
     /**
