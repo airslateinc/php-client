@@ -157,9 +157,9 @@ class FlowsService extends AbstractService
     /**
      * @param string $flowUid
      * @param SlateInviteCreate $slateInvite
-     * @return SlateInvite
+     * @return SlateInvite[]
      */
-    public function inviteUser(string $flowUid, SlateInviteCreate $slateInvite): SlateInvite
+    public function inviteUser(string $flowUid, SlateInviteCreate $slateInvite): array
     {
         $url = $this->resolveEndpoint("/flows/$flowUid/invites/bulk");
 
@@ -169,7 +169,7 @@ class FlowsService extends AbstractService
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
-        return SlateInvite::createFromOne($content);
+        return SlateInvite::createFromCollection($content);
     }
 
     /**
