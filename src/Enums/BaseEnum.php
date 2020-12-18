@@ -34,11 +34,11 @@ abstract class BaseEnum
      */
     private function setValue(string $value): void
     {
-        if (in_array($value, $this->getPossibleValues())) {
-            $this->value = $value;
+        if (!in_array($value, $this->getPossibleValues())) {
+            throw new IncorrectValueForEnum($value, $this->getPossibleValues());
         }
 
-        throw new IncorrectValueForEnum($value, $this->getPossibleValues());
+        $this->value = $value;
     }
 
     /**

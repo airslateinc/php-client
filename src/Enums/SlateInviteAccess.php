@@ -7,13 +7,13 @@ namespace AirSlate\ApiClient\Enums;
 class SlateInviteAccess extends BaseEnum
 {
     // POSSIBLE VALUES
-    private const IS_OWNER = 'IS_OWNER';
-    private const CAN_SHARE = 'CAN_SHARE';
-    private const CAN_READ = 'CAN_READ';
-    private const READ_ONLY = 'READ_ONLY';
-    private const CAN_USE = 'CAN_USE';
-    private const CAN_FILL = 'CAN_FILL';
-    private const CAN_EDIT = 'CAN_EDIT';
+    public const IS_OWNER = 'IS_OWNER';
+    public const CAN_SHARE = 'CAN_SHARE';
+    public const CAN_READ = 'CAN_READ';
+    public const READ_ONLY = 'READ_ONLY';
+    public const CAN_USE = 'CAN_USE';
+    public const CAN_FILL = 'CAN_FILL';
+    public const CAN_EDIT = 'CAN_EDIT';
 
     /** @const string[] */
     private const POSSIBLE_FIELDS = [

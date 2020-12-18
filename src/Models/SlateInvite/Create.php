@@ -53,8 +53,8 @@ class Create extends AbstractModel
                     ],
                     'relationships' => [
                         'invite_email_additions' => [
-                            "type" => "invite_email_additions",
-                            "id" => $this->emailAdditionsId,
+                            'type' => 'invite_email_additions',
+                            'id' => $this->emailAdditionsId,
                         ],
                     ],
                 ],
