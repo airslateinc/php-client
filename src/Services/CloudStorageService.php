@@ -6,10 +6,11 @@ namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Entities\CloudStorage\DataProvideResponse;
 use AirSlate\ApiClient\Entities\CloudStorage\DataStorage;
+use AirSlate\ApiClient\Models\CloudStorage\Create;
 use AirSlate\ApiClient\Models\CloudStorage\Provide;
 use AirSlate\ApiClient\Models\CloudStorage\StructureUpdate;
 use AirSlate\ApiClient\Models\CloudStorage\Subscribe;
-use AirSlate\ApiClient\Models\CloudStorage\Update;
+use AirSlate\ApiClient\Models\CloudStorage\UpdateOrCreate;
 use GuzzleHttp\RequestOptions;
 
 class CloudStorageService extends AbstractService
@@ -49,15 +50,30 @@ class CloudStorageService extends AbstractService
     }
 
     /**
-     * @param Update $update
+     * @param Create $create
      * @return bool
      */
-    public function update(Update $update): bool
+    public function create(Create $create): bool
     {
-        $url = $this->resolveEndpoint('/cloud-storage/update');
+        $url = $this->resolveEndpoint('/cloud-storage/create');
 
         $response = $this->httpClient->post($url, [
-            RequestOptions::JSON => $update->toArray(),
+            RequestOptions::JSON => $create->toArray(),
+        ]);
+
+        return $response && $response->getStatusCode() === 200;
+    }
+
+    /**
+     * @param UpdateOrCreate $updateOrCreate
+     * @return bool
+     */
+    public function updateOrCreate(UpdateOrCreate $updateOrCreate): bool
+    {
+        $url = $this->resolveEndpoint('/cloud-storage/updateOrCreate');
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $updateOrCreate->toArray(),
         ]);
 
         return $response && $response->getStatusCode() === 200;
