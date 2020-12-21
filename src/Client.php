@@ -14,6 +14,7 @@ use AirSlate\ApiClient\Services\ExperimentsService;
 use AirSlate\ApiClient\Services\ExportService;
 use AirSlate\ApiClient\Services\ExportZipService;
 use AirSlate\ApiClient\Services\FilesService;
+use AirSlate\ApiClient\Services\GalleryService;
 use AirSlate\ApiClient\Services\IntegrationProxyService;
 use AirSlate\ApiClient\Services\NotificationsService;
 use AirSlate\ApiClient\Services\PaywallService;
@@ -121,6 +122,11 @@ class Client
      * @var ExperimentsService
      */
     private $experimentsService;
+
+    /**
+     * @var GalleryService
+     */
+    private $galleryService;
 
     /**
      * Client instances.
@@ -451,5 +457,17 @@ class Client
         }
 
         return $this->experimentsService;
+    }
+
+    /**
+     * @return GalleryService
+     */
+    public function galleryService(): GalleryService
+    {
+        if (!$this->galleryService) {
+            $this->galleryService = new GalleryService($this->httpClient);
+        }
+
+        return $this->galleryService;
     }
 }

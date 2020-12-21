@@ -71,4 +71,5 @@ interface EntityType
     public const RESOLVE_TAGS = 'resolve_tags';
     public const DATA_STORAGE = 'data_storages';
     public const DATA_STORAGE_ENTITY = 'data_storage_entities';
+    public const GALLERY_ITEMS = 'gallery_items';
 }
