@@ -8,7 +8,7 @@ use AirSlate\ApiClient\Services\AddonFlowDocumentsService;
 use AirSlate\ApiClient\Services\AddonLogsService;
 use AirSlate\ApiClient\Services\AddonsService;
 use AirSlate\ApiClient\Services\AddonsSmsService;
-use AirSlate\ApiClient\Services\CloudStorageService;
+use AirSlate\ApiClient\Services\CloudStorage\CloudStorageService;
 use AirSlate\ApiClient\Services\DocumentsService;
 use AirSlate\ApiClient\Services\ExperimentsService;
 use AirSlate\ApiClient\Services\ExportService;
