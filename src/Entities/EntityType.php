@@ -70,4 +70,5 @@ interface EntityType
     public const INTEGRATION_REQUESTS = 'integration_requests';
     public const RESOLVE_TAGS = 'resolve_tags';
     public const GALLERY_ITEMS = 'gallery_items';
+    public const CONTACT = 'contacts';
 }

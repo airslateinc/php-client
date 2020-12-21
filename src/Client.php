@@ -8,6 +8,7 @@ use AirSlate\ApiClient\Services\AddonFlowDocumentsService;
 use AirSlate\ApiClient\Services\AddonLogsService;
 use AirSlate\ApiClient\Services\AddonsService;
 use AirSlate\ApiClient\Services\AddonsSmsService;
+use AirSlate\ApiClient\Services\ContactService;
 use AirSlate\ApiClient\Services\DocumentsService;
 use AirSlate\ApiClient\Services\ExperimentsService;
 use AirSlate\ApiClient\Services\ExportService;
@@ -121,6 +122,11 @@ class Client
      * @var GalleryService
      */
     private $galleryService;
+
+    /**
+     * @var ContactService
+     */
+    private $contactService;
 
     /**
      * Client instances.
@@ -451,5 +457,17 @@ class Client
         }
 
         return $this->galleryService;
+    }
+
+    /**
+     * @return ContactService
+     */
+    public function contacts(): ContactService
+    {
+        if (!$this->contactService) {
+            $this->contactService = new ContactService($this->httpClient);
+        }
+
+        return $this->contactService;
     }
 }
