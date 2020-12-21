@@ -18,11 +18,11 @@ use GuzzleHttp\RequestOptions;
 class CloudStorageService extends AbstractService
 {
     /**
-     * @return ConnectionService
+     * @return ConnectionsService
      */
-    public function connection(): ConnectionService
+    public function connections(): ConnectionsService
     {
-        return new ConnectionService($this->httpClient);
+        return new ConnectionsService($this->httpClient);
     }
 
     /**

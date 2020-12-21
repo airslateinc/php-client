@@ -10,7 +10,7 @@ use AirSlate\ApiClient\Models\CloudStorage\Connection\Update;
 use AirSlate\ApiClient\Services\AbstractService;
 use GuzzleHttp\RequestOptions;
 
-class ConnectionService extends AbstractService
+class ConnectionsService extends AbstractService
 {
     /**
      * @param Update $update
