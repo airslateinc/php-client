@@ -9,6 +9,7 @@ use AirSlate\ApiClient\Entities\EntityType;
 
 /**
  * @property string $id
+ * @property string $original_id
  * @property string $type
  * @property array $attributes
  */
