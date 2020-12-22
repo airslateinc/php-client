@@ -6,12 +6,13 @@ namespace AirSlate\ApiClient\Services\CloudStorage;
 
 use AirSlate\ApiClient\Entities\CloudStorage\DataProvideResponse;
 use AirSlate\ApiClient\Entities\CloudStorage\DataStorage;
+use AirSlate\ApiClient\Entities\CloudStorage\Watch;
 use AirSlate\ApiClient\Models\CloudStorage\Create;
 use AirSlate\ApiClient\Models\CloudStorage\Provide;
 use AirSlate\ApiClient\Models\CloudStorage\StructureUpdate;
 use AirSlate\ApiClient\Models\CloudStorage\Subscribe;
 use AirSlate\ApiClient\Models\CloudStorage\UpdateOrCreate;
-use AirSlate\ApiClient\Models\CloudStorage\Watch;
+use AirSlate\ApiClient\Models\CloudStorage\Watch as WatchRequest;
 use AirSlate\ApiClient\Services\AbstractService;
 use GuzzleHttp\RequestOptions;
 
@@ -107,10 +108,10 @@ class CloudStorageService extends AbstractService
     }
 
     /**
-     * @param Watch $watch
-     * @return bool
+     * @param WatchRequest $watch
+     * @return Watch
      */
-    public function watch(Watch $watch): bool
+    public function watch(WatchRequest $watch): Watch
     {
         $url = $this->resolveEndpoint('/cloud-storage/watch');
 
@@ -118,6 +119,8 @@ class CloudStorageService extends AbstractService
             RequestOptions::JSON => $watch->toArray(),
         ]);
 
-        return $response && $response->getStatusCode() === 200;
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Watch::createFromOne($content);
     }
 }
