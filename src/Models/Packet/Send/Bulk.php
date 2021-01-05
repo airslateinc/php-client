@@ -57,6 +57,10 @@ class Bulk extends AbstractModel
         $this->addEmailAddition($payload, $emailAddition);
     }
 
+    /**
+     * @param array $payload
+     * @param InviteEmailAddition|null $emailAddition
+     */
     private function addEmailAddition(array $payload, ?InviteEmailAddition $emailAddition = null): void
     {
         if ($emailAddition !== null) {
