@@ -13,11 +13,17 @@ class Enable extends AbstractModel
      * @param string $role
      * @param string|null $email
      * @param int $order
-     * @param InviteEmailAddition $emailAddition
+     * @param InviteEmailAddition|null $emailAddition
+     * @param int|null $phone
      * @return void
      */
-    public function enable(string $role, ?string $email, int $order, ?InviteEmailAddition $emailAddition = null): void
-    {
+    public function enable(
+        string $role,
+        ?string $email,
+        int $order,
+        ?InviteEmailAddition $emailAddition = null,
+        ?int $phone = null
+    ): void {
         $payload = [
             'type' => 'packet_signing_order',
             'attributes' => [
@@ -28,6 +34,10 @@ class Enable extends AbstractModel
 
         if (!empty($email)) {
             $payload['attributes']['email'] = $email;
+        }
+
+        if (!empty($phone)) {
+            $payload['attributes']['phone_number'] = $phone;
         }
 
         if ($emailAddition !== null) {
