@@ -40,13 +40,25 @@ class GrantAndAssign extends AbstractModel
 
     /**
      * @param User $user
+     * @param bool $shouldUsePhone
      */
-    public function addUser(User $user): void
+    public function addUser(User $user, bool $shouldUsePhone = false): void
     {
         $this->relationships[EntityType::USER]['data'][] = [
             'type' => EntityType::USER,
             'id' => $user->id
         ];
+
+        if ($shouldUsePhone) {
+            $this->included[] = [
+                'id' => $user->id,
+                'type' => EntityType::USER,
+                'attributes' => [
+                    'phone_number' => $user->phone_number,
+                ]
+            ];
+            return;
+        }
 
         $this->included[] = [
             'id' => $user->id,
