@@ -41,12 +41,25 @@ class GrantAndAssign extends AbstractModel
     /**
      * @param User $user
      */
+    public function addUserByPhone(User $user): void
+    {
+        $this->addRelationship($user);
+
+        $this->included[] = [
+            'id' => $user->id,
+            'type' => EntityType::USER,
+            'attributes' => [
+                'phone_number' => (int)$user->phone_number,
+            ]
+        ];
+    }
+
+    /**
+     * @param User $user
+     */
     public function addUser(User $user): void
     {
-        $this->relationships[EntityType::USER]['data'][] = [
-            'type' => EntityType::USER,
-            'id' => $user->id
-        ];
+        $this->addRelationship($user);
 
         $this->included[] = [
             'id' => $user->id,
@@ -113,6 +126,17 @@ class GrantAndAssign extends AbstractModel
                 'relationships' => $this->relationships
             ],
             'included' => $this->included
+        ];
+    }
+
+    /**
+     * @param User $user
+     */
+    private function addRelationship(User $user): void
+    {
+        $this->relationships[EntityType::USER]['data'][] = [
+            'type' => EntityType::USER,
+            'id' => $user->id
         ];
     }
 }
