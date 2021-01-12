@@ -14,6 +14,7 @@ use AirSlate\ApiClient\Services\ExperimentsService;
 use AirSlate\ApiClient\Services\ExportService;
 use AirSlate\ApiClient\Services\ExportZipService;
 use AirSlate\ApiClient\Services\FilesService;
+use AirSlate\ApiClient\Services\FlowLibraryService;
 use AirSlate\ApiClient\Services\GalleryService;
 use AirSlate\ApiClient\Services\IntegrationProxyService;
 use AirSlate\ApiClient\Services\NotificationsService;
@@ -117,6 +118,11 @@ class Client
      * @var ExperimentsService
      */
     private $experimentsService;
+
+    /**
+     * @var FlowLibraryService
+     */
+    private $flowLibraryService;
 
     /**
      * @var GalleryService
@@ -295,6 +301,18 @@ class Client
         }
 
         return $this->exportService;
+    }
+
+    /**
+     * @return FlowLibraryService
+     */
+    public function flowLibrary(): FlowLibraryService
+    {
+        if (!$this->flowLibraryService) {
+            $this->flowLibraryService = new FlowLibraryService($this->httpClient);
+        }
+
+        return $this->flowLibraryService;
     }
 
     public function exportZip(): ExportZipService
