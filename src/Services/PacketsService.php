@@ -18,6 +18,7 @@ use AirSlate\ApiClient\Exceptions\TypeMismatchException;
 use AirSlate\ApiClient\Models\Packet\ActivateOpenAsRole;
 use AirSlate\ApiClient\Models\Packet\AssignRole;
 use AirSlate\ApiClient\Models\Packet\Create;
+use AirSlate\ApiClient\Models\Packet\CreateBlank;
 use AirSlate\ApiClient\Models\Packet\Lock;
 use AirSlate\ApiClient\Models\Packet\ResendPacketInvite;
 use AirSlate\ApiClient\Models\Packet\Send\Create as CreatePacketSend;
@@ -123,6 +124,24 @@ class PacketsService extends AbstractService
 
         $response = $this->httpClient->post($url, [
             RequestOptions::JSON => $packet->toArray(),
+        ]);
+
+        $content = \GuzzleHttp\json_decode($response->getBody(), true);
+
+        return Packet::createFromOne($content);
+    }
+
+    /**
+     * @param string $flowUid
+     * @param CreateBlank $packetBlank
+     * @return Packet
+     */
+    public function createBlank(string $flowUid, CreateBlank $packetBlank): Packet
+    {
+        $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/blank");
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $packetBlank->toArray(),
         ]);
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
