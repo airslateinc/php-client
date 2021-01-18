@@ -13,21 +13,30 @@ use AirSlate\ApiClient\Models\AbstractModel;
  */
 class JsonRequest extends AbstractModel
 {
-    /* we can use only 'json' or 'form-data' type */
-
+    /**
+     * @param string $slateAddonIntegration
+     * @param string $httpMethod
+     * @param string $url
+     * @param array|null $data
+     * @param array $query
+     * @param string $type
+     * @param string $source external|cloud-storage
+     */
     public function __construct(
         string $slateAddonIntegration,
         string $httpMethod,
         string $url,
         ?array $data,
         array $query = [],
-        string $type = 'json'
+        string $type = 'json',
+        string $source = 'external'
     ) {
         parent::__construct();
 
         $this->data = [
             'type' => EntityType::INTEGRATION_REQUESTS,
             'attributes' => [
+                'source' => $source,
                 'http_method' => $httpMethod,
                 'action' => $url,
                 'arguments' => [
@@ -85,6 +94,18 @@ class JsonRequest extends AbstractModel
     {
         $this->data['attributes']['action'] = $url;
         $this->data['attributes']['http_method'] = $httpMethod;
+
+        return $this;
+    }
+
+    /**
+     * @param string $source
+     * @return $this
+     */
+    public function setSource(string $source): self
+    {
+        $this->data['attributes']['source'] = $source;
+
         return $this;
     }
 
@@ -106,6 +127,7 @@ class JsonRequest extends AbstractModel
     public function type(string $type): self
     {
         $this->data['attributes']['type'] = $type;
+
         return $this;
     }
 
