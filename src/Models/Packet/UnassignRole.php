@@ -14,6 +14,9 @@ class UnassignRole extends AbstractModel
     /** @var string */
     private $userUid = '';
 
+    /** @var bool */
+    private $ignoreManualAction = false;
+
     /**
      * @param string $userUid
      * @return UnassignRole
@@ -37,6 +40,17 @@ class UnassignRole extends AbstractModel
     }
 
     /**
+     * @param bool $ignoreManualAction
+     * @return UnassignRole
+     */
+    public function setIgnoreManualAction(bool $ignoreManualAction): self
+    {
+        $this->ignoreManualAction = $ignoreManualAction;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function toArray(): array
@@ -45,6 +59,9 @@ class UnassignRole extends AbstractModel
             'data' => [
                 'id' => $this->packetRoleUid,
                 'type' => EntityType::PACKET_ROLES,
+                'attributes' => [
+                    'ignore_manual_action' => $this->ignoreManualAction,
+                ],
                 'relationships' => [
                     'users' => [
                         'data' => [
