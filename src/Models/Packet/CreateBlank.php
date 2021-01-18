@@ -14,7 +14,7 @@ use AirSlate\ApiClient\Models\AbstractModel;
 class CreateBlank extends AbstractModel
 {
     /** @var string */
-    private $name;
+    private $name = '';
 
     /** @var array  */
     private $additionalData = [];
@@ -40,13 +40,15 @@ class CreateBlank extends AbstractModel
      */
     public function toArray(): array
     {
+        $attributes = ['additional_data' => $this->additionalData];
+        if ($this->name !== '') {
+            $attributes['name'] = $this->name;
+        }
+
         return [
             'data' => [
                 'type' => EntityType::PACKET,
-                'attributes' => [
-                    'name' => $this->name,
-                    'additional_data' => $this->additionalData
-                ]
+                'attributes' => $attributes,
             ],
         ];
     }
