@@ -73,5 +73,7 @@ interface EntityType
     public const DATA_STORAGE_ENTITY = 'data_storage_entities';
     public const DATA_STORAGE_CONNECTION = 'data_storage_connections';
     public const DATA_STORAGE_WATCH = 'data_storage_watch';
+    public const DOCUMENT_TEMPLATE = 'document_template';
     public const GALLERY_ITEMS = 'gallery_items';
+    public const CONTACT = 'contacts';
 }

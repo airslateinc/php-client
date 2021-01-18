@@ -9,11 +9,13 @@ use AirSlate\ApiClient\Services\AddonLogsService;
 use AirSlate\ApiClient\Services\AddonsService;
 use AirSlate\ApiClient\Services\AddonsSmsService;
 use AirSlate\ApiClient\Services\CloudStorage\CloudStorageService;
+use AirSlate\ApiClient\Services\ContactService;
 use AirSlate\ApiClient\Services\DocumentsService;
 use AirSlate\ApiClient\Services\ExperimentsService;
 use AirSlate\ApiClient\Services\ExportService;
 use AirSlate\ApiClient\Services\ExportZipService;
 use AirSlate\ApiClient\Services\FilesService;
+use AirSlate\ApiClient\Services\FlowLibraryService;
 use AirSlate\ApiClient\Services\GalleryService;
 use AirSlate\ApiClient\Services\IntegrationProxyService;
 use AirSlate\ApiClient\Services\NotificationsService;
@@ -124,9 +126,19 @@ class Client
     private $experimentsService;
 
     /**
+     * @var FlowLibraryService
+     */
+    private $flowLibraryService;
+
+    /**
      * @var GalleryService
      */
     private $galleryService;
+
+    /**
+     * @var ContactService
+     */
+    private $contactService;
 
     /**
      * Client instances.
@@ -295,6 +307,18 @@ class Client
         }
 
         return $this->exportService;
+    }
+
+    /**
+     * @return FlowLibraryService
+     */
+    public function flowLibrary(): FlowLibraryService
+    {
+        if (!$this->flowLibraryService) {
+            $this->flowLibraryService = new FlowLibraryService($this->httpClient);
+        }
+
+        return $this->flowLibraryService;
     }
 
     public function exportZip(): ExportZipService
@@ -469,5 +493,17 @@ class Client
         }
 
         return $this->galleryService;
+    }
+
+    /**
+     * @return ContactService
+     */
+    public function contacts(): ContactService
+    {
+        if (!$this->contactService) {
+            $this->contactService = new ContactService($this->httpClient);
+        }
+
+        return $this->contactService;
     }
 }

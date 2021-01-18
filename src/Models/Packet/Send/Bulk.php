@@ -33,6 +33,36 @@ class Bulk extends AbstractModel
             ],
         ];
 
+        $this->addEmailAddition($payload, $emailAddition);
+    }
+
+    /**
+     * @param int $phone
+     * @param string $accessLevel
+     * @param InviteEmailAddition|null $emailAddition
+     */
+    public function addPacketSendByPhone(
+        int $phone,
+        string $accessLevel,
+        ?InviteEmailAddition $emailAddition = null
+    ): void {
+        $payload = [
+            'type' => EntityType::PACKET_SEND,
+            'attributes' => [
+                'phone_number' => $phone,
+                'access_level' => $accessLevel,
+            ],
+        ];
+
+        $this->addEmailAddition($payload, $emailAddition);
+    }
+
+    /**
+     * @param array $payload
+     * @param InviteEmailAddition|null $emailAddition
+     */
+    private function addEmailAddition(array $payload, ?InviteEmailAddition $emailAddition = null): void
+    {
         if ($emailAddition !== null) {
             $payload['relationships'][InviteEmailAddition::RELATIONSHIP_KEY] = [
                 'type' => EntityType::INVITE_EMAIL_ADDITION,
