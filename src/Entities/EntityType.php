@@ -11,7 +11,6 @@ interface EntityType
 {
     public const ADDON = 'addons';
     public const ADDON_SMS = 'addons_sms';
-    public const ADDON_FILE = 'addon_files';
     public const ADDON_INTEGRATION = 'addon_integrations';
     public const APPLICATION_MESSAGE_BUS_EVENT = 'applications-message-bus-event';
     public const APPLICATION_CALLBACK = 'applications-callback';
