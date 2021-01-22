@@ -49,7 +49,7 @@ class GalleryService extends AbstractService
      */
     public function getGalleryItemsByCurrentUser(array $types): array
     {
-        $url = $this->resolveEndpoint('/gallery/gallery-items/byUser');
+        $url = $this->resolveEndpoint('/gallery/gallery-items/by-user');
 
         $response = $this->httpClient->get($url, [
             'query' => [
@@ -77,7 +77,7 @@ class GalleryService extends AbstractService
      */
     public function setDefaultGalleryItem(string $galleryItemId): void
     {
-        $url = $this->resolveEndpoint("/gallery/gallery-items/setDefault/$galleryItemId");
+        $url = $this->resolveEndpoint("/gallery/gallery-items/set-default/$galleryItemId");
 
         $this->httpClient->patch($url);
     }
@@ -86,7 +86,7 @@ class GalleryService extends AbstractService
      * @param GalleryFile $file
      * @return string
      */
-    public function uploadFile(GalleryFile $file)
+    public function uploadFile(GalleryFile $file): string
     {
         $url = $this->resolveEndpoint('/gallery/gallery-items/file-upload');
 
@@ -96,6 +96,6 @@ class GalleryService extends AbstractService
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
-        return $content['file_id'];
+        return $content['data']['id'];
     }
 }
