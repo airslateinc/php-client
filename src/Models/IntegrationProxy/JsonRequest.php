@@ -6,33 +6,25 @@ namespace AirSlate\ApiClient\Models\IntegrationProxy;
 use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Models\AbstractModel;
 
-/**
- * Class JsonRequest
- *
- * @package AirSlate\ApiClient\Models\IntegrationProxy
- */
 class JsonRequest extends AbstractModel
 {
-    /* we can use only 'json' or 'form-data' type */
-
+    /**
+     * @param string $slateAddonIntegration
+     * @param string $httpMethod
+     * @param string $url
+     */
     public function __construct(
         string $slateAddonIntegration,
         string $httpMethod,
-        string $url,
-        ?array $data,
-        array $query = [],
-        string $type = 'json'
+        string $url
     ) {
-        parent::__construct();
-
-        $this->data = [
+        parent::__construct([
             'type' => EntityType::INTEGRATION_REQUESTS,
             'attributes' => [
                 'http_method' => $httpMethod,
                 'action' => $url,
-                'arguments' => [
-                    'query' => $query
-                ]
+                'headers' => [],
+                'arguments' => []
             ],
             'relationships' => [
                 'slate_addon_integration' => [
@@ -43,48 +35,17 @@ class JsonRequest extends AbstractModel
                     ]
                 ]
             ]
-        ];
-
-        $this->addBody($data, $type);
+        ]);
     }
 
     /**
-     * @param array|null $data
-     * @param string $type
+     * @param array $headers
      * @return $this
      */
-    private function addBody(?array $data, string $type): self
+    public function setHeaders(array $headers): self
     {
-        if ($data !== null) {
-            $this->data['attributes']['arguments']['body'] = [
-                'type' => $type,
-                'data' => $data,
-            ];
-        }
+        $this->data['attributes']['headers'] = $headers;
 
-        return $this;
-    }
-
-    /**
-     * @param string $id
-     * @return $this
-     */
-    public function addSlateAddonIntegrationId(string $id): self
-    {
-        $this->data['relationships']['slate_addon_integration']['data']['id'] = $id;
-
-        return $this;
-    }
-
-    /**
-     * @param string $url
-     * @param string $httpMethod
-     * @return $this
-     */
-    public function addAttributes(string $url, string $httpMethod): self
-    {
-        $this->data['attributes']['action'] = $url;
-        $this->data['attributes']['http_method'] = $httpMethod;
         return $this;
     }
 
@@ -92,7 +53,7 @@ class JsonRequest extends AbstractModel
      * @param array $query
      * @return $this
      */
-    public function addQuery(array $query = []): self
+    public function setQuery(array $query): self
     {
         $this->data['attributes']['arguments']['query'] = $query;
 
@@ -100,20 +61,35 @@ class JsonRequest extends AbstractModel
     }
 
     /**
-     * @param string $type
+     * @param array $array
      * @return $this
      */
-    public function type(string $type): self
+    public function setJsonBody(array $array): self
     {
-        $this->data['attributes']['type'] = $type;
-        return $this;
+        return $this->setBody('json', json_encode($array));
     }
 
     /**
-     * @return array
+     * @param string $string
+     * @return $this
      */
-    public function toArray(): array
+    public function setRawBody(string $string): self
     {
-        return ['data' => $this->data];
+        return $this->setBody('raw', $string);
+    }
+
+    /**
+     * @param string $type json|raw
+     * @param string $body
+     * @return $this
+     */
+    public function setBody(string $type, string $body): self
+    {
+        $this->data['attributes']['arguments']['body'] = [
+            'type' => $type,
+            'data' => base64_encode($body),
+        ];
+
+        return $this;
     }
 }
