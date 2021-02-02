@@ -6,13 +6,14 @@ namespace AirSlate\ApiClient\Models\Notifications;
 
 use AirSlate\ApiClient\Entities\EntityType;
 use AirSlate\ApiClient\Models\AbstractModel;
+use AirSlate\ApiClient\Models\Notifications\Mailer\NotificationMail;
 
 class SendEmailsBulk extends AbstractModel
 {
     /**
-     * @param array $mails
+     * @param NotificationMail ...$mails
      */
-    public function __construct(array $mails)
+    public function __construct(NotificationMail ...$mails)
     {
         parent::__construct();
 
@@ -22,13 +23,13 @@ class SendEmailsBulk extends AbstractModel
     }
 
     /**
-     * @param array $mail
+     * @param NotificationMail $mail
      */
-    public function addMail(array $mail): void
+    public function addMail(NotificationMail $mail): void
     {
         $this->data[] = [
             'type' => EntityType::NOTIFICATION_MAIL,
-            'attributes' => $mail,
+            'attributes' => $mail->toArray(),
         ];
     }
 }
