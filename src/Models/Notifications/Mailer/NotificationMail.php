@@ -18,11 +18,11 @@ class NotificationMail
     /** @var array */
     private $templateParams;
 
-    /** @var string|null */
-    private $subject;
+    /** @var string */
+    private $group;
 
     /** @var string|null */
-    private $group;
+    private $subject;
 
     /** @var Sender|null */
     private $sender;
@@ -31,16 +31,16 @@ class NotificationMail
      * @param Recipient $recipient
      * @param string $templateName
      * @param array $templateParams
+     * @param string $group
      * @param string|null $subject
-     * @param string|null $group
      * @param Sender|null $sender
      */
     public function __construct(
         Recipient $recipient,
         string $templateName,
         array $templateParams,
+        string $group = self::DEFAULT_GROUP,
         ?string $subject = null,
-        ?string $group = null,
         ?Sender $sender = null
     ) {
         $this->recipient = $recipient;
@@ -96,7 +96,7 @@ class NotificationMail
      */
     public function group(): string
     {
-        return $this->group ?? self::DEFAULT_GROUP;
+        return $this->group;
     }
 
     /**
