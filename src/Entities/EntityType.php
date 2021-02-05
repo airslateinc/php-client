@@ -71,4 +71,5 @@ interface EntityType
     public const DOCUMENT_TEMPLATE = 'document_template';
     public const GALLERY_ITEMS = 'gallery_items';
     public const CONTACT = 'contacts';
+    public const NOTIFICATION_MAIL = 'notification_mail';
 }

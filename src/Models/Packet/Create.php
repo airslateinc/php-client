@@ -13,15 +13,35 @@ use AirSlate\ApiClient\Models\AbstractModel;
  */
 class Create extends AbstractModel
 {
+    /** @var string */
+    private $name;
+
+    /**
+     * @param string $name
+     * @return Create
+     */
+    public function setName(string $name): Create
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
     /**
      * @return array
      */
     public function toArray(): array
     {
-        return [
+        $data = [
             'data' => [
                 'type' => EntityType::PACKET,
             ],
         ];
+
+        if (isset($this->name)) {
+            $data['data']['attributes']['name'] = $this->name;
+        }
+
+        return $data;
     }
 }
