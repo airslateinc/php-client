@@ -39,6 +39,17 @@ class JsonRequest extends AbstractModel
     }
 
     /**
+     * @param string $source
+     * @return $this external|cloud-storage
+     */
+    public function setSource(string $source): self
+    {
+        $this->data['attributes']['source'] = $source;
+
+        return $this;
+    }
+
+    /**
      * @param array $headers
      * @return $this
      */
