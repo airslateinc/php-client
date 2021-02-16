@@ -21,7 +21,6 @@ class JsonRequest extends AbstractModel
         parent::__construct([
             'type' => EntityType::INTEGRATION_REQUESTS,
             'attributes' => [
-                'source' => 'external',
                 'http_method' => $httpMethod,
                 'action' => $url,
                 'headers' => [],
