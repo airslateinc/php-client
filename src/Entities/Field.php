@@ -13,6 +13,7 @@ namespace AirSlate\ApiClient\Entities;
  * @property string|array|null $value
  * @property array $role_label
  * @property array $triggers
+ * @property string $field_type
  */
 class Field extends BaseEntity
 {
