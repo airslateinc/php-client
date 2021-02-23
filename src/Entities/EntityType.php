@@ -72,4 +72,5 @@ interface EntityType
     public const GALLERY_ITEMS = 'gallery_items';
     public const CONTACT = 'contacts';
     public const NOTIFICATION_MAIL = 'notification_mail';
+    public const PACKET_REVISION_REDIRECT = 'packet_revision_redirect';
 }
