@@ -192,7 +192,7 @@ class RevisionsService extends AbstractService
      * @param Update $packetRevisionRedirect
      * @return bool
      */
-    public function updateRedirect(
+    public function updatePacketRevisionRedirect(
         string $flowUid,
         string $packetUid,
         string $revisionUid,
