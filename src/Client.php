@@ -18,7 +18,6 @@ use AirSlate\ApiClient\Services\FlowLibraryService;
 use AirSlate\ApiClient\Services\GalleryService;
 use AirSlate\ApiClient\Services\IntegrationProxyService;
 use AirSlate\ApiClient\Services\NotificationsService;
-use AirSlate\ApiClient\Services\PacketRevisionRedirectsService;
 use AirSlate\ApiClient\Services\PaywallService;
 use AirSlate\ApiClient\Services\StorageFilesService;
 use AirSlate\ApiClient\Services\FlowsService;
@@ -134,11 +133,6 @@ class Client
      * @var ContactService
      */
     private $contactService;
-
-    /**
-     * @var PacketRevisionRedirectsService
-     */
-    private $packetRevisionRedirectService;
 
     /**
      * Client instances.
@@ -493,17 +487,5 @@ class Client
         }
 
         return $this->contactService;
-    }
-
-    /**
-     * @return PacketRevisionRedirectsService
-     */
-    public function packetRevisionRedirect(): PacketRevisionRedirectsService
-    {
-        if (!$this->packetRevisionRedirectService) {
-            $this->packetRevisionRedirectService = new PacketRevisionRedirectsService($this->httpClient);
-        }
-
-        return $this->packetRevisionRedirectService;
     }
 }

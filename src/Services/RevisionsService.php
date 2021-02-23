@@ -9,6 +9,7 @@ use AirSlate\ApiClient\Entities\Packets\RevisionLinks;
 use AirSlate\ApiClient\Exceptions\DomainException;
 use AirSlate\ApiClient\Exceptions\MissingDataException;
 use AirSlate\ApiClient\Exceptions\TypeMismatchException;
+use AirSlate\ApiClient\Models\PacketRevisionRedirects\Update;
 use AirSlate\ApiClient\Models\Revision\Create;
 use AirSlate\ApiClient\Models\RevisionDocument\BulkUpdate;
 use AirSlate\ApiClient\Entities\Packets\Revision;
@@ -180,6 +181,29 @@ class RevisionsService extends AbstractService
         $url = $this->resolveEndpoint("/flows/{$flowUid}/packets/{$packetUid}/revisions/{$revisionUid}/clear");
 
         $response = $this->httpClient->delete($url);
+
+        return $response && $response->getStatusCode() === 204;
+    }
+
+    /**
+     * @param string $flowUid
+     * @param string $packetUid
+     * @param string $revisionUid
+     * @param Update $packetRevisionRedirect
+     * @return bool
+     */
+    public function updateRedirect(
+        string $flowUid,
+        string $packetUid,
+        string $revisionUid,
+        Update $packetRevisionRedirect
+    ): bool {
+        $url = $this->resolveEndpoint(
+            "/flows/$flowUid/packets/$packetUid/revisions/$revisionUid/redirect"
+        );
+        $response = $this->httpClient->patch($url, [
+            RequestOptions::JSON => $packetRevisionRedirect->toArray(),
+        ]);
 
         return $response && $response->getStatusCode() === 204;
     }
