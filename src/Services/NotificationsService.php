@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AirSlate\ApiClient\Services;
 
 use AirSlate\ApiClient\Models\Notifications\Send;
+use AirSlate\ApiClient\Models\Notifications\SendEmail;
 use AirSlate\ApiClient\Models\Notifications\SendEmailsBulk;
 use GuzzleHttp\RequestOptions;
 
@@ -50,6 +51,21 @@ class NotificationsService extends AbstractService
 
         $response = $this->httpClient->post($url, [
             RequestOptions::JSON => $sendEmailsBulk->toArray(),
+        ]);
+
+        return $response && $response->getStatusCode() === 202;
+    }
+
+    /**
+     * @param SendEmail $sendEmail
+     * @return bool
+     */
+    public function sendEmail(SendEmail $sendEmail): bool
+    {
+        $url = $this->resolveEndpoint('/notifications/send-email');
+
+        $response = $this->httpClient->post($url, [
+            RequestOptions::JSON => $sendEmail->toArray(),
         ]);
 
         return $response && $response->getStatusCode() === 202;
