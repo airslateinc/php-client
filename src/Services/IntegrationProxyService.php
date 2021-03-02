@@ -8,7 +8,6 @@ use AirSlate\ApiClient\Models\IntegrationProxy\JsonRequest;
 use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\RequestOptions;
 
-
 class IntegrationProxyService extends AbstractService
 {
     /**
