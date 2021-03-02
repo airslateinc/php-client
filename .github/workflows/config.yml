@@ -30,9 +30,6 @@ jobs:
       - name: Run PHPCS
         run: |
           ./vendor/bin/phpcs
-      - name: Run PHPStan
-        run: |
-          ./vendor/bin/phpstan a -c ./phpstan.neon --no-progress --no-ansi --memory-limit=256M
       - name: Run PHPUnit
         run: |
           ./vendor/bin/phpunit
