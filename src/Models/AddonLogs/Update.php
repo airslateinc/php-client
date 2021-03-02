@@ -8,7 +8,7 @@ use AirSlate\ApiClient\Entities\EntityType;
 
 class Update extends AbstractAddonLog
 {
-    /** @var string  */
+    /** @var string */
     private $addonLogUid = '';
 
     /**
@@ -24,7 +24,7 @@ class Update extends AbstractAddonLog
      */
     public function toArray(): array
     {
-         return [
+        return [
             'data' => [
                 'type' => EntityType::SLATE_ADDON_LOG,
                 'id' => $this->addonLogUid,
