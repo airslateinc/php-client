@@ -12,5 +12,5 @@ interface ExceptionCode
     public const INVALID_FIELD_VALUE = 24032;
     public const INVALID_PAYLOAD = 0;
     public const FLOW_NOT_FOUND = 13014;
-    public const FLOW_TRASHED_NOT_FOUND = 13015;
+    public const FLOW_TRASHED_NOT_FOUND = 13075;
 }
