@@ -11,4 +11,5 @@ interface ExceptionCode
     public const PAYWALL_EXPORT_API = 17001;
     public const INVALID_FIELD_VALUE = 24032;
     public const INVALID_PAYLOAD = 0;
+    public const FLOW_NOT_FOUND = 13014;
 }
