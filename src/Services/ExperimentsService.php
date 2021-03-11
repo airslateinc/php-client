@@ -13,14 +13,9 @@ class ExperimentsService extends AbstractService
 {
     public function run(string $experimentUid): Experiment
     {
-        $url = $this->resolveEndpoint("/experiments/run");
+        $url = $this->resolveEndpoint("/experiments/$experimentUid");
 
-        $response = $this->httpClient->post(
-            $url,
-            [
-                RequestOptions::JSON => RunExperiment::create($experimentUid)->toArray()
-            ]
-        );
+        $response = $this->httpClient->get($url);
 
         $content = \GuzzleHttp\json_decode($response->getBody(), true);
 
